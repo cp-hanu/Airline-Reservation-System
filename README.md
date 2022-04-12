@@ -1,14 +1,2 @@
-# spring-security
+# Airline Reservation System
 
-Demo project for Spring Security:
-- Login
-- Logout
-- Authorizing
-
-using:
-
-- Spring Boot
-- Spring Security
-- Spring MVC
-- Spring Data JPA
-- Thymeleaf

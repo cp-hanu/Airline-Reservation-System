@@ -3,9 +3,7 @@ package com.edu.hanu.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -30,23 +28,15 @@ public class Ticket {
     @ToString.Exclude
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "ticket_flight_seat",
-            joinColumns = @JoinColumn(name = "ticket_id"),
-            inverseJoinColumns = @JoinColumn(name = "seat_id")
-    )
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private List<Seat> seat;
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "flight_id", referencedColumnName = "flight_id"),
+            @JoinColumn(name = "seat_id", referencedColumnName = "seat_id")
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "ticket_flight_seat",
-            joinColumns = @JoinColumn(name = "ticket_id"),
-            inverseJoinColumns = @JoinColumn(name = "flight_id")
-    )
+    })
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private List<Flight> flight;
+    private FlightSeatPrice flightSeatPrice;
+
+
 }

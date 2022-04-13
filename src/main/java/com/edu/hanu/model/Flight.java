@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Data
+@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -53,10 +54,10 @@ public class Flight {
     @Column(name = "arrival_time")
     private Time arrivalTime;
 
-    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Collection<FlightSeatPrice> flightSeats ;
+    private Set<FlightSeatPrice> flightSeats ;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude

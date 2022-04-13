@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -29,9 +30,4 @@ public class Plane {
     @ToString.Exclude
     private Collection<Flight> flights;
 
-    public Plane(String brand, String name, int capacity) {
-        this.brand = brand;
-        this.name = name;
-        this.capacity = capacity;
-    }
 }

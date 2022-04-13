@@ -26,34 +26,4 @@ public class Airport implements Serializable {
    private String country;
    private String city;
 
-//   @OneToMany(mappedBy = "airport", cascade = CascadeType.ALL)
-//   Collection<Flight> fromAirport;
-//
-//   @OneToMany(mappedBy = "airport", cascade = CascadeType.ALL)
-//   Collection<Flight> toAirport;
-
-
-//   public Airport(String code, String name) {
-//      this.code = code;
-//      this.name = name;
-//   }
-//
-//   public Airport(String code) {
-//      this.code = code;
-//   }
-//
-//   public Airport(String code, String name, String type) {
-//      this.code = code;
-//      this.name = name;
-//      this.type = type;
-//   }
-//
-//   public Airport(String code, String name, String type, String country, String city) {
-//      this.code = code;
-//      this.name = name;
-//      this.type = type;
-//      this.country = country;
-//      this.city = city;
-//   }
-
 }

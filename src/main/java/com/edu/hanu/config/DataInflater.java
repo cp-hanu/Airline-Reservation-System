@@ -5,8 +5,8 @@ import com.edu.hanu.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -16,7 +16,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 
-@Component
+@Configuration
 @Data
 public class DataInflater {
     @Autowired
@@ -41,13 +41,11 @@ public class DataInflater {
     FlightRepository flightRepository;
 
     @Autowired
-    FlightSeatRepository flightSeatRepository;
+    FlightSeatPriceRepository flightSeatPriceRepository;
 
     @Autowired
     TicketRepository ticketRepository;
 
-    @Autowired
-    TicketFlightSeatRepository ticketFlightSeatRepository;
 
     @Transactional
     @PostConstruct
@@ -123,7 +121,11 @@ public class DataInflater {
         // For create plane data: ID: 1, Airbus A320
         if (!planeRepository.exists(1L)) {
             try {
-                Plane newPlane = new Plane("AIRBUS", "A320", 180);
+                Plane newPlane = Plane.builder().
+                        brand("AIRBUS")
+                        .name("A320")
+                        .capacity(180).
+                        build();
                 var plane = planeRepository.save(newPlane);
 
                 var planeRow = plane.getCapacity() / 6;
@@ -131,31 +133,33 @@ public class DataInflater {
                 for (int i = 0; i < planeRow; i++) {
                     if (i < 3) {
                         for (String col : cols) {
-                            Seat seat = new Seat();
-                            seat.setPlane(plane);
-                            seat.setType("FIRST CLASS");
-                            seat.setCol(col);
-                            seat.setRow(i + 1);
-
+                            Seat seat = Seat.builder()
+                                    .plane(plane)
+                                    .type("FIRST CLASS")
+                                    .col(col)
+                                    .row(i + 1)
+                                    .build();
                             seatRepository.save(seat);
                         }
                     } else if (i < 6) {
                         for (String col : cols) {
-                            Seat seat = new Seat();
-                            seat.setPlane(plane);
-                            seat.setType("BUSINESS CLASS");
-                            seat.setCol(col);
-                            seat.setRow(i + 1);
+                            Seat seat = Seat.builder()
+                                    .plane(plane)
+                                    .type("BUSINESS CLASS")
+                                    .col(col)
+                                    .row(i + 1)
+                                    .build();
 
                             seatRepository.save(seat);
                         }
                     } else {
                         for (String col : cols) {
-                            Seat seat = new Seat();
-                            seat.setPlane(plane);
-                            seat.setType("ECONOMY CLASS");
-                            seat.setCol(col);
-                            seat.setRow(i + 1);
+                            Seat seat = Seat.builder()
+                                    .plane(plane)
+                                    .type("BUSINESS CLASS")
+                                    .col(col)
+                                    .row(i + 1)
+                                    .build();
                             seatRepository.save(seat);
                         }
                     }
@@ -167,10 +171,12 @@ public class DataInflater {
         // create a new airline (VietNam Airline)
         if (!airlineRepository.exists(1L)) {
             try {
-                Airline newAirline = new Airline();
-                newAirline.setFullName("Vietnam Airlines");
-                newAirline.setAbbreviation("VN");
-                var airline = airlineRepository.save(newAirline);
+
+                Airline newAirline = Airline.builder()
+                        .fullName("Vietnam Airlines")
+                        .abbreviation("VN")
+                        .build();
+                airlineRepository.save(newAirline);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -209,47 +215,41 @@ public class DataInflater {
 
             for (Seat seat : allSeat) {
                 if (seat.getType().equalsIgnoreCase("Economy Class")) {
-                    FlightSeatPrice flightSeat = new FlightSeatPrice();
-                    flightSeat.setFlight(flight);
-                    flightSeat.setSeat(seat);
-                    flightSeat.setPrice(58);
-                    flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(),seat.getId()));
-                    flightSeatRepository.save(flightSeat);
+                    FlightSeatPrice flightSeat = FlightSeatPrice.builder()
+                            .flight(flight)
+                            .seat(seat)
+                            .price(58).build();
+                    flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(), seat.getId()));
+                    flightSeatPriceRepository.save(flightSeat);
                 } else if (seat.getType().equalsIgnoreCase("BUSINESS CLASS")) {
-                    FlightSeatPrice flightSeat = new FlightSeatPrice();
-                    flightSeat.setFlight(flight);
-                    flightSeat.setSeat(seat);
-                    flightSeat.setPrice(300);
-                    flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(),seat.getId()));
-                    flightSeatRepository.save(flightSeat);
+                    FlightSeatPrice flightSeat = FlightSeatPrice.builder()
+                            .flight(flight)
+                            .seat(seat)
+                            .price(300).build();
+                    flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(), seat.getId()));
+                    flightSeatPriceRepository.save(flightSeat);
                 } else if (seat.getType().equalsIgnoreCase("First Class")) {
-                    FlightSeatPrice flightSeat = new FlightSeatPrice();
-                    flightSeat.setFlight(flight);
-                    flightSeat.setSeat(seat);
-                    flightSeat.setPrice(500);
-                    flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(),seat.getId()));
-                    flightSeatRepository.save(flightSeat);
+                    FlightSeatPrice flightSeat = FlightSeatPrice.builder()
+                            .flight(flight)
+                            .seat(seat)
+                            .price(500).build();
+                    flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(), seat.getId()));
+                    flightSeatPriceRepository.save(flightSeat);
                 }
             }
             // create ticket seat
             User user = userRepository.findByEmail("customer@gmail.com");
+            Seat seat3B = seatRepository.findSeatByRowAndColAndPlane(3, "B", plane);
+            FlightSeatPrice flightSeatPrice = flightSeatPriceRepository.findByFlightAndSeat(flight, seat3B);
             Ticket newTicket = Ticket.builder()
                     .pnr("GWGIQR")
                     .firstName("Nam")
                     .lastName("Nguyen")
                     .user(user)
+                    .flightSeatPrice(flightSeatPrice)
                     .build();
-            var ticket = ticketRepository.save(newTicket);
-           Seat seat3B = seatRepository.findSeatByRowAndColAndPlane(3,"B",plane) ;
+            ticketRepository.save(newTicket);
 
-           TicketFlightSeat ticketFlightSeat =
-                   TicketFlightSeat.builder()
-                           .seat(seat3B)
-                           .flight(flight)
-                           .ticket(ticket)
-                           .pk(new TicketFlightSeat.TicketFlightSeatPK(ticket.getId(),flight.getId(),seat3B.getId())).build();
-
-          ticketFlightSeatRepository.save(ticketFlightSeat);
         }
 
         // Get booked Seat from a flight
@@ -257,11 +257,11 @@ public class DataInflater {
         System.out.println(x.getBookedSeats());
 
         // Get ticket details
-       var ticket = ticketRepository.findOne(1L);
+        var ticket = ticketRepository.findOne(1L);
         System.out.println("GET FLIGHT FROM TICKET");
-        System.out.println(ticket.getFlight().get(0));
+        System.out.println(ticket.getFlightSeatPrice().getFlight());
         System.out.println("GET SEAT FROM TICKET");
-        System.out.println(ticket.getSeat().get(0));
+        System.out.println(ticket.getFlightSeatPrice().getSeat());
 
     }
 }

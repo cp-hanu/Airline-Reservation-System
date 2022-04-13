@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Date;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

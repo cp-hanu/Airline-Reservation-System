@@ -240,7 +240,9 @@ public class DataInflater {
             // create ticket seat
             User user = userRepository.findByEmail("customer@gmail.com");
             Seat seat3B = seatRepository.findSeatByRowAndColAndPlane(3, "B", plane);
+
             FlightSeatPrice flightSeatPrice = flightSeatPriceRepository.findByFlightAndSeat(flight, seat3B);
+
             Ticket newTicket = Ticket.builder()
                     .pnr("GWGIQR")
                     .firstName("Nam")
@@ -253,15 +255,20 @@ public class DataInflater {
         }
 
         // Get booked Seat from a flight
-        var x = flightRepository.findOne(1L);
-        System.out.println(x.getBookedSeats());
+//        var x = flightRepository.findOne(1L);
 
         // Get ticket details
+        System.out.println("TEST QUERY ---------------------------------------------------");
         var ticket = ticketRepository.findOne(1L);
-        System.out.println("GET FLIGHT FROM TICKET");
-        System.out.println(ticket.getFlightSeatPrice().getFlight());
-        System.out.println("GET SEAT FROM TICKET");
-        System.out.println(ticket.getFlightSeatPrice().getSeat());
+//        System.out.println("GET FLIGHT FROM TICKET");
+//        System.out.println(ticket.getFlightSeatPrice().getFlight());
+//        System.out.println("GET SEAT FROM TICKET");
+//        System.out.println(ticket.getFlightSeatPrice().getSeat());
+
+        System.out.println("GET BOOKED SEAT");
+        var x = flightRepository.findOne(1L);
+        System.out.println(x.getFlightSeats());
+        System.out.println("--------------------------------------");
 
     }
 }

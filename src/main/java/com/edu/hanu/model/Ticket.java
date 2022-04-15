@@ -28,6 +28,7 @@ public class Ticket {
     @ToString.Exclude
     private User user;
 
+
     @ManyToOne
     @JoinColumns({
             @JoinColumn(name = "flight_id", referencedColumnName = "flight_id"),
@@ -38,5 +39,10 @@ public class Ticket {
     @ToString.Exclude
     private FlightSeatPrice flightSeatPrice;
 
+    @ManyToOne
+    @JoinColumn(name = "flight_id", insertable = false, updatable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Flight flight;
 
 }

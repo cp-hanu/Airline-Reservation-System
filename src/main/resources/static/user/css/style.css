@@ -130,6 +130,9 @@ form .pass-txt{
 .logout-alert{
     color: #49d014;
 }
+.error-alert{
+    color:red;
+}
 .wrapper a:hover{
     text-decoration: underline;
 }

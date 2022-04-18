@@ -29,25 +29,28 @@
     </div>
     <div class="content">
         <form th:action="@{/signup}" method="post" th:object="${user}" >
+<!--        <form th:action="@{/signup}" method="post">-->
+
             <div class="user-details">
                 <div class="input-box">
                     <span class="details" for="username">Fullname</span>
-                    <input id="username"  type="text" placeholder="Enter your fullname" th:field="*{fullName}"/>
-                    <p th:if="${#fields.hasErrors('fullName')}" th:errorclass="error" th:errors="*{fullName}" />
+
+                    <input id="username"  type="text" placeholder="Enter your fullname" th:field="*{fullname}"/>
+<!--                    <p th:if="${#fields.hasErrors('fullName')}" th:errorclass="error" th:errors="*{fullName}" />-->
                 </div>
                 <div class="input-box">
                     <span class="details" for="email">Email</span>
                     <input type="email" id="email" placeholder="Enter your email" th:field="*{email}" />
-                    <p th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}" />
+<!--                    <p th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}" />-->
                 </div>
                 <div class="input-box">
                     <span class="details" for="phone">Phone Number</span>
-                    <input type="number" id="phone" placeholder="Enter your phone number"  th:field="*{phone}"/>
-                    <p th:if="${#fields.hasErrors('phone')}" th:errorclass="error" th:errors="*{phone}" />
+                    <input type="number" id="phone" placeholder="Enter your phone number" th:field="*{phone}" />
+<!--                    <p th:if="${#fields.hasErrors('phone')}" th:errorclass="error" th:errors="*{phone}" />-->
                 </div>
                 <div class="input-box">
                     <span class="details" for="country">Country:</span>
-                    <select name="country"  id="country" class="form-control" th:field="*{country}">
+                    <select name="country"  id="country" class="form-control"  th:field="*{country}">
                         <option value="0" label="Select a country ... " selected="selected">Select a country ... </option>
                         <optgroup id="country-optgroup-Africa" label="Africa">
                             <option value="DZ" label="Algeria">Algeria</option>
@@ -312,12 +315,12 @@
                             <option value="WF" label="Wallis and Futuna">Wallis and Futuna</option>
                         </optgroup>
                     </select>
-                    <p th:if="${#fields.hasErrors('country')}" th:errorclass="error" th:errors="*{country}" />
+<!--                    <p th:if="${#fields.hasErrors('country')}" th:errorclass="error" th:errors="*{country}" />-->
                 </div>
                 <div class="input-box">
                     <span class="details" for="password">Password</span>
                     <input type="password" id="password" placeholder="Enter your password"  th:field="*{password}"/>
-                    <p th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}" />
+<!--                    <p th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}" />-->
 <!--                    <i class="bi bi-eye-slash" id="togglePassword"></i>-->
                 </div>
 <!--                <div class="input-box">-->
@@ -326,7 +329,7 @@
 <!--                </div>-->
             </div>
             <div class="button">
-                <input type="submit" value="Sign Up">
+                <input type="submit" value="Sign Up" />
             </div>
             <span class="already mt-3">Already registered? <a href="/" th:href="@{/login}">Login
 								here</a></span>

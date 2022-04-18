@@ -62,27 +62,27 @@ public class DataInflater {
 
         // Admin account
         if (userRepository.findByEmail("admin@gmail.com") == null) {
-            User admin = new User();
-            admin.setEmail("admin@gmail.com");
-            admin.setPassword(passwordEncoder.encode("123456"));
-            admin.setFullname("Chinh Pham");
             HashSet<Role> roles = new HashSet<>();
             roles.add(roleRepository.findByName("ROLE_ADMIN"));
             roles.add(roleRepository.findByName("ROLE_CUSTOMER"));
-            admin.setRoles(roles);
+            User admin = User.builder().
+                    email("admin@gmail.com")
+                    .fullname("Chinh Pham")
+                    .password(passwordEncoder.encode("123456"))
+                    .roles(roles)
+                    .build();
             userRepository.save(admin);
         }
 
         // customer account
         if (userRepository.findByEmail("customer@gmail.com") == null) {
-            User user = new User();
-            user.setEmail("customer@gmail.com");
-            user.setPassword(passwordEncoder.encode("123456"));
-            user.setFullname("Chinh Pham");
             HashSet<Role> roles = new HashSet<>();
             roles.add(roleRepository.findByName("ROLE_CUSTOMER"));
-            user.setRoles(roles);
-            userRepository.save(user);
+
+            User customer = User.builder().email("customer@gmail.com").fullname("Chinh Pham")
+                    .password(passwordEncoder.encode("123456"))
+                    .roles(roles).build();
+            userRepository.save(customer);
         }
 
         if (!airportRepository.exists(1L)) {

@@ -129,7 +129,7 @@ public class DataInflater {
                 var plane = planeRepository.save(newPlane);
 
                 var planeRow = plane.getCapacity() / 6;
-                String cols[] = {"A", "B", "C", "D", "E", "F"};
+                String[] cols = {"A", "B", "C", "D", "E", "F"};
                 for (int i = 0; i < planeRow; i++) {
                     if (i < 3) {
                         for (String col : cols) {
@@ -259,16 +259,16 @@ public class DataInflater {
 
         // Get ticket details
         System.out.println("TEST QUERY ---------------------------------------------------");
-        var ticket = ticketRepository.findOne(1L);
-//        System.out.println("GET FLIGHT FROM TICKET");
-//        System.out.println(ticket.getFlightSeatPrice().getFlight());
-//        System.out.println("GET SEAT FROM TICKET");
-//        System.out.println(ticket.getFlightSeatPrice().getSeat());
-
-        System.out.println("GET BOOKED SEAT");
-        var x = flightRepository.findOne(1L);
-        System.out.println(x.getFlightSeats());
-        System.out.println("--------------------------------------");
+//        var ticket = ticketRepository.findOne(1L);
+////        System.out.println("GET FLIGHT FROM TICKET");
+////        System.out.println(ticket.getFlightSeatPrice().getFlight());
+////        System.out.println("GET SEAT FROM TICKET");
+////        System.out.println(ticket.getFlightSeatPrice().getSeat());
+//
+//        System.out.println("GET BOOKED SEAT");
+//        var x = flightRepository.findOne(1L);
+//        System.out.println(x.getFlightSeats());
+//        System.out.println("--------------------------------------");
 
     }
 }

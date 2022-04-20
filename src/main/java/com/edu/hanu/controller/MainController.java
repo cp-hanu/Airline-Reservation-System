@@ -6,13 +6,14 @@ import com.edu.hanu.model.User;
 import com.edu.hanu.repository.RoleRepository;
 import com.edu.hanu.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 
 @Controller
@@ -22,16 +23,25 @@ public class MainController {
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
-	PasswordEncoder passwordEncoder;
-	
-	@GetMapping("/")
-	public String index() {
-		return "user/index1";
+//	PasswordEncoder passwordEncoder;
+
+	@GetMapping("/test")
+	public String test(){
+		return "user/test2";
 	}
-	
-	@GetMapping("/admin") 
+ 	@GetMapping("/web")
+	public String food(){
+		return "web";
+	}
+
+//	@GetMapping("/home")
+//	public String homepage(){
+//		return "user/home";
+//	}
+
+	@GetMapping("/admin")
 	public String admin() {
-		return "user/admin";
+		return "admin/index";
 	}
 	
 	@GetMapping("/403")
@@ -51,19 +61,20 @@ public class MainController {
 
 		return "user/signup";
 	}
-	@PostMapping("/signup")
-		public String submit(@ModelAttribute User user, Model model){
-		model.addAttribute("user", user);
-		user.setPassword(passwordEncoder.encode(
-				user.getPassword()
-		));
-		HashSet<Role> roles = new HashSet<>();
-
-		roles.add(roleRepository.findByName("ROLE_CUSTOMER"));
-		user.setRoles(roles);
-		userRepository.save(user);
-//		System.out.println(user);
-		return "user/index2";
-	}
+//	@PostMapping("/signup")
+//		public String submit(@Valid User user, Model model, BindingResult result){
+//		if(result.hasErrors()){
+//			return "user/signup";
+//		}
+//		model.addAttribute("user", user);
+//		user.setPassword(passwordEncoder.encode(
+//				user.getPassword()
+//		));
+//		HashSet<Role> roles = new HashSet<>();
+//		roles.add(roleRepository.findByName("ROLE_CUSTOMER"));
+//		user.setRoles(roles);
+//		userRepository.save(user);
+//		return "redirect:signup?success";
+//	}
 	
 }

@@ -10,7 +10,7 @@
 	Logged user: <span sec:authentication="name"></span> <br/> 
 	Roles: <span sec:authentication="principal.authorities"></span>
 	<form action="#" th:action="@{/logout}" method="POST">
-		<button type="submit">Logout</button>
+		<button type="submit" class="btn btn-primary">Logout</button>
 	</form>
 </body>
 </html>

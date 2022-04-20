@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="user/_layoutUser">
+      layout:decorate="/user/_layoutUser">
 <head>
     <meta charset="UTF-8" />
     <title>Home</title>
@@ -42,7 +42,7 @@
                       <div class="col-md-6">
                         <fieldset>
                           <label for="from">FROM:</label>
-                          <select required name="from" id="from">
+                          <select required="required" name="from" id="from">
                             <option>Select a location</option>
                             <option value="Cambodia">Cambodia</option>
                             <option value="Hong Kong">Hong Kong</option>
@@ -61,7 +61,7 @@
                       <div class="col-md-6">
                         <fieldset>
                           <label for="to">TO:</label>
-                          <select required id="to" name="to">
+                          <select required="required" id="to" name="to">
                             <option>Select a location</option>
                             <option value="Cambodia">Cambodia</option>
                             <option value="Hong Kong">Hong Kong</option>
@@ -96,11 +96,11 @@
                             <div class="row">
                                 <div class="col-md-6 col-sm-6 col-xs-6">
                                   <label for="round">Round</label>
-                                  <input type="radio" id="round" th:onchange='this.form.()'/>
+                                  <input type="radio" id="round"/>
                                 </div>
                               <div class="col-md-6 col-sm-6 col-xs-6">
                                 <label for="oneway">Oneway</label>
-                                <input type="radio"  id="oneway" th:onchange='this.form.()'/>
+                                <input type="radio"  id="oneway"/>
                               </div>
                             </div>
                           </div>
@@ -119,7 +119,7 @@
 <!--                      <div class="col-md-6">-->
 <!--                        <fieldset>-->
 <!--                          <label for="from">From:</label>-->
-<!--                          <select required name='from'  id="from" th:onchange='this.form.()'>-->
+<!--                          <select required="required" name='from'  id="from" th:onchange='this.form.()'>-->
 <!--                            <option value="">Select a location...</option>-->
 <!--                            <option value="Cambodia">Cambodia</option>-->
 <!--                            <option value="Hong Kong">Hong Kong</option>-->
@@ -137,7 +137,7 @@
 <!--                      <div class="col-md-6">-->
 <!--                        <fieldset>-->
 <!--                          <label for="to">To:</label>-->
-<!--                          <select required name='to' id="to" th:onchange='this.form.()'>-->
+<!--                          <select required="required" name='to' id="to" th:onchange='this.form.()'>-->
 <!--                            <option value="">Select a location...</option>-->
 <!--                            <option value="Cambodia">Cambodia</option>-->
 <!--                            <option value="Hong Kong">Hong Kong</option>-->
@@ -155,15 +155,15 @@
 <!--                      <div class="col-md-6">-->
 <!--                        <fieldset>-->
 <!--                          <label for="departure">Departure date:</label>-->
-<!--                          <input name="deparure" type="text" class="form-control date" id="departure" placeholder="Select date..." required="" th:onchange='this.form.()'>-->
-<!--    &lt;!&ndash;                      <input name="deparure" type="date" class="form-control date" id="deparure" placeholder="Select date..." required="" >&ndash;&gt;-->
+<!--                          <input name="deparure" type="text" class="form-control date" id="departure" placeholder="Select date..." required="required"="" th:onchange='this.form.()'>-->
+<!--    &lt;!&ndash;                      <input name="deparure" type="date" class="form-control date" id="deparure" placeholder="Select date..." required="required"="" >&ndash;&gt;-->
 <!--                        </fieldset>-->
 <!--                      </div>-->
 <!--                      <div class="col-md-6">-->
 <!--                        <fieldset>-->
 <!--                          <label for="return">Return date:</label>-->
-<!--                          <input name="return" type="text" class="form-control date" id="return" placeholder="Select date..." required="" th:onchange='this.form.()'>-->
-<!--&lt;!&ndash;                          <input name="return" type="text" class="form-control date" id="return" placeholder="Select date..." required="">&ndash;&gt;-->
+<!--                          <input name="return" type="text" class="form-control date" id="return" placeholder="Select date..." required="required"="" th:onchange='this.form.()'>-->
+<!--&lt;!&ndash;                          <input name="return" type="text" class="form-control date" id="return" placeholder="Select date..." required="required"="">&ndash;&gt;-->
 <!--                        </fieldset>-->
 <!--                      </div>-->
 <!--                      <div class="col-md-6">-->
@@ -171,13 +171,13 @@
 <!--                          <div class="row">-->
 <!--                            <div class="col-md-6 col-sm-6 col-xs-6">-->
 <!--                              <label for="round">Round</label>-->
-<!--&lt;!&ndash;                              <input type="radio" name="trip" id="round" value="round" required="required" >&ndash;&gt;-->
-<!--                              <input type="radio" name="trip" id="round" value="round" required="required" th:onchange='this.form.()'>-->
+<!--&lt;!&ndash;                              <input type="radio" name="trip" id="round" value="round" required="required"="required="required"" >&ndash;&gt;-->
+<!--                              <input type="radio" name="trip" id="round" value="round" required="required"="required="required"" th:onchange='this.form.()'>-->
 <!--                            </div>-->
 <!--                            <div class="col-md-6 col-sm-6 col-xs-6">-->
 <!--                              <label for="oneway">Oneway</label>-->
-<!--                              <input type="radio" name="trip" id="oneway" value="one-way" required="required" th:onchange='this.form.()'>-->
-<!--&lt;!&ndash;                              <input type="radio" name="trip" id="oneway" value="one-way" required="required">&ndash;&gt;-->
+<!--                              <input type="radio" name="trip" id="oneway" value="one-way" required="required"="required="required"" th:onchange='this.form.()'>-->
+<!--&lt;!&ndash;                              <input type="radio" name="trip" id="oneway" value="one-way" required="required"="required="required"">&ndash;&gt;-->
 <!--                            </div>-->
 <!--                          </div>-->
 <!--                        </div>-->

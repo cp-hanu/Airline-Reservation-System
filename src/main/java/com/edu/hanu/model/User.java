@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Data
 @Builder
@@ -24,16 +25,29 @@ public class User implements Serializable {
     private long id;
 
     @Column(name = "email", nullable = false, unique = true)
+//    @Email
+//    @NotBlank
     private String email;
 
     @Column(name = "country", nullable = false)
+//    @NotNull
     private String country;
+
+
     @Column(name = "phone", nullable = false)
+//    @NotNull
     private String phone;
 
+
     @Column(name = "password", nullable = false)
+//    @NotNull
+//    @Min(5)
     private String password;
+
+
     @Column(name = "full_name", nullable = false)
+    @NotNull
+    @Size(min = 2, max = 30)
     private String fullname;
 
     @ManyToMany(cascade = CascadeType.ALL)

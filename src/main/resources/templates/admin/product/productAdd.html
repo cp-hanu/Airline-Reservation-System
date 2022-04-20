@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="admin/_layoutAdmin">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="admin/_layoutAdmin">
 
 <body>
 
@@ -26,26 +23,21 @@
                     <input type="hidden" name="id" th:field="*{productId}">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" required th:field="*{name}" name="name" id="name"
-                               placeholder="Enter name">
+                        <input type="text" class="form-control" required th:field="*{name}" name="name" id="name" placeholder="Enter name">
                     </div>
                     <div class="form-group">
                         <label for="category">Select Category</label>
                         <select class="form-control" th:field="*{categoryId}" id="category" name="category">
-                            <option th:each="category :${categories}"
-                                    th:value="${category.id}"
-                                    th:text="${category.name}"
-                            >
-                        </select>
+                            <option th:each="category :${categories}" th:value="${category.id}" th:text="${category.name}">
+                        </option></select>
                     </div>
                     <div class="form-group">
                         <label for="price">Price</label>
-                        <input type="number" class="form-control" required th:field="*{price}" name="price" id="price"
-                               placeholder="Price">
+                        <input type="number" class="form-control" required th:field="*{price}" name="price" id="price" placeholder="Price">
                     </div>
                     <div class="form-group">
                         <label for="quantity">Product Quantity</label>
-                        <input type="number" class="form-control" th:field="*{quantity}" name="quantity" id="quantity"></input>
+                        <input type="number" class="form-control" th:field="*{quantity}" name="quantity" id="quantity">
                     </div>
                     <div class="form-group">
                         <label for="description">Product Description</label>
@@ -55,7 +47,7 @@
                 <div class="col-sm-5">
                     <p>Product Image</p>
                     <div class="custom-file">
-                        <input type="file"  class="custom-file-input" name="productImage" accept="image/jpeg, image/png"  id="productImage"/>
+                        <input type="file" class="custom-file-input" name="productImage" accept="image/jpeg, image/png" id="productImage">
                         <label class="custom-file-label" for="productImage">Choose file</label>
                     </div>
                     <div class="form-group">

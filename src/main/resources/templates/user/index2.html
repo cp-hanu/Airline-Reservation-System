@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8" />
-    <title>Title</title>
+    <title>Index Page</title>
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
 </head>
 <body>
-<h1>test</h1>
+<h1>Admin</h1> <br/>
+Logged user: <span sec:authentication="name"></span> <br/>
+Roles: <span sec:authentication="principal.authorities"></span>
+<form action="#" th:action="@{/logout}" method="POST">
+    <button type="submit" class="btn btn-primary">Logout</button>
+</form>
 </body>
 </html>

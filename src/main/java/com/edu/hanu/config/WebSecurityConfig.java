@@ -14,42 +14,39 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	@Autowired
-	private UserDetailsService userDetailsService;
-	
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
-	@Autowired
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
-	
-	@Override
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests()
-<<<<<<< Updated upstream
+                .authorizeRequests()
                 .antMatchers("/register").permitAll()
-=======
-                .antMatchers("/register","/home").permitAll()
->>>>>>> Stashed changes
+                .antMatchers("/register", "/home").permitAll()
                 .antMatchers("/").hasRole("CUSTOMER")
                 .antMatchers("/admin").hasRole("ADMIN")
                 .and()
-            	.formLogin()
-            	.loginPage("/login")
-            	.usernameParameter("email")
-            	.passwordParameter("password")
-            	.defaultSuccessUrl("/")
+                .formLogin()
+                .loginPage("/login")
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/")
 //				.successHandler()
-            	.failureUrl("/login?error")
-            	.and()
-        		.exceptionHandling()
-    			.accessDeniedPage("/403");
+                .failureUrl("/login?error")
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/403");
     }
-	
+
 }

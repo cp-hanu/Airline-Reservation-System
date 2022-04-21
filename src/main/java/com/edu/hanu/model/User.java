@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+//import javax.validation.constraints.*;
 
 @Data
 @Builder
@@ -46,8 +46,8 @@ public class User implements Serializable {
 
 
     @Column(name = "full_name", nullable = false)
-    @NotNull
-    @Size(min = 2, max = 30)
+//    @NotNull
+//    @Size(min = 2, max = 30)
     private String fullname;
 
     @ManyToMany(cascade = CascadeType.ALL)

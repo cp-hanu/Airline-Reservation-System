@@ -68,7 +68,9 @@ public class DataInflater {
             User admin = User.builder().
                     email("admin@gmail.com")
                     .fullname("Chinh Pham")
-                    .password(passwordEncoder.encode("123456"))
+                    .password(passwordEncoder.encode("1"))
+                    .country("VN")
+                    .phone("0123")
                     .roles(roles)
                     .build();
             userRepository.save(admin);
@@ -81,6 +83,8 @@ public class DataInflater {
 
             User customer = User.builder().email("customer@gmail.com").fullname("Chinh Pham")
                     .password(passwordEncoder.encode("123456"))
+                    .country("VN")
+                    .phone("0121313")
                     .roles(roles).build();
             userRepository.save(customer);
         }
@@ -109,6 +113,34 @@ public class DataInflater {
                             airport.setCountry(o.get("country").toString());
                         }
                         airportRepository.save(airport);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        if (!airlineRepository.exists(1L)) {
+            InputStream resourceStream = getClass().getResourceAsStream("/airlines.json");
+            try {
+                ArrayList<HashMap> list = new ObjectMapper().readValue(resourceStream, ArrayList.class);
+                list.forEach(o -> {
+                    try {
+                        Airline airline = new Airline();
+
+                        if (o.containsKey("id")) {
+                            airline.setAbbreviation(o.get("id").toString());
+                        }
+                        if (o.containsKey("name")) {
+                            airline.setFullName(o.get("name").toString());
+                        }
+                        if (o.containsKey("logo")) {
+                            airline.setLogoUrl(o.get("logo").toString());
+                        }
+
+                        airlineRepository.save(airline);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -168,19 +200,8 @@ public class DataInflater {
                 e.printStackTrace();
             }
         }
-        // create a new airline (VietNam Airline)
-        if (!airlineRepository.exists(1L)) {
-            try {
 
-                Airline newAirline = Airline.builder()
-                        .fullName("Vietnam Airlines")
-                        .abbreviation("VN")
-                        .build();
-                airlineRepository.save(newAirline);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+
         // create a new flight
         if (!flightRepository.exists(1L)) {
             Flight newFlight = new Flight();

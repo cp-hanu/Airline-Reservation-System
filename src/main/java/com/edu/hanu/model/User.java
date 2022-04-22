@@ -36,7 +36,7 @@ public class User implements Serializable {
     @Column(name = "full_name", nullable = false)
     private String fullname;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),

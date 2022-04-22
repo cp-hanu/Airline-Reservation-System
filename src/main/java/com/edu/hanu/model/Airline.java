@@ -21,6 +21,8 @@ public class Airline implements Serializable {
 
     private String abbreviation;
 
+    private String logoUrl;
+
     @OneToMany(mappedBy = "airline", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude

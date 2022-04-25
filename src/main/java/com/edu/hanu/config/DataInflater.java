@@ -83,7 +83,7 @@ public class DataInflater {
             roles.add(roleRepository.findByName("ROLE_CUSTOMER"));
 
             User customer = User.builder().email("customer@gmail.com").fullname("Chinh Pham")
-                    .password(passwordEncoder.encode("123456"))
+                    .password(passwordEncoder.encode("1"))
                     .country("VN")
                     .phone("0121313")
                     .roles(roles).build();
@@ -113,7 +113,9 @@ public class DataInflater {
                         if (o.containsKey("country")) {
                             airport.setCountry(o.get("country").toString());
                         }
-                        airportRepository.save(airport);
+                        if (!airport.getCity().equals("")) {
+                            airportRepository.save(airport);
+                        }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -213,8 +215,8 @@ public class DataInflater {
 
             Plane plane = planeRepository.findByName("A320");
 
-            LocalTime departureTime = LocalTime.of(5,0);
-            LocalTime arrivalTime = LocalTime.of(7,0);
+            LocalTime departureTime = LocalTime.of(5, 0);
+            LocalTime arrivalTime = LocalTime.of(7, 0);
 //            Time arrivalTime = Time.valueOf("07:25:00");
 
             Date departureDate = Date.valueOf("2022-04-20");

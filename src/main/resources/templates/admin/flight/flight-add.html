@@ -131,7 +131,7 @@
                                         <!--                                        </datalist>-->
                                         <select id="from" class="form-control" th:field="*{fromAirport}">
                                             <option th:each="airport : ${airports}" th:value="${airport.id}"
-                                                    th:text="${airport.city} + '-' + ${airport.code}"></option>
+                                                    th:text="${airport.getCity()} + '-' + ${airport.code}"></option>
                                         </select>
                                     </div>
                                     <div class="mb-3">

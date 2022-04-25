@@ -146,9 +146,9 @@ public class AdminController {
     @GetMapping("/admin/flights/create")
     public String flightCreate(Model model) {
         Flight flight = new Flight();
-        List<Airline> airlines = airlineRepository.findAll();
+        List<Airline> airlines = airlineRepository.findAllAirline();
         List<Plane> planes = planeRepository.findAll();
-        List<Airport> airports = airportRepository.findAll();
+        List<Airport> airports = airportRepository.findAllAirport();
         model.addAttribute("flight", flight);
         model.addAttribute("airlines", airlines);
         model.addAttribute("planes", planes);
@@ -164,7 +164,7 @@ public class AdminController {
         }
         model.addAttribute("flight", flight);
         flightRepository.save(flight);
-        return "redirect:create?success";
+        return "redirect:admin/flight/flight";
     }
 
     @GetMapping("/admin/flights/update/{id}")

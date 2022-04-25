@@ -63,7 +63,45 @@ public class AdminController {
             return "admin/plane/plane-add";
         }
         model.addAttribute("plane", plane);
-        planeRepository.save(plane);
+
+        var newPlane = planeRepository.save(plane);
+
+        var planeRow = newPlane.getCapacity() / 6;
+        String[] cols = {"A", "B", "C", "D", "E", "F"};
+        for (int i = 0; i < planeRow; i++) {
+            if (i < 3) {
+                for (String col : cols) {
+                    Seat seat = Seat.builder()
+                            .plane(newPlane)
+                            .type("FIRST CLASS")
+                            .col(col)
+                            .row(i + 1)
+                            .build();
+                    seatRepository.save(seat);
+                }
+            } else if (i < 6) {
+                for (String col : cols) {
+                    Seat seat = Seat.builder()
+                            .plane(newPlane)
+                            .type("BUSINESS CLASS")
+                            .col(col)
+                            .row(i + 1)
+                            .build();
+
+                    seatRepository.save(seat);
+                }
+            } else {
+                for (String col : cols) {
+                    Seat seat = Seat.builder()
+                            .plane(newPlane)
+                            .type("BUSINESS CLASS")
+                            .col(col)
+                            .row(i + 1)
+                            .build();
+                    seatRepository.save(seat);
+                }
+            }
+        }
         return "redirect:create?success";
     }
 

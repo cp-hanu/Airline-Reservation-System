@@ -2,11 +2,7 @@ package com.edu.hanu.controller;
 
 import com.edu.hanu.model.*;
 import com.edu.hanu.repository.*;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +14,6 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/admin")
 public class AdminController {
     @Autowired
     PlaneRepository planeRepository;
@@ -164,7 +159,7 @@ public class AdminController {
         }
         model.addAttribute("flight", flight);
         flightRepository.save(flight);
-        return "redirect:admin/flight/flight";
+        return "redirect:?success";
     }
 
     @GetMapping("/admin/flights/update/{id}")

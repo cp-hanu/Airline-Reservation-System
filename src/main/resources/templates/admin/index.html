@@ -1,79 +1,183 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="admin/_layoutAdmin">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Travel Admin</title>
+    <link th:href="@{/admin/vendor/fontawesome/css/fontawesome.min.css}" rel="stylesheet">
+    <link th:href="@{/admin/vendor/fontawesome/css/solid.min.css}" rel="stylesheet">
+    <link th:href="@{/admin/vendor/fontawesome/css/brands.min.css}" rel="stylesheet">
+    <link th:href="@{/admin/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/admin/css/master.css}" rel="stylesheet">
+    <link th:href="@{/admin/vendor/flagiconcss/css/flag-icon.min.css}" rel="stylesheet">
+</head>
 
 <body>
-    <!--main content start-->
-    <div layout:fragment="content">
-
-        <section class="wrapper">
-            <!--overview start-->
-            <div class="row">
-                <div class="col-lg-12">
-                    <h3 class="page-header"><i class="fa fa-laptop"></i><b style="color: #092f3d"> Admin</b></h3>
-                    <ol class="breadcrumb">
-                        <li><i class="fa fa-home"></i><a th:href="@{/admin}">Home</a></li>
-                       <li th:href="@{/admin}"><i class="fa fa-laptop"></i>Dashboard</li>
-                    </ol>
-                </div>
+    <div class="wrapper">
+        <nav id="sidebar" class="active">
+            <div class="sidebar-header">
+                <img th:src="@{/user/img/logo.png}" alt="bootraper logo" class="app-logo mb-1 ml-2">
+<!--                <span>Travel Airlines</span>-->
             </div>
-
-            <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <a  th:href="@{/admin/products}">
-                    <div class="info-box blue-bg">
-                        <i class="fa fa-folder"></i>
-<!--                            <div class="count" th:text="${products.size()}"></div>-->
-                        <div class="count" th:text="12"></div>
-                        <div class="title">Products</div>
-                    </div>
-                    </a>
-                    <!--/.info-box-->
+            <ul class="list-unstyled components text-secondary">
+                <li>
+                    <a th:href="@{/admin}"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/planes}"><i class="fas fa-file-alt"></i> Planes</a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/airlines}"><i class="fas fa-table"></i> Airlines</a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/flights}"><i class="fas fa-chart-bar"></i> Flights</a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/users}"><i class="fas fa-user-friends"></i>Users</a>
+                </li>
+            </ul>
+        </nav>
+        <div id="body" class="active">
+            <!-- navbar navigation component -->
+            <nav class="navbar navbar-expand-lg navbar-white bg-white">
+                <button type="button" id="sidebarCollapse" class="btn btn-light">
+                    <i class="fas fa-bars"></i><span></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <div class="nav-dropdown">
+                                <a href="#" id="nav2" class="nav-item nav-link dropdown-toggle text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user"></i> <span sec:authentication="principal.getUsername()"></span> <i style="font-size: .8em;" class="fas fa-caret-down"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end nav-link-menu">
+                                    <ul class="nav-list">
+                                        <li><a href="" class="dropdown-item"><i class="fas fa-address-card"></i> Profile</a></li>
+                                        <li><a href="" class="dropdown-item"><i class="fas fa-envelope"></i> Messages</a></li>
+                                        <li><a href="" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a></li>
+                                        <div class="dropdown-divider"></div>
+                                        <li><a th:href="@{/logout}" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <a th:href="@{/admin/categories}">
-                    <div  class="info-box brown-bg">
-                        <i class="fa fa-bars"></i>
-<!--                        <div class="count" th:text="${categories.size()}"></div>-->
-                        <div class="count" th:text="12"></div>
-
-                        <div class="title">Categories</div>
-                    </div>
-                    </a>
-                    <!--/.info-box-->
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <div th:href="@{/admin/reservation/view-reservation}" class="info-box dark-bg">
-                        <i class="fa fa-table"></i>
-<!--                        <div class="count" th:text="${reservations.size()}"></div>-->
-<!--                            <span class="title" th:if="${reservations.size()} > 1" th:text="'Table reservation request are waiting'"></span>-->
-<!--                            <span class="title" th:if="${reservations.size()} < 1" th:text="'No table reservation request is waiting'"></span>-->
-                        <div class="count" th:text="12"></div>
-
-                    </div>
-            </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <a  th:href="@{/admin/carts}">
-                        <div class="info-box green-bg">
-                            <i class="fa fa-shopping-cart"></i>
-<!--                            <div class="count" th:text="${carts.size()}"></div>-->
-                            <div class="count" th:text="12"></div>
-
-                            <div class="title">Carts Management</div>
+            </nav>
+            <!-- end of navbar navigation -->
+            <div class="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 page-header">
+                            <h2 class="page-title">Dashboard</h2>
                         </div>
-                    </a>
-                    <!--/.info-box-->
-                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <a th:href="@{/admin/planes}">
+                                            <div class="col-sm-4">
+                                                <div class="icon-big text-center">
+                                                    <i class="teal fa fa-plane"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8" >
+                                                <div class="detail">
+                                                    <p class="detail-subtitle">Planes</p>
+                                                    <div th:text="${planes.size()}">
+                                                        <span class="number" th:if="${planes.size()} > 1" th:text="No plane"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <a th:href="@{/admin/airlines}">
+                                            <div class="col-sm-4">
+                                                <div class="icon-big text-center">
+                                                    <i class="olive fas fa-globe-asia"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="detail">
+                                                    <p class="detail-subtitle">Airlines</p>
+                                                    <div th:text="${airlines.size()}">
+                                                        <span class="number" th:if="${airlines.size()} > 1" th:text="No airline"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <a th:href="@{/admin/flights}">
+                                            <div class="col-sm-4">
+                                                <div class="icon-big text-center">
+                                                    <i class="violet fa fa-plane-departure"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="detail">
+                                                    <p class="detail-subtitle">Flights</p>
+                                                    <div th:text="${flights.size()}">
+                                                        <span class="number" th:if="${flights.size()} > 1" th:text="No flight"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3">
+                            <div class="card">
+                                <div class="content">
+                                        <div class="row">
+                                            <a th:href="@{/admin/users}">
+                                            <div class="col-sm-4">
+                                                <div class="icon-big text-center">
+                                                    <i class="orange fa fa-user"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="detail">
+                                                    <p class="detail-subtitle">Account</p>
+                                                    <div th:text="${users.size()}">
+                                                        <span class="number" th:if="${users.size()} > 1" th:text="No User"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </a>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </section>
-<!--        <h1>hello</h1>-->
+        </div>
     </div>
-    <!--main content end-->
+    <script th:src="@{/admin/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/admin/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/admin/js/script.js}"></script>
 </body>
 
 </html>

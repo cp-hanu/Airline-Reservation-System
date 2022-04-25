@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:HH="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Travel Admin</title>
+    <link th:href="@{/admin/vendor/fontawesome/css/fontawesome.min.css}" rel="stylesheet">
+    <link th:href="@{/admin/vendor/fontawesome/css/solid.min.css}" rel="stylesheet">
+    <link th:href="@{/admin/vendor/fontawesome/css/brands.min.css}" rel="stylesheet">
+    <link th:href="@{/admin/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/admin/css/master.css}" rel="stylesheet">
+<!--    <link th:href="@{/admin/vendor/flagiconcss/css/flag-icon.min.css}" rel="stylesheet">-->
+</head>
+<body>
+<div class="wrapper">
+    <nav id="sidebar" class="active">
+        <div class="sidebar-header">
+            <img th:src="@{/user/img/logo.png}" alt="bootraper logo" class="app-logo">
+        </div>
+        <ul class="list-unstyled components text-secondary">
+            <li>
+                <a th:href="@{/admin}"><i class="fas fa-home"></i> Dashboard</a>
+            </li>
+            <li>
+                <a th:href="@{/admin/planes}"><i class="fas fa-file-alt"></i> Planes</a>
+            </li>
+            <li>
+                <a th:href="@{/admin/airlines}"><i class="fas fa-table"></i> Airlines</a>
+            </li>
+            <li>
+                <a th:href="@{/admin/flights}"><i class="fas fa-chart-bar"></i> Flights</a>
+            </li>
+            <li>
+                <a th:href="@{/admin/flights}"><i class="fas fa-user-friends"></i>Users</a>
+            </li>
+        </ul>
+    </nav>
+    <div id="body" class="active">
+        <!-- navbar navigation component -->
+        <nav class="navbar navbar-expand-lg navbar-white bg-white">
+            <button type="button" id="sidebarCollapse" class="btn btn-light">
+                <i class="fas fa-bars"></i><span></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="nav navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <div class="nav-dropdown">
+                            <a href="#" id="nav2" class="nav-item nav-link dropdown-toggle text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i> <span sec:authentication="principal.getUsername()"></span> <i style="font-size: .8em;" class="fas fa-caret-down"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end nav-link-menu">
+                                <ul class="nav-list">
+                                    <li><a href="" class="dropdown-item"><i class="fas fa-address-card"></i> Profile</a></li>
+                                    <li><a href="" class="dropdown-item"><i class="fas fa-envelope"></i> Messages</a></li>
+                                    <li><a href="" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a></li>
+                                    <div class="dropdown-divider"></div>
+                                    <li><a th:href="@{/logout}" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- end of navbar navigation -->
+        <div class="content">
+            <div class="container">
+<!--                <div class="page-title">-->
+<!--                    <h3>Create Plane</h3>-->
+<!--                </div>-->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">Update Flight</div>
+                            <div th:if="${param.error}">
+                                <div class="alert alert-info">Save unsuccessfully!</div>
+                            </div>
+                            <div th:if="${param.success}">
+                                <div class="alert alert-info">Save successfully!</div>
+                            </div>
+                            <div class="card-body">
+                                <form th:action="@{/admin/flights/save/{id}(id=${flights.id})}" method="post" th:object="${flights}" accept-charset="utf-8" >
+                                    <div class="mb-3">
+                                        <label class="form-label" for="air">Airline</label>
+<!--                                        <input type="text" list="airline" id="air" placeholder="Enter Airline" class="form-control"  required th:field="*{airline}">-->
+                                        <select id="air" class="form-control"  required th:field="*{airline}">
+                                            <option th:each="airline : ${airlines}" th:value="${airline.abbreviation}" th:text="${airline.fullName}"></option>
+                                        </select>
+<!--                                        <datalist id="airline" >-->
+<!--                                            <option th:each="airline : ${airlines}" th:value="${airline.fullName}" th:text="${airline.fullName}"></option>-->
+<!--                                        </datalist>-->
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="flightNo">Flight No</label>
+                                        <input type="number" id="flightNo" min=1  placeholder="Enter Flight No" class="form-control" required th:field="*{flightNo}">
+                                    </div>
+                                    <div class="mb-3">
+<!--                                        <label class="form-label">Plane</label>-->
+                                        <label class="form-label" for="plane">Plane</label>
+                                        <input type="text"  id="plane" placeholder="Enter Plane" class="form-control"  required th:field="*{plane}">
+<!--                                        <datalist id="planeList" th:each="plane : ${planes}">-->
+<!--                                            <option th:value="${plane.brand} + ' ' + ${plane.name}" />-->
+<!--                                        </datalist>-->
+<!--                                        <select id="plane"  placeholder="Enter Airline" class="form-control"  required th:field="*{plane}">-->
+<!--                                            &lt;!&ndash;/*@thymesVar id="name" type=""*/&ndash;&gt;-->
+<!--                                            <option th:each="p : ${planes}" th:value="${p.name}" th:text="${p.brand} + ' ' + ${p.name}"></option>-->
+<!--                                        </select>-->
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="from">From</label>
+<!--                                        <input type="text" list="fromCity" id="from" placeholder="Enter From Destination" class="form-control"  required th:field="*{fromAirport}">-->
+<!--                                        <datalist id="fromCity" th:each="airport : ${airports}">-->
+<!--                                            <option th:value="${airport.city} + '(' + ${airport.code} + ')' " />-->
+<!--                                        </datalist>-->
+                                        <select id="from"  class="form-control"  required th:field="*{fromAirport}">
+                                            <option th:each="airport : ${airports}" th:value="${airport.code}" th:text="${airport.city} + '-' + ${airport.code}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="to">To</label>
+<!--                                        <input type="text" list="toCity" id="to" placeholder="Enter To Destination" class="form-control"  required th:field="*{toAirport}">-->
+<!--                                        <datalist id="toCity" >-->
+<!--                                            <option th:each="airport : ${airports}" th:value="${airport.city} + '(' + ${airport.code} + ')' " />-->
+<!--                                        </datalist>-->
+                                        <select id="to"  class="form-control"  required th:field="*{toAirport}">
+                                            <option th:each="airport : ${airports}" th:value="${airport.code}" th:text="${airport.city} + '-' + ${airport.code}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="departureDate">Departure Date</label>
+                                        <input type="date" id="departureDate" placeholder="Enter Departure Date" class="form-control"  required th:field="*{departureDate}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="departureTime">Departure Time</label>
+                                        <input type="time" id="departureTime" value="@DateTime.Now.ToString('HH:mm:ss')" class="form-control"  required th:field="*{departureTime}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="arrivalDate">Arrival Date</label>
+                                        <input type="date" id="arrivalDate" placeholder="Enter Arrival Date" class="form-control"  required th:field="*{arrivalDate}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="arrivalTime">Arrival Time</label>
+                                        <input type="time" min="00:00"  max="23:59" id="arrivalTime" value="@DateTime.Now.ToString('HH:mm:ss')" class="form-control"  required th:field="*{arrivalTime}">
+                                    </div>
+                                    <div class="mb-3">
+                                        <a type="submit" th:href="@{/admin/flights}" class="btn btn-secondary mb-2"><i class="fas fa-times"></i> Cancel</a>
+                                        <button type="submit" class="btn btn-primary mb-2">
+                                             <i class="fas fa-save"></i>
+                                            Update
+                                        </button>
+                                    </div>
+<!--                                    <div class="col-sm-4 offset-sm-2">-->
+<!--                                        <a type="submit" th:href="@{/admin/planes}" class="btn btn-secondary mb-2"><i class="fas fa-times"></i> Cancel</a>-->
+<!--                                        <button type="submit" class="btn btn-primary mb-2">-->
+<!--                                             <i class="fas fa-save"></i>-->
+<!--                                            Save-->
+<!--                                        </button>-->
+<!--                                    </div>-->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/admin/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/admin/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!--<script th:src="@{/admin/js/form-validator.js}"></script>-->
+<!--<script>-->
+<!--    // prevent form submit-->
+<!--    const form = document.querySelector("form");-->
+<!--    form.addEventListener('submit', function (e) {-->
+<!--        e.preventDefault();-->
+<!--    });-->
+<!--    // const formSubmit = document.getElementById("formSubmit");-->
+<!--    // formSubmit.addEventListener('submit', function(event){-->
+<!--    //     event.preventDefault();-->
+<!--    //     alert("Submit successfully!");-->
+<!--    // });-->
+<!--</script>-->
+<script th:src="@{/admin/js/script.js}"></script>
+
+
+</body>
+
+</html>

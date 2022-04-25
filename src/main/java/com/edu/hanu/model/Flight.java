@@ -1,5 +1,6 @@
 package com.edu.hanu.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,18 +42,22 @@ public class Flight {
 
     //    @Temporal(TemporalType.DATE)
     @Column(name = "departure_date")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern="yyyy-MM-dd")
     private Date departureDate;
 
     //    @Temporal(TemporalType.TIME)
     @Column(name = "departure_time")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "HH:mm:ss")
     private Time departureTime;
 
-    //    @Temporal(TemporalType.DATE)
+//        @Temporal(TemporalType.DATE)
     @Column(name = "arrival_date")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern="yyyy-MM-dd")
     private Date arrivalDate;
 
     //    @Temporal(TemporalType.TIME)
     @Column(name = "arrival_time")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "HH:mm:ss")
     private Time arrivalTime;
 
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

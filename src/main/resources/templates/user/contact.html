@@ -1,112 +1,153 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="user/_layoutUser">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta charset="UTF-8">
-    <title>Home</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Travel</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" th:href="@{user/css/bootstrap.min.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{user/css/bootstrap-theme.min.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{user/css/fontAwesome.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{user/css/hero-slider.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{user/css/owl-carousel.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{user/css/datepicker.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{user/css/tooplate-style.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{user/css/navbar.css}" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" />
+    <!-- CSS only -->
+    <script th:src="@{user/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js}"></script>
 </head>
 <body>
-    <div layout:fragment="content">
-        <section class="page-heading" id="top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="logo">
-                            <img th:src="@{user/img/logo.png}" alt="Flight Template">
-                        </div>
+
+    <header>
+        <div class="nav-bar">
+            <a th:href="@{/home}" class="logo">
+                <img class="airline" th:src="@{../user/img/airline.png}" alt=""/>
+                TRAVEL</a>
+            <div class="navigation">
+                <div class="nav-items">
+                    <i class="uil uil-times nav-close-btn"></i>
+                    <a th:href="@{/home}"><i class="uil uil-home"></i> Home</a>
+                    <a th:href="@{/flights}"><i class="uil uil-compass"></i> Flights</a>
+                    <a th:href="@{/about}"><i class="uil uil-info-circle"></i> About</a>
+                    <a th:href="@{/contact}"><i class="uil uil-document-layout-left"></i> Contact</a>
+                    <a th:href="@{/carts}">
+                        <img class="logout" th:src="@{/user/img/shopping-cart.png}" alt="cart"/>
+                    </a>
+                    <span class="authen" sec:authentication="principal.username"></span>
+                    <a th:href="@{/logout}">
+                        <img class="logout" th:src="@{/user/img/logout.png}" alt="" />
+                    </a>
+                </div>
+            </div>
+            <!--                <i class="uil uil-apps nav-menu-btn"></i>-->
+        </div>
+    </header>
+
+
+    <section class="page-heading" id="top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="logo">
+                        <img th:src="@{user/img/logo.png}" alt="Flight Template">
                     </div>
-                    <div class="col-md-6">
-                        <div class="page-direction-button">
-                            <a th:href="@{/customer/home}"><i class="fa fa-home"></i>Go Back Home</a>
-                        </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="page-direction-button">
+                        <a th:href="@{/home}"><i class="fa fa-home"></i>Go Back Home</a>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
 
 
-        <section class="contact-us">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="section-heading">
-                            <h2>Contact Information</h2>
-                            <p> Pellentesque quis turpis et lectus auctor gravida ut vel orci. Proin et tempus nunc.
-                                Proin sed justo neque. Donec et tempus ligula, et gravida elit. Vivamus vitae placerat metus.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <img th:src="@{user/img/contact-01.jpg}" alt="">
-                    </div>
-                    <div class="col-md-6">
-                        <img th:src="@{user/img/contact-02.jpg}" alt="">
-                    </div>
-                    <div class="col-md-4">
-                        <h6>Proin dignissim rhoncus</h6>
-                        <p>Aliquam elit metus, varius in ligula sed, posuere aliquam nibh.
-                            Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Duis vel rhoncus lectus.</p>
-                    </div>
-                    <div class="col-md-4">
-                        <h6>Duis vehicula quis elit</h6>
-                        <p>Donec nisl felis, eleifend eu diam ut, condimentum finibus erat. Aliquam luctus commodo ultricies.
-                            Etiam in tellus mi. Nam lobortis est magna, et rutrum ipsum lacinia id.</p>
-                    </div>
-                    <div class="col-md-4">
-                        <h6>Duis vel rhoncus lectus</h6>
-                        <p>Mauris aliquet eget lorem a tempor. Morbi in dui sed orci placerat ultrices sed a mi. Praesent eget porttitor enim.
-                            In tempor eros mi. Morbi a lobortis ante. Sed blandit vitae diam commodo ultricies.</p>
+    <section class="contact-us">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-heading">
+                        <h2>Contact Information</h2>
+                        <p> Who is ugly and the author of the bed is pregnant or the average person.
+                            Then time and time. But not just Until then, the time around the world,
+                            and the pregnancy problems. We live a life of real fear.</p>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <img th:src="@{user/img/contact-01.jpg}" alt="">
+                </div>
+                <div class="col-md-6">
+                    <img th:src="@{user/img/contact-02.jpg}" alt="">
+                </div>
+                <div class="col-md-4">
+                    <h6>Uncategorized</h6>
+                    <p>It's time to take some elite risks, but put down some labels in the casino.
+                        The film or the range of the bed.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6>Duis vehicula quis elit</h6>
+                    <p>Until the players of the cat, the teenagers that the football developed,
+                        was the saucer of the ends. It's time for the pain of convenience to cancel.
+                        Even in my earth. For the carton is great, and the makeup itself is the fringe of it.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6>Duis vel rhoncus lectus</h6>
+                    <p>Mauris aliquet eget lorem a tempor. Morbi in dui sed orci placerat ultrices sed a mi.
+                        It's a need for the ferry. My time in the United States. You're a pill before.
+                        But the most flattering of life is the advantage of the backyard.</p>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
 
 
-        <section class="contact-form">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="section-heading">
-                            <h2>Leave us a message</h2>
-                        </div>
+    <section class="contact-form">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-heading">
+                        <h2>Leave us a message</h2>
                     </div>
-                    <div class="col-md-6 col-md-offset-3">
-                        <form id="contact" action="#" method="post">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <fieldset>
-                                        <input name="name" type="text" class="form-control" id="name" placeholder="Your name..." required="">
-                                    </fieldset>
-                                </div>
-                                <div class="col-md-6">
-                                    <fieldset>
-                                        <input name="email" type="text" class="form-control" id="email" placeholder="Your email..." required="">
-                                    </fieldset>
-                                </div>
-                                <div class="col-md-12">
-                                    <fieldset>
-                                        <textarea name="message" rows="6" class="form-control" id="message" placeholder="Your message..." required=""></textarea>
-                                    </fieldset>
-                                </div>
-                                <div class="col-md-12">
-                                    <fieldset>
-                                        <button type="submit" id="form-submit" class="btn">Submit Your Message</button>
-                                    </fieldset>
-                                </div>
+                </div>
+                <div class="col-md-6 col-md-offset-3">
+                    <form id="contact" action="#" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <fieldset>
+                                    <input name="name" type="text" class="form-control" id="name" placeholder="Your name..." required="">
+                                </fieldset>
                             </div>
-                        </form>
-                    </div>
+                            <div class="col-md-6">
+                                <fieldset>
+                                    <input name="email" type="text" class="form-control" id="email" placeholder="Your email..." required="">
+                                </fieldset>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset>
+                                    <textarea name="message" rows="6" class="form-control" id="message" placeholder="Your message..." required=""></textarea>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset>
+                                    <button type="submit" id="form-submit" class="btn">Submit Your Message</button>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
 
 
-        <section class="map">
+    <section class="map">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
@@ -117,6 +158,78 @@
                 </div>
             </div>
         </section>
-    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="primary-button">
+                        <a th:href="@{#}" class="scroll-top">Back To Top</a>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <ul class="social-icons">
+                        <li><a href="https://www.facebook.com/tooplate"><i class="fa fa-facebook"></i></a></li>
+                        <li><a th:href="@{/#}"><i class="fa fa-twitter"></i></a></li>
+                        <li><a th:href="@{/#}"><i class="fa fa-linkedin"></i></a></li>
+                        <li><a th:href="@{/#}"><i class="fa fa-rss"></i></a></li>
+                        <li><a th:href="@{/#}"><i class="fa fa-behance"></i></a></li>
+                    </ul>
+                </div>
+                <!--                <div class="col-md-12">-->
+                <!--                <p>Copyright &copy; suyash-->
+
+                <!--                    | Design: <a th:href="@{/#}" target="_parent"><em>suyash</em></a></p>-->
+                <!--            </div>-->
+            </div>
+        </div>
+    </footer>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script th:src="@{../user/js/vendor/jquery-1.11.2.min.js}"><\/script>')</script>
+    <script th:src="@{../user/js/vendor/bootstrap.min.js}"></script>
+    <script th:src="@{../user/js/datepicker.js}"></script>
+    <script th:src="@{../user/js/plugins.js}"></script>
+    <script th:src="@{../user/js/mainUser.js}"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+
+
+            // navigation click actions
+            $('.scroll-link').on('click', function(event){
+                event.preventDefault();
+                var sectionID = $(this).attr("data-id");
+                scrollToID('#' + sectionID, 750);
+            });
+            // scroll to top action
+            $('.scroll-top').on('click', function(event) {
+                event.preventDefault();
+                $('html, body').animate({scrollTop:0}, 'slow');
+            });
+            // mobile nav toggle
+            $('#nav-toggle').on('click', function (event) {
+                event.preventDefault();
+                $('#main-nav').toggleClass("open");
+            });
+        });
+        // scroll function
+        function scrollToID(id, speed){
+            var offSet = 0;
+            var targetOffset = $(id).offset().top - offSet;
+            var mainNav = $('#main-nav');
+            $('html,body').animate({scrollTop:targetOffset}, speed);
+            if (mainNav.hasClass("open")) {
+                mainNav.css("height", "1px").removeClass("in").addClass("collapse");
+                mainNav.removeClass("open");
+            }
+        }
+        if (typeof console === "undefined") {
+            console = {
+                log: function() { }
+            };
+        }
+    </script>
+
 </body>
 </html>

@@ -50,7 +50,7 @@ public class User implements Serializable {
 //    @Size(min = 2, max = 30)
     private String fullname;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -63,5 +63,5 @@ public class User implements Serializable {
     @ToString.Exclude
     private Collection<Ticket> ticket;
 
-
 }
+

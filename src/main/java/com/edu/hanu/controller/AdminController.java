@@ -1,24 +1,281 @@
 package com.edu.hanu.controller;
 
-import com.edu.hanu.model.Plane;
-import com.edu.hanu.model.Seat;
-import com.edu.hanu.repository.PlaneRepository;
-import com.edu.hanu.repository.SeatRepository;
+import com.edu.hanu.model.*;
+import com.edu.hanu.repository.*;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-//@RequestMapping(name = "/admin")
+import javax.validation.Valid;
+import java.util.List;
+
+@Controller
+//@RequestMapping("/admin")
 public class AdminController {
     @Autowired
     PlaneRepository planeRepository;
     @Autowired
     SeatRepository seatRepository;
 
-//    @GetMapping("/admin")
-//    public String homepageAdmin(){
-//        return "user/index2";
-//    }
+    @Autowired
+    FlightRepository flightRepository;
+
+    @Autowired
+    AirlineRepository airlineRepository;
+
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    AirportRepository airportRepository;
+    @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+//    Planes page
+    @GetMapping("/admin/planes")
+    public String plane(Model model){
+        List<Plane> plane = planeRepository.findAll();
+        model.addAttribute("planes",plane);
+        return "admin/plane/plane";
+    }
+       // Create plane
+    @GetMapping("/admin/planes/create")
+    public String planeCreate(Model model){
+        Plane plane = new Plane();
+        model.addAttribute("plane",plane);
+        return "admin/plane/plane-add";
+    }
+    @PostMapping("/admin/planes/create")
+    public String planeCreatePost(@Valid Plane plane, Model model, BindingResult result){
+        if(result.hasErrors()){
+            return "admin/plane/plane-add";
+        }
+        model.addAttribute("plane",plane);
+        planeRepository.save(plane);
+        return "redirect:create?success";
+    }
+
+    @GetMapping("/admin/planes/update/{id}")
+    public String planeUpdate(@PathVariable(value = "id") long id, Model model){
+        Plane plane = planeRepository.getById(id);
+        model.addAttribute("plane",plane);
+        return "admin/plane/plane-update";
+    }
+    @PostMapping(value = "/admin/planes/save/{id}")
+    public String saveUpdate(
+            @PathVariable(value = "id", required = false) long id, @Valid Plane plane,
+            BindingResult result)
+    {
+        if (result.hasErrors()) {
+            plane.setId(id);
+            return "admin/plane/plane-update";
+
+        }
+        planeRepository.save(plane);
+        return "redirect:/admin/planes";
+    }
+
+    @GetMapping(value = "/admin/planes/delete/{id}")
+    public String deletePlanes(
+            @PathVariable(value = "id") Long id) {
+        Plane plane = planeRepository.getById(id);
+        planeRepository.delete(plane);
+        return "redirect:/admin/planes";
+    }
+
+
+
+//    Flight page
+    @GetMapping("/admin/flights")
+    public String flight(Model model){
+        List<Flight> flights = flightRepository.findAll();
+        for (Flight flight : flights){
+            flight.getFlightNo();
+            flight.getAirline();
+            flight.getArrivalDate();
+            flight.getArrivalTime();
+            flight.getDepartureDate();
+            flight.getDepartureTime();
+            flight.getFromAirport();
+            flight.getToAirport();
+            flight.getPlane();
+
+        }
+        model.addAttribute("flights",flights);
+        return "admin/flight/flight";
+    }
+    // Create plane
+    @GetMapping("/admin/flights/create")
+    public String flightCreate(Model model){
+        Flight flight = new Flight();
+        List<Airline> airlines = airlineRepository.findAll();
+        List<Plane> planes = planeRepository.findAll();
+        List<Airport> airports = airportRepository.findAll();
+        model.addAttribute("flights",flight);
+        model.addAttribute("airlines",airlines);
+        model.addAttribute("planes",planes);
+        model.addAttribute("airports",airports);
+//        System.out.println(flight.getAirline());
+        return "admin/flight/flight-add";
+    }
+    @PostMapping("/admin/flights/create")
+    public String flightCreatePost(@Valid Flight flight, Model model,BindingResult result){
+        if(result.hasErrors()){
+            return "admin/flight/flight-add";
+        }
+        model.addAttribute("flight",flight);
+        //set object airline
+//        String airlineFullName = flight.getAirline().getFullName();
+//        Airline airline = airlineRepository.findByFullName(airlineFullName);
+//        flight.setAirline(airline);
+//        //set object fromAirport
+//        String airportNameFrom = flight.getFromAirport().getName();
+//        Airport airportFrom = airportRepository.findByName(airportNameFrom);
+//        flight.setFromAirport(airportFrom);
+//        //set object toAirport
+//        String airportNameTo = flight.getToAirport().getName();
+//        Airport airportTo = airportRepository.findByName(airportNameTo);
+//        flight.setFromAirport(airportTo);
+//        //set object plane
+//        String planeName = flight.getPlane().getName();
+//        Plane plane = planeRepository.findByName(planeName);
+//        flight.setPlane(plane);
+        //save to database
+        flightRepository.save(flight);
+//        System.out.println(flight);
+        return "redirect:create?success";
+    }
+    @GetMapping("/admin/flights/update/{id}")
+    public String flightUpdate(@PathVariable(value = "id") long id, Model model){
+        Flight flights = flightRepository.getById(id);
+        List<Airline> airline = airlineRepository.findAll();
+        List<Plane> planes = planeRepository.findAll();
+        List<Airport> airports = airportRepository.findAll();
+        model.addAttribute("flights",flights);
+        model.addAttribute("airlines",airline);
+        model.addAttribute("planes",planes);
+        model.addAttribute("airports",airports);
+        return "admin/flight/flight-update";
+    }
+    @PostMapping(value = "/admin/flights/save/{id}")
+    public String saveFlightUpdate(
+            @PathVariable(value = "id", required = false) long id, @Valid Flight flight,
+            BindingResult result)
+    {
+        if (result.hasErrors()) {
+            flight.setId(id);
+            return "admin/flight/flight-update";
+        }
+        flightRepository.save(flight);
+        return "redirect:/admin/flights";
+    }
+    @GetMapping(value = "/admin/flights/delete/{id}")
+    public String deleteFlight(
+            @PathVariable(value = "id") Long id) {
+        Flight flight = flightRepository.getById(id);
+        flightRepository.delete(flight);
+        return "redirect:/admin/flights";
+    }
+
+
+//    Airlines page
+    @GetMapping("/admin/airlines")
+    public String airline(Model model){
+        List<Airline> airline = airlineRepository.findAll();
+        model.addAttribute("airlines", airline);
+        return "admin/airline/airline";
+    }
+    @GetMapping("/admin/airlines/update/{id}")
+    public String airlineUpdate(@PathVariable(value = "id") long id, Model model){
+        Airline airline = airlineRepository.getById(id);
+        model.addAttribute("airline",airline);
+        return "admin/airline/airline-update";
+    }
+    @PostMapping(value = "/admin/airlines/save/{id}")
+    public String saveAirlineUpdate(
+            @PathVariable(value = "id", required = false) long id, @Valid Airline airline, BindingResult result)
+    {
+         if (result.hasErrors()) {
+            airline.setId(id);
+            return "admin/airline/airline-update";
+
+        }
+        airlineRepository.save(airline);
+        return "redirect:/admin/airlines";
+    }
+    @GetMapping(value = "/admin/airlines/delete/{id}")
+    public String deleteAirLine(
+            @PathVariable(value = "id") Long id) {
+        Airline airline = airlineRepository.getById(id);
+        airlineRepository.delete(airline);
+        return "redirect:/admin/airlines";
+    }
+//    Account page
+    @GetMapping("/admin/users")
+    public String user(Model model){
+        List<User> users = userRepository.findAll();
+        for(User user : users){
+            user.getFullname();
+            user.getEmail();
+            user.getPassword();
+            user.getPhone();
+            user.getCountry();
+            user.getRoles();
+        }
+        model.addAttribute("user",users);
+        return "admin/user/users";
+    }
+
+    @GetMapping("/admin/users/update/{id}")
+    public String userUpdate(@PathVariable(value = "id") long id, Model model){
+        User user = userRepository.getById(id);
+        model.addAttribute("user",user);
+        return "admin/user/user-update";
+    }
+    @PostMapping(value = "/admin/user/save/{id}")
+    public String saveUserUpdate(
+            @PathVariable(value = "id", required = false) long id, @Valid User user,BindingResult result)
+    {
+        if (result.hasErrors()) {
+            user.setId(id);
+            return "admin/user/user-update";
+
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping(value = "/admin/users/delete/{id}")
+    public String deleteUser(
+            @PathVariable(value = "id") Long id) {
+        User user = userRepository.getById(id);
+        userRepository.delete(user);
+        return "redirect:/admin/users";
+    }
+
+
+    //View role
+    @GetMapping(value = "/admin/users/roles")
+    public String viewRole(Model model){
+        List<Role> roles = roleRepository.findAll();
+        model.addAttribute("roles",roles);
+        return "admin/role/roles";
+    }
+
+
+
+
+
 
 }
 

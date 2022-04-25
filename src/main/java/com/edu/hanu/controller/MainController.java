@@ -1,20 +1,19 @@
 package com.edu.hanu.controller;
 
 
-import com.edu.hanu.model.Role;
-import com.edu.hanu.model.User;
-import com.edu.hanu.repository.RoleRepository;
-import com.edu.hanu.repository.UserRepository;
+import com.edu.hanu.model.*;
+import com.edu.hanu.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-//import javax.validation.Valid;
+import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -23,33 +22,40 @@ public class MainController {
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
-//	PasswordEncoder passwordEncoder;
+	PasswordEncoder passwordEncoder;
 
-	@GetMapping("/test")
-	public String test(){
-		return "user/test2";
-	}
- 	@GetMapping("/web")
-	public String food(){
-		return "web";
-	}
+	@Autowired
+	PlaneRepository planeRepository;
+	@Autowired
+	AirlineRepository airlineRepository;
 
-//	@GetMapping("/home")
-//	public String homepage(){
-//		return "user/home";
-//	}
+	@Autowired
+	AirportRepository airportRepository;
 
+	@Autowired
+	FlightRepository flightRepository;
+
+
+//	homepage admin
 	@GetMapping("/admin")
-	public String admin() {
+	public String admin(Model model) {
+		List<Flight> flights = flightRepository.findAll();
+		List<Airline> airlines = airlineRepository.findAll();
+		List<Plane> planes = planeRepository.findAll();
+		List<User> users = userRepository.findAll();
+		model.addAttribute("flights",flights);
+		model.addAttribute("airlines",airlines);
+		model.addAttribute("planes",planes);
+		model.addAttribute("users",users);
 		return "admin/index";
 	}
-	
+
 	@GetMapping("/403")
 	public String accessDenied() {
 		return "user/403";
 	}
-	
-	@GetMapping("/login") 
+
+	@GetMapping("/login")
 	public String getLogin() {
 		return "user/login";
 	}
@@ -61,20 +67,20 @@ public class MainController {
 
 		return "user/signup";
 	}
-//	@PostMapping("/signup")
-//		public String submit(@Valid User user, Model model, BindingResult result){
-//		if(result.hasErrors()){
-//			return "user/signup";
-//		}
-//		model.addAttribute("user", user);
-//		user.setPassword(passwordEncoder.encode(
-//				user.getPassword()
-//		));
-//		HashSet<Role> roles = new HashSet<>();
-//		roles.add(roleRepository.findByName("ROLE_CUSTOMER"));
-//		user.setRoles(roles);
-//		userRepository.save(user);
-//		return "redirect:signup?success";
-//	}
-	
+	@PostMapping("/signup")
+		public String submit(@Valid User user, Model model, BindingResult result){
+		if(result.hasErrors()){
+			return "user/signup";
+		}
+		model.addAttribute("user", user);
+		user.setPassword(passwordEncoder.encode(
+				user.getPassword()
+		));
+		HashSet<Role> roles = new HashSet<>();
+		roles.add(roleRepository.findByName("ROLE_CUSTOMER"));
+		user.setRoles(roles);
+		userRepository.save(user);
+		return "redirect:signup?success";
+	}
+
 }

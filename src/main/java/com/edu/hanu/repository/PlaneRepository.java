@@ -10,4 +10,5 @@ import java.util.List;
 public interface PlaneRepository extends JpaRepository<Plane,Long> {
     List<Plane> findAll();
     Plane findByName(String name);
+    Plane getById(long id);
 }

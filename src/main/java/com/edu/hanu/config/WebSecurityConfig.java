@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -18,50 +19,54 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
-//	@Autowired
-//	private LoginSuccessHandler successHandler;
+
+		@Autowired
+	private LoginSuccessHandler successHandler;
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
 	@Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+	}
+
 
 	@Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-                .antMatchers("/signup").permitAll()
-//				.anyRequest().authenticated()
-                .antMatchers("/home").hasRole("CUSTOMER")
-                .antMatchers("/admin").hasRole("ADMIN")
-//				.anyRequest().authenticated()
-                .and()
-            	.formLogin()
-            	.loginPage("/login")
-            	.usernameParameter("email")
-            	.passwordParameter("password")
-            	.defaultSuccessUrl("/home")
-//				.successHandler(successHandler)
-            	.failureUrl("/login?error")
-            	.and()
-        		.exceptionHandling()
-    			.accessDeniedPage("/403");
-    }
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+				.authorizeRequests()
+				.antMatchers("/signup","/login").permitAll()
+				.antMatchers("/home").hasRole("CUSTOMER")
+				.antMatchers("/admin").hasRole("ADMIN")
+				.anyRequest().authenticated()
+				.and()
+				.formLogin()
+				.loginPage("/login")
+				.usernameParameter("email")
+				.passwordParameter("password")
+				.successHandler(successHandler)
+				.failureUrl("/login?error")
+				.and()
+				.logout()
+				.invalidateHttpSession(true)
+				.clearAuthentication(true)
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.logoutSuccessUrl("/login?logout")
+				.permitAll()
+				.and()
+				.exceptionHandling()
+				.accessDeniedPage("/403");
+	}
 
-//	@Override
-//	public void configure(WebSecurity web) throws Exception {
-//		web.ignoring().antMatchers("/resources/**","/static/**","/user/**","/admin/**","/assets/**",
-//				"/contactform/**","/css/**","/fonts/**","/img/**","/js/**",
-//				"/productImages/**","/gif/**");
-//	}
 	@Override
-		public void configure(WebSecurity web) throws Exception {
-			web
-					.ignoring()
-					.antMatchers("/resources/**");
+	public void configure(WebSecurity web) throws Exception {
+		web
+				.ignoring()
+				.antMatchers("/resources/**", "/static/**","/admin/**","/user/**", "/css/**", "/js/**", "/img/**", "/font/**"
+				,"/components/**","/vendor/**","/fonts/**","/gif/**");
 	}
 }
+
+
+

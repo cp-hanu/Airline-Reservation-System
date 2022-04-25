@@ -2,6 +2,7 @@ package com.edu.hanu.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -47,10 +48,12 @@ public class Flight {
 
     //    @Temporal(TemporalType.TIME)
     @Column(name = "departure_time")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "HH:mm:ss")
-    private Time departureTime;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    private java.time.LocalTime departureTime;
 
-//        @Temporal(TemporalType.DATE)
+//    private Time departureTime;
+
+    //        @Temporal(TemporalType.DATE)
     @Column(name = "arrival_date")
 //    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern="yyyy-MM-dd")
     private Date arrivalDate;
@@ -58,7 +61,8 @@ public class Flight {
     //    @Temporal(TemporalType.TIME)
     @Column(name = "arrival_time")
 //    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "HH:mm:ss")
-    private Time arrivalTime;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    private java.time.LocalTime arrivalTime;
 
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude

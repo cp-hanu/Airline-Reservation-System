@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.*;
 
 @Configuration
@@ -212,8 +213,9 @@ public class DataInflater {
 
             Plane plane = planeRepository.findByName("A320");
 
-            Time departureTime = Time.valueOf("05:00:00");
-            Time arrivalTime = Time.valueOf("07:25:00");
+            LocalTime departureTime = LocalTime.of(5,0);
+            LocalTime arrivalTime = LocalTime.of(7,0);
+//            Time arrivalTime = Time.valueOf("07:25:00");
 
             Date departureDate = Date.valueOf("2022-04-20");
             Date arrivalDate = Date.valueOf("2022-04-20");

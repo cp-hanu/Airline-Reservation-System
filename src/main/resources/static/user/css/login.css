@@ -12,7 +12,7 @@ body{
     align-items: center;
     justify-content: center;
     /*background: #5372F0;*/
-    background-image: url("../img/airline-login.jpg");
+    /*background-image: url("../user/img/login.png");*/
     /*background-repeat: no-repeat repeat;*/
 }
 ::selection{

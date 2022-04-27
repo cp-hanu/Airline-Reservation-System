@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Booked Flights</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/user/css/cart.css}">
+    <link rel="stylesheet" th:href="@{/user/css/navbar.css}" >
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" defer></script>
+    <script th:src="@{/user/js/main.js}"></script>
+
+</head>
+<body>
+<div>
+    <header id="head">
+        <div class="nav-bar">
+            <a th:href="@{/home}" class="logo">
+                <img class="airline" th:src="@{/user/img/airline.png}" alt=""/>
+                TRAVEL</a>
+            <div class="navigation">
+                <div class="nav-items">
+                    <i class="uil uil-times nav-close-btn"></i>
+                    <a th:href="@{/home}"><i class="uil uil-home"></i> Home</a>
+                    <a th:href="@{/flights}"><i class="uil uil-compass"></i> Flights</a>
+                    <a th:href="@{/about}"><i class="uil uil-info-circle"></i> About</a>
+                    <a th:href="@{/contact}"><i class="uil uil-document-layout-left"></i> Contact</a>
+                    <a th:href="@{/view}">
+                        <img class="logout" th:src="@{/user/img/cart.png}" alt="cart"/>
+                    </a>
+                                    <span class="authen" sec:authentication="principal.username"></span>
+                    <a th:href="@{/logout}">
+                        <img class="logout" th:src="@{/user/img/out.png}" alt=""/>
+                    </a>
+                </div>
+            </div>
+            <!--                <i class="uil uil-apps nav-menu-btn"></i>-->
+        </div>
+    </header>
+</div>
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center mb-5">
+                <h2 class="heading-section">Booked Flights</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-wrap">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Name Passenger</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Departure Date</th>
+                            <th>Departure Time</th>
+                            <th>Arrival Time</th>
+                            <th>Flight</th>
+                            <th>Brand</th>
+                            <th>Seat</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="alert" role="alert">
+                            <th scope="row">Pham Van Bao</th>
+                            <td>Ha Noi</td>
+                            <td>Ho chi minh</td>
+                            <td>04/25/2022</td>
+                            <td>17:00</td>
+                            <td>19:00</td>
+                            <td>AIRBUS A380</td>
+                            <td>
+                                <img th:src="@{/user/img/img.png}" height="40px" width="40px" />
+                                VietNam Airlines
+                            </td>
+                            <td>BUSINESS CLASS</td>
+                            <td>
+                                <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+</body>
+</html>
+

@@ -1,0 +1,60 @@
+.container{
+    margin-top: 60px !important;
+}
+.part{
+    margin-left: 140px;
+    font-weight: 700;
+    font-size: 23px;
+}
+.total{
+    font-size: 25px;
+    font-weight: 800;
+}
+.element{
+    font-size: 15px;
+    font-weight: 450;
+}
+.tal{
+    font-size: 19px;
+    font-weight: 550;
+}
+.invoice-title h2, .invoice-title h3 {
+    display: inline-block;
+}
+
+.table > tbody > tr > .no-line {
+    border-top: none;
+}
+
+.table > thead > tr > .no-line {
+    border-bottom: none;
+}
+
+.table > tbody > tr > .thick-line {
+    border-top: 2px solid;
+}
+.txt{
+    font-weight: 1000;
+    font-size: 20px;
+}
+.image{
+    width: 150px;
+    height: 100px;
+    margin-left: 35%;
+    margin-bottom: 3px;
+}
+.arrow{
+    height: 50px;
+    width: 60px;
+}
+.name-city{
+    font-weight: 800;
+    color:red;
+}
+.time-flight{
+    margin-left: 3%;
+    font-weight: 700;
+    line-height: 40px;
+    font-size: 18px;
+}
+

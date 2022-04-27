@@ -53,10 +53,14 @@ public class CustomerController {
     }
 
     @GetMapping("/contact")
-    public String contact() {
-        return "user/contact";
+        public String contact(){
+        return "user/form-checkout";
     }
 
+    @GetMapping("/flights")
+    public String success(){
+        return "user/success";
+    }
     @GetMapping("/view")
     public String view() {
         return "user/view";
@@ -66,4 +70,14 @@ public class CustomerController {
     public String detail() {
         return "user/flight-detail";
     }
+    @GetMapping("/view/detail/fare")
+    public String fare(){
+        return "user/fare";
+    }
+
+    @GetMapping("/view/choose")
+    public String choose(){
+        return "user/choose";
+    }
+
 }

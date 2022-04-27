@@ -57,7 +57,6 @@
                                         <li><a href="" class="dropdown-item"><i class="fas fa-address-card"></i> Profile</a></li>
                                         <li><a href="" class="dropdown-item"><i class="fas fa-envelope"></i> Messages</a></li>
                                         <li><a href="" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a></li>
-                                        <div class="dropdown-divider"></div>
                                         <li><a th:href="@{/logout}" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                                     </ul>
                                 </div>
@@ -96,7 +95,7 @@
                                         <td th:text="${user.current.password}"></td>
                                         <td th:text="${user.current.phone}"></td>
                                         <td th:text="${user.current.country}"></td>
-<!--                                        <td th:text="${user.current.roles}"></td>-->
+<!--                                        <td th:text="${user.current.roles.}"></td>-->
                                         <td class="text-end">
                                             <a th:href="'/admin/users/update/' + ${user.current.id}" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
                                             <a th:href="'/admin/users/delete/' + ${user.current.id}" class="btn btn-outline-danger btn-rounded"

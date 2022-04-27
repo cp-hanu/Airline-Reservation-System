@@ -37,22 +37,11 @@ public class MainController {
 
 
 //	homepage admin
-	@GetMapping("/admin")
-	public String admin(Model model) {
-		List<Flight> flights = flightRepository.findAll();
-		List<Airline> airlines = airlineRepository.findAll();
-		List<Plane> planes = planeRepository.findAll();
-		List<User> users = userRepository.findAll();
-		model.addAttribute("flights",flights);
-		model.addAttribute("airlines",airlines);
-		model.addAttribute("planes",planes);
-		model.addAttribute("users",users);
-		return "admin/index";
-	}
+
 
 	@GetMapping("/403")
 	public String accessDenied() {
-		return "user/403";
+		return "error/403";
 	}
 
 	@GetMapping("/login")

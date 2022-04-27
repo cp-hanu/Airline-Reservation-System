@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Controller
+@RequestMapping("/internal")
 public class AdminController {
     @Autowired
     PlaneRepository planeRepository;
@@ -35,6 +36,19 @@ public class AdminController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @GetMapping("/admin")
+    public String admin(Model model) {
+        List<Flight> flights = flightRepository.findAll();
+        List<Airline> airlines = airlineRepository.findAll();
+        List<Plane> planes = planeRepository.findAll();
+        List<User> users = userRepository.findAll();
+        model.addAttribute("flights", flights);
+        model.addAttribute("airlines", airlines);
+        model.addAttribute("planes", planes);
+        model.addAttribute("users", users);
+        return "admin/index";
+    }
 
     //    Planes page
     @GetMapping("/admin/planes")

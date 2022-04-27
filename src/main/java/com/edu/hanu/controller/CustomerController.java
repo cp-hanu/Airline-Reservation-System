@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -34,28 +35,35 @@ public class CustomerController {
     RoleRepository roleRepository;
 
     @GetMapping("/home")
-    public String homepage(Model model){
+    public String homepage(Model model) {
         List<Airline> airline = airlineRepository.findAll();
         List<Plane> planes = planeRepository.findAll();
         List<Airport> airports = airportRepository.findAll();
+        model.addAttribute("flight", new Flight());
         model.addAttribute("airlines", airline);
         model.addAttribute("planes", planes);
         model.addAttribute("airports", airports);
-    return "user/index";
-}
+        return "user/index";
+    }
+
+    @PostMapping("/home")
+    public String getFlight(Model model, Flight flight) {
+        System.out.println(flight);
+        return "user/view";
+    }
 
     @GetMapping("/contact")
-    public String contact(){
+    public String contact() {
         return "user/contact";
     }
 
     @GetMapping("/view")
-    public String view(){
+    public String view() {
         return "user/view";
     }
 
     @GetMapping("/view/detail")
-    public String detail(){
+    public String detail() {
         return "user/flight-detail";
     }
 }

@@ -42,7 +42,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         }
 
         if(roles.contains("ROLE_ADMIN")){
-            url = "/admin";
+            url = "internal/admin";
         }else if(roles.contains("ROLE_CUSTOMER")){
             url = "/home";
         }

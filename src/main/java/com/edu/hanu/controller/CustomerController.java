@@ -158,6 +158,11 @@ public class CustomerController {
             return "error/500";
         }
         System.out.println(flightSeat.getFlightId());
+
+        var flightSeatPrice = flightSeatPriceRepository.findByFlightAndSeat(
+                Flight.builder().id(flightSeat.getFlightId()).build(), Seat.builder().id(flightSeat.getSeatId()).build()
+        );
+        System.out.println(flightSeatPrice);
 //        var x = flightSeatPriceRepository.findByFlightAndSeat(flight,seat);
 //        System.out.println(x);
         return "user/bill";

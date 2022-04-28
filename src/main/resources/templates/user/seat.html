@@ -15,11 +15,20 @@
     </div>
     <form method="post" th:action="@{/payment/create/}" th:object="${bookSeat}">
         <!--        <div id="flight" th:field="*{flight_id}" th:value="${seats.get(0).get(0).getFlight().id}">-->
-        <input type="hidden" th:field="*{flightId}" th:value="${seats.get(0).get(0).getFlight().id}" id="flightId">
+
+        <label for="flightId"></label><input type="hidden"
+                                             th:value="${seats.get(0).get(0).getFlight().id}"
+                                             id="flightId"
+                                             name="flightId">
+
         <ol class="cabin fuselage">
             <li class="'row row--" th:classappend="${seatList.index + 1}" th:each="index, seatList: ${seats}">
                 <ol class="seats" type="A">
                     <li class="seat" th:each="idx, seat : ${seatList.current}">
+<<<<<<< HEAD
+=======
+                        <!--                        <input type="hidden" th:field="*{flightId}" th:value="${seat.current.getFlight().id}" id="flightId">-->
+>>>>>>> dev
                         <input type="radio"
                                th:disabled="${seat.current.isBooked()}"
                                th:value="${seat.current.seat.getId()}"

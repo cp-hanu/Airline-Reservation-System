@@ -203,7 +203,7 @@ public class AdminController {
             }
         }
 //        return "redirect:?success";
-        return "redirect:/internal/admin/flights";
+        return "redirect:/internal/admin/flight";
     }
 
     @GetMapping("/admin/flights/update/{id}")

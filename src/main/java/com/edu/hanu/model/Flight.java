@@ -95,9 +95,9 @@ public class Flight {
         this.flightSeats.forEach(flightSeatPrice -> {
             if (bookedSeats.contains(flightSeatPrice)) {
                 flightSeatPrice.setBooked(true);
-                result.add(FlightSeatPrice.builder().seat(flightSeatPrice.getSeat()).isBooked(true).build());
+                result.add(flightSeatPrice);
             } else {
-                result.add(FlightSeatPrice.builder().seat(flightSeatPrice.getSeat()).build());
+                result.add(flightSeatPrice);
             }
         });
         return new TreeSet<>(result);
@@ -107,8 +107,8 @@ public class Flight {
         return this.flightSeats.stream().filter(e -> e.getSeat().getType().equalsIgnoreCase(seatClass)).findFirst().get().getPrice();
     }
 
-    public int getAvailableSeat(String seatClass){
-       return (int) this.getFlightSeats().stream().filter(e -> e.getSeat().getType().equalsIgnoreCase(seatClass)).count();
+    public int getAvailableSeat(String seatClass) {
+        return (int) this.getFlightSeats().stream().filter(e -> e.getSeat().getType().equalsIgnoreCase(seatClass)).count();
     }
 
 }

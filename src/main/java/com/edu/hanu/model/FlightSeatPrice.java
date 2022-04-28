@@ -1,10 +1,7 @@
 package com.edu.hanu.model;
 
 import com.google.common.collect.ComparisonChain;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,6 +15,8 @@ import java.util.Comparator;
 @Table(name = "flight_seat_price")
 public class FlightSeatPrice implements Serializable, Comparable<FlightSeatPrice> {
     @EmbeddedId
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private FlightSeatPricePk pk;
 
     @ManyToOne
@@ -53,10 +52,14 @@ public class FlightSeatPrice implements Serializable, Comparable<FlightSeatPrice
         private static final long serialVersionUID = 1L;
         @GeneratedValue
         @Column(name = "flight_id")
+        @EqualsAndHashCode.Exclude
+        @ToString.Exclude
         private long flightId;
 
         @GeneratedValue
         @Column(name = "seat_id")
+        @EqualsAndHashCode.Exclude
+        @ToString.Exclude
         private long seatId;
     }
 }

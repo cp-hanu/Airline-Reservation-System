@@ -29,7 +29,7 @@ public class Ticket {
     private User user;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumns({
             @JoinColumn(name = "flight_id", referencedColumnName = "flight_id"),
             @JoinColumn(name = "seat_id", referencedColumnName = "seat_id")

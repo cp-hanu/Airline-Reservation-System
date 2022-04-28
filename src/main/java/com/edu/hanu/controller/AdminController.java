@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -37,6 +38,9 @@ public class AdminController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    FlightSeatPriceRepository flightSeatPriceRepository;
+
     @GetMapping("/admin")
     public String admin(Model model) {
         List<Flight> flights = flightRepository.findAll();
@@ -55,7 +59,7 @@ public class AdminController {
     public String plane(Model model) {
         List<Plane> plane = planeRepository.findAll();
         model.addAttribute("planes", plane);
-        return "admin/plane/plane";
+        return "/admin/plane/plane";
     }
 
     // Create plane
@@ -103,7 +107,7 @@ public class AdminController {
                 for (String col : cols) {
                     Seat seat = Seat.builder()
                             .plane(newPlane)
-                            .type("BUSINESS CLASS")
+                            .type("ECONOMY CLASS")
                             .col(col)
                             .row(i + 1)
                             .build();
@@ -131,7 +135,7 @@ public class AdminController {
 
         }
         planeRepository.save(plane);
-        return "redirect:/admin/planes";
+        return "redirect:/internal/admin/planes";
     }
 
     @GetMapping(value = "/admin/planes/delete/{id}")
@@ -139,7 +143,7 @@ public class AdminController {
             @PathVariable(value = "id") Long id) {
         Plane plane = planeRepository.getById(id);
         planeRepository.delete(plane);
-        return "redirect:/admin/planes";
+        return "redirect:/internal/admin/planes";
     }
 
 
@@ -173,7 +177,33 @@ public class AdminController {
         }
         model.addAttribute("flight", flight);
         flightRepository.save(flight);
-        return "redirect:?success";
+        Collection<Seat> allSeat = flight.getPlane().getSeats();
+        for (Seat seat : allSeat) {
+            if (seat.getType().equalsIgnoreCase("First Class")) {
+                FlightSeatPrice flightSeat = FlightSeatPrice.builder()
+                        .flight(flight)
+                        .seat(seat)
+                        .price(flight.getFirstClassPrice()).build();
+                flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(), seat.getId()));
+                flightSeatPriceRepository.save(flightSeat);
+            } else if (seat.getType().equalsIgnoreCase("BUSINESS CLASS")) {
+                FlightSeatPrice flightSeat = FlightSeatPrice.builder()
+                        .flight(flight)
+                        .seat(seat)
+                        .price(flight.getBusinessClassPrice()).build();
+                flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(), seat.getId()));
+                flightSeatPriceRepository.save(flightSeat);
+            } else if (seat.getType().equalsIgnoreCase("Economy Class")) {
+                FlightSeatPrice flightSeat = FlightSeatPrice.builder()
+                        .flight(flight)
+                        .seat(seat)
+                        .price(flight.getEconomyClassPrice()).build();
+                flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(), seat.getId()));
+                flightSeatPriceRepository.save(flightSeat);
+            }
+        }
+//        return "redirect:?success";
+        return "redirect:/internal/admin/flights";
     }
 
     @GetMapping("/admin/flights/update/{id}")
@@ -198,7 +228,7 @@ public class AdminController {
             return "admin/flight/flight-update";
         }
         flightRepository.save(flight);
-        return "redirect:/admin/flights";
+        return "redirect:internal/admin/flights";
     }
 
     @GetMapping(value = "/admin/flights/delete/{id}")
@@ -206,7 +236,7 @@ public class AdminController {
             @PathVariable(value = "id") Long id) {
         Flight flight = flightRepository.getById(id);
         flightRepository.delete(flight);
-        return "redirect:/admin/flights";
+        return "redirect:/internal/admin/flights";
     }
 
 
@@ -234,7 +264,7 @@ public class AdminController {
 
         }
         airlineRepository.save(airline);
-        return "redirect:/admin/airlines";
+        return "redirect:internal/admin/airlines";
     }
 
     @GetMapping(value = "/admin/airlines/delete/{id}")
@@ -242,7 +272,7 @@ public class AdminController {
             @PathVariable(value = "id") Long id) {
         Airline airline = airlineRepository.getById(id);
         airlineRepository.delete(airline);
-        return "redirect:/admin/airlines";
+        return "redirect:internal/admin/airlines";
     }
 
     //    Account page
@@ -270,7 +300,7 @@ public class AdminController {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return "redirect:/admin/users";
+        return "redirect:/internal/admin/users";
     }
 
     @GetMapping(value = "/admin/users/delete/{id}")
@@ -278,7 +308,7 @@ public class AdminController {
             @PathVariable(value = "id") Long id) {
         User user = userRepository.getById(id);
         userRepository.delete(user);
-        return "redirect:/admin/users";
+        return "redirect:/internal/admin/users";
     }
 
 

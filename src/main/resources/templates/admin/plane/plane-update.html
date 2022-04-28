@@ -23,19 +23,19 @@
         </div>
         <ul class="list-unstyled components text-secondary">
             <li>
-                <a th:href="@{/admin}"><i class="fas fa-home"></i> Dashboard</a>
+                <a th:href="@{/internal/admin}"><i class="fas fa-home"></i> Dashboard</a>
             </li>
             <li>
-                <a th:href="@{/admin/planes}"><i class="fas fa-file-alt"></i> Planes</a>
+                <a th:href="@{/internal/admin/planes}"><i class="fas fa-file-alt"></i> Planes</a>
             </li>
             <li>
-                <a th:href="@{/admin/airlines}"><i class="fas fa-table"></i> Airlines</a>
+                <a th:href="@{/internal/admin/airlines}"><i class="fas fa-table"></i> Airlines</a>
             </li>
             <li>
-                <a th:href="@{/admin/flights}"><i class="fas fa-chart-bar"></i> Flights</a>
+                <a th:href="@{/internal/admin/flights}"><i class="fas fa-chart-bar"></i> Flights</a>
             </li>
             <li>
-                <a th:href="@{/admin/users}"><i class="fas fa-user-friends"></i>Users</a>
+                <a th:href="@{/internal/admin/users}"><i class="fas fa-user-friends"></i>Users</a>
             </li>
         </ul>
     </nav>
@@ -83,7 +83,7 @@
                                 <div class="alert alert-info">Save successfully!</div>
                             </div>
                             <div class="card-body">
-                                <form th:action="@{/admin/planes/save/{id}(id=${plane.id})}" method="post" th:object="${plane}" accept-charset="utf-8" >
+                                <form th:action="@{/internal/admin/planes/save/{id}(id=${plane.id})}" method="post" th:object="${plane}" accept-charset="utf-8" >
                                     <div class="mb-3">
                                         <label class="form-label" for="branch">Branch</label>
                                         <input type="text" id="branch" placeholder="Enter Branch" class="form-control"  required th:field="*{brand}">
@@ -97,7 +97,7 @@
                                         <input type="text" id="name" placeholder="Enter Name plane" class="form-control"  required th:field="*{name}">
                                     </div>
                                     <div class="col-sm-4 offset-sm-2">
-                                        <a type="submit" th:href="@{/admin/planes}" class="btn btn-secondary mb-2"><i class="fas fa-times"></i> Cancel</a>
+                                        <a type="submit" th:href="@{/internal/admin/planes}" class="btn btn-secondary mb-2"><i class="fas fa-times"></i> Cancel</a>
                                         <button type="submit" class="btn btn-primary mb-2">
                                              <i class="fas fa-save"></i>
                                             Update

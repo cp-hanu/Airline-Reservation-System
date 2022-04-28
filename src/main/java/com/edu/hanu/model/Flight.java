@@ -74,20 +74,15 @@ public class Flight {
     @ToString.Exclude
     private Set<Ticket> tickets;
 
-//    public Set<FlightSeatPrice> getFlightSeats(){
-//       Set<FlightSeatPrice> bookedSeats = new HashSet<>();
-//       this.tickets.forEach(ticket -> {
-//           bookedSeats.add(ticket.getFlightSeatPrice());
-//       });
-//
-//       this.flightSeats.forEach(flightSeatPrice -> {
-//          if (bookedSeats.contains(flightSeatPrice)) {
-//              flightSeatPrice.setBooked(true);
-//           }
-//       });
-//
-//       return this.flightSeats;
-//    }
+    @Transient
+    private Double firstClassPrice;
+
+    @Transient
+    private Double economyClassPrice;
+
+    @Transient
+    private Double businessClassPrice;
+
 
     public TreeSet<FlightSeatPrice> getFlightSeats() {
         Set<FlightSeatPrice> bookedSeats = new HashSet<>();
@@ -105,18 +100,15 @@ public class Flight {
                 result.add(FlightSeatPrice.builder().seat(flightSeatPrice.getSeat()).build());
             }
         });
-
         return new TreeSet<>(result);
     }
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
-//    @JoinTable(
-//            name = "ticket_flight_seat",
-//            joinColumns = @JoinColumn(name = "flight_id"),
-//            inverseJoinColumns = @JoinColumn(name = "seat_id")
-//    )
-//    private Set<Seat> bookedSeats;
+    public double getClassPrice(String seatClass) {
+        return this.flightSeats.stream().filter(e -> e.getSeat().getType().equalsIgnoreCase(seatClass)).findFirst().get().getPrice();
+    }
+
+    public int getAvailableSeat(String seatClass){
+       return (int) this.getFlightSeats().stream().filter(e -> e.getSeat().getType().equalsIgnoreCase(seatClass)).count();
+    }
 
 }

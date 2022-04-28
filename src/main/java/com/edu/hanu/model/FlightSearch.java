@@ -15,4 +15,5 @@ public class FlightSearch {
     Airport to;
     Date departureDate;
     Date returnDate;
+    String seatClass;
 }

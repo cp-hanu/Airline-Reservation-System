@@ -291,7 +291,7 @@
 //        var airline = airlineRepository.findAll();
 //        System.out.println(airline);
 //        System.out.println("-------------------------");
-//        System.out.println(roleRepository.findAll());
+//        System.out.println(seatRepository.findAll());
 //        System.out.println("-------------------------");
 //
 ////        var user = userRepository.findAll();

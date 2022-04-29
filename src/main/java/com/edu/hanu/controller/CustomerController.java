@@ -10,12 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.SecondaryTable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -50,10 +46,13 @@ public class CustomerController {
         List<Airline> airline = airlineRepository.findAll();
         List<Plane> planes = planeRepository.findAll();
         List<Airport> airports = airportRepository.findAll();
+
+        String[] seats = new String[]{"FIRST CLASS", "ECONOMY CLASS", "BUSINESS CLASS"};
         model.addAttribute("flightSearch", new FlightSearch());
         model.addAttribute("airlines", airline);
         model.addAttribute("planes", planes);
         model.addAttribute("airports", airports);
+        model.addAttribute("seats", seats);
         LocalDate now = LocalDate.now();
         model.addAttribute("now", now);
         return "user/index";
@@ -64,19 +63,14 @@ public class CustomerController {
         if (result.hasErrors()) {
             return "error/500";
         }
-        System.out.println(flightSearch);
         // one way
         if (flightSearch.getReturnDate() == null) {
             var flights = flightRepository.findByFromAirportAndToAirportAndDepartureDate(flightSearch.getFrom(), flightSearch.getTo(), flightSearch.getDepartureDate());
-            // imagine this is economy
             model.addAttribute("flights", flights);
-
-            Set<FlightSeatPrice> availableSeat = new HashSet<>();
-
+            model.addAttribute("flightSearch", flightSearch);
             return "user/view";
         }
 
-//        return "user/view";
         return "user/index";
     }
 
@@ -120,17 +114,6 @@ public class CustomerController {
         }
         System.out.println(username);
 
-//        User user = userRepository.findByEmail("customer@gmail.com");
-//        Ticket newTicket = Ticket.builder()
-//                .pnr("GWGIQR")
-//                .firstName("Nam")
-//                .lastName("Nguyen")
-//                .user(user)
-//                .flightSeatPrice(test.get(4))
-//                .build();
-//        ticketRepository.save(newTicket);
-
-
         var x = flight.getFlightSeats().stream().filter(e -> e.getSeat().getType().equalsIgnoreCase(seatClass)).collect(Collectors.toList());
         List<List<FlightSeatPrice>> seats = new ArrayList<>();
         List<FlightSeatPrice> flightSeatPriceList = new ArrayList<>();
@@ -145,9 +128,14 @@ public class CustomerController {
             flightSeatPriceList = new ArrayList<>();
         }
         model.addAttribute("seats", seats);
-//        model.addAttribute("ticket", new Ticket());
         model.addAttribute("bookSeat", new FlightSeat());
-        System.out.println(seats.get(0).get(0).getFlight().getId());
+        return "user/seat";
+    }
+
+    @GetMapping("/payment/create")
+    public String paymentGet(Model model) {
+        FlightSeat flightSeat = new FlightSeat();
+        model.addAttribute("bookSeat", flightSeat);
         return "user/seat";
     }
 

@@ -69,12 +69,13 @@
                         <td th:text="${flight.current.toAirport.city} + '(' + ${flight.current.toAirport.code} + ')'"></td>
                         <td th:text="${flight.current.departureDate}+' '+${flight.current.departureTime}"></td>
                         <td th:text="${flight.current.arrivalDate}+' '+${flight.current.arrivalTime}"></td>
-                        <td th:text="${flight.current.getClassPrice('Business class')} + '$'" > </td>
-                        <td th:text="${flight.current.getAvailableSeat('Business class')}"> </td>
+                        <td th:text="${flight.current.getClassPrice(flightSearch.seatClass)} + '$'"></td>
+                        <td th:text="${flight.current.getAvailableSeat(flightSearch.seatClass)}"></td>
                         <td>
                             <a th:href="@{/view/detail}" class="btn btn-outline-info btn-rounded">Flight Details</a>
                             <a th:href="@{/view/detail/fare}" class="btn btn-outline-info btn-rounded">Fare Info</a>
-                            <a th:href="'/view/choose?id=' + ${flight.current.getId() + '&type=business class'}"  class="btn btn-outline-danger btn-rounded">Choose</a>
+                            <a th:href="'/view/choose?id=' + ${flight.current.getId()} + '&type=' + ${flightSearch.seatClass} "
+                               class="btn btn-outline-danger btn-rounded">Choose</a>
                         </td>
                     </tr>
                     </tbody>

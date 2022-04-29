@@ -31,7 +31,7 @@
                 <div class="nav-items">
                     <i class="uil uil-times nav-close-btn"></i>
                     <a th:href="@{/home}"><i class="uil uil-home"></i> Home</a>
-                    <a th:href="@{/flights}"><i class="uil uil-compass"></i> Flights</a>
+                    <a th:href="@{/checkout}"><i class="uil uil-compass"></i> Flights</a>
                     <a th:href="@{/about}"><i class="uil uil-info-circle"></i> About</a>
                     <a th:href="@{/contact}"><i class="uil uil-document-layout-left"></i> Contact</a>
                     <a th:href="@{/view}">
@@ -75,7 +75,7 @@
         </div>
         <div class="col-md-8 order-md-1">
             <h4 class="mb-3">Personal Information</h4>
-            <form class="needs-validation" novalidate>
+<!--            <form class="needs-validation" novalidate>-->
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="firstName">First name<span class="star">*</span></label>
@@ -162,6 +162,7 @@
                             Expiration date required
                         </div>
                     </div>
+
                     <div class="col-md-3 mb-3">
                         <label for="cc-cvv">CVV<span class="star">*</span></label>
                         <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
@@ -170,8 +171,13 @@
                         </div>
                     </div>
                 </div>
+            <form method="post" th:action="@{/checkout/pay}">
+                <div class="col-md-3 mb-3">
+                    <label >Payment</label>
+                    <input type="text" class="form-control" name="price" value="20" >
+                </div>
                 <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout with Paypal</button>
             </form>
         </div>
     </div>

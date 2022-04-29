@@ -1,11 +1,9 @@
 package com.edu.hanu.controller;
 
-import com.edu.hanu.config.UserPDFExporter;
-import com.edu.hanu.model.User;
+import com.edu.hanu.service.UserPDFExporter;
 import com.edu.hanu.repository.UserRepository;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -14,7 +12,6 @@ import java.io.IOException;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 @Controller
 public class PDFController {

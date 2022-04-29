@@ -97,11 +97,11 @@
 			<artifactId>openpdf</artifactId>
 			<version>1.3.8</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>com.itextpdf</groupId>-->
-<!--			<artifactId>hyph</artifactId>-->
-<!--			<version>7.2.0</version>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>com.paypal.sdk</groupId>
+			<artifactId>rest-api-sdk</artifactId>
+			<version>1.4.2</version>
+		</dependency>
 
 
 		<dependency>

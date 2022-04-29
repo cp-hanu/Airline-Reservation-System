@@ -1,4 +1,4 @@
-package com.edu.hanu.config;
+package com.edu.hanu.service;
 
 import com.edu.hanu.model.Ticket;
 import com.edu.hanu.model.User;
@@ -23,7 +23,7 @@ public class UserPDFExporter {
     private List<Ticket> listTicket;
 
     public void export(HttpServletResponse response) throws DocumentException, IOException {
-        Document document = new Document(PageSize.A4);
+        Document document = new Document(PageSize.A5.rotate());
         PdfWriter.getInstance(document,response.getOutputStream());
         document.open();
 

@@ -50,10 +50,18 @@ public class CustomerController {
         List<Airline> airline = airlineRepository.findAll();
         List<Plane> planes = planeRepository.findAll();
         List<Airport> airports = airportRepository.findAll();
+//        List<Seat> seats = seatRepository.findAll();
+//
+        String[] seats = new String[] {"FIRST CLASS", "ECONOMY CLASS","BUSINESS CLASS"};
+        List<String> ghe = new ArrayList<>();
+        ghe.add(seats[0]);
+        ghe.add(seats[1]);
+        ghe.add(seats[2]);
         model.addAttribute("flightSearch", new FlightSearch());
         model.addAttribute("airlines", airline);
         model.addAttribute("planes", planes);
         model.addAttribute("airports", airports);
+        model.addAttribute("seats", ghe);
         LocalDate now = LocalDate.now();
         model.addAttribute("now", now);
         return "user/index";
@@ -69,6 +77,8 @@ public class CustomerController {
         if (flightSearch.getReturnDate() == null) {
             var flights = flightRepository.findByFromAirportAndToAirportAndDepartureDate(flightSearch.getFrom(), flightSearch.getTo(), flightSearch.getDepartureDate());
             // imagine this is economy
+
+//            System.out.println(seats);
             model.addAttribute("flights", flights);
 
             Set<FlightSeatPrice> availableSeat = new HashSet<>();
@@ -148,6 +158,13 @@ public class CustomerController {
 //        model.addAttribute("ticket", new Ticket());
         model.addAttribute("bookSeat", new FlightSeat());
         System.out.println(seats.get(0).get(0).getFlight().getId());
+        return "user/seat";
+    }
+
+    @GetMapping("/payment/create")
+    public String paymentGet(Model model){
+        FlightSeat flightSeat = new FlightSeat();
+        model.addAttribute("bookSeat",flightSeat);
         return "user/seat";
     }
 

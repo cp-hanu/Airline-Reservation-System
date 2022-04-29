@@ -33,7 +33,7 @@
                 <i class="uil uil-times nav-close-btn"></i>
                 <a th:href="@{/home}"><i class="uil uil-home"></i> Home</a>
                 <a th:href="@{/flights}"><i class="uil uil-compass"></i> Flights</a>
-                <a th:href="@{/about}"><i class="uil uil-info-circle"></i> About</a>
+                <a th:href="@{/users/export/pdf}"><i class="uil uil-info-circle"></i> About</a>
                 <a th:href="@{/contact}"><i class="uil uil-document-layout-left"></i> Contact</a>
                 <a th:href="@{/view}">
                     <img class="logout" th:src="@{/user/img/cart.png}" alt="cart"/>
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                         <div class="row" id="box">
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label" for="from">From</label>
                                     <select required name='from' id="from" class="form-control" th:field="*{from}">
@@ -79,7 +79,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label" for="to">To</label>
                                     <select required name='to' id="to" class="form-control" th:field="*{to}">
@@ -89,7 +89,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label" for="departure">Departing</label>
                                     <input class="form-control" name="departure" id="departure" type="date" required
@@ -97,7 +97,7 @@
                                            th:field="*{departureDate}">
                                 </div>
                             </div>
-                            <div class="col-md-3" id="returning" style="display: block">
+                            <div class="col-md-4" id="returning" style="display: block">
                                 <div class="form-group">
                                     <label class="form-label" for="return">Returning</label>
                                     <input class="form-control" name="return" id="return" type="date" required
@@ -105,21 +105,20 @@
                                     >
                                 </div>
                             </div>
-
-
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label" for="travel">Travel Class</label>
+                                    <select  required name='to' id="travel" class="form-control" th:field="*{seatClass}">
+<!--                                        <option value="">Select a location...</option>-->
+                                        <option th:each="index,seat : ${seats}" th:value="${seat.index}"
+                                                th:text="${seat.current}"></option>
+                                    </select>
+                                </div>
+                            </div>
 
                         </div>
 
-<!--                           <div class="col-md-3" id="travelSeat">-->
-<!--                                <div class="form-group">-->
-<!--                                    <label class="form-label" for="seat">Travel Class</label>-->
-<!--                                    <select class="form-control" id="seat" >-->
-<!--                                        <option th:text=$"Economy"></option>-->
-<!--                                        <option th:text=$"First"></option>-->
-<!--                                        <option th:text=$"Business"></option>-->
-<!--                                    </select>-->
-<!--                                </div>-->
-<!--                            </div>-->
+
 
                         <button id="btnAdd" class="btn btn-success " style="display:none">Add another flight</button>
 

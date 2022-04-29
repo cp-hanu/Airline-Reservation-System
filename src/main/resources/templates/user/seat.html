@@ -25,10 +25,7 @@
             <li class="'row row--" th:classappend="${seatList.index + 1}" th:each="index, seatList: ${seats}">
                 <ol class="seats" type="A">
                     <li class="seat" th:each="idx, seat : ${seatList.current}">
-<<<<<<< HEAD
-=======
                         <!--                        <input type="hidden" th:field="*{flightId}" th:value="${seat.current.getFlight().id}" id="flightId">-->
->>>>>>> dev
                         <input type="radio"
                                th:disabled="${seat.current.isBooked()}"
                                th:value="${seat.current.seat.getId()}"

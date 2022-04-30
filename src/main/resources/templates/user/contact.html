@@ -8,45 +8,36 @@
     <title>Travel</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" th:href="@{user/css/bootstrap.min.css}" type="text/css"/>
-    <link rel="stylesheet" th:href="@{user/css/bootstrap-theme.min.css}" type="text/css" />
-    <link rel="stylesheet" th:href="@{user/css/fontAwesome.css}" type="text/css"/>
-    <link rel="stylesheet" th:href="@{user/css/hero-slider.css}" type="text/css"/>
-    <link rel="stylesheet" th:href="@{user/css/owl-carousel.css}" type="text/css"/>
-    <link rel="stylesheet" th:href="@{user/css/datepicker.css}" type="text/css"/>
-    <link rel="stylesheet" th:href="@{user/css/tooplate-style.css}" type="text/css"/>
-    <link rel="stylesheet" th:href="@{user/css/navbar.css}" type="text/css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/user/css/navbar.css}"/>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" />
     <!-- CSS only -->
     <script th:src="@{user/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js}"></script>
 </head>
 <body>
 
-    <header>
-        <div class="nav-bar">
-            <a th:href="@{/home}" class="logo">
-                <img class="airline" th:src="@{../user/img/airline.png}" alt=""/>
-                TRAVEL</a>
-            <div class="navigation">
-                <div class="nav-items">
-                    <i class="uil uil-times nav-close-btn"></i>
-                    <a th:href="@{/home}"><i class="uil uil-home"></i> Home</a>
-                    <a th:href="@{/flights}"><i class="uil uil-compass"></i> Flights</a>
-                    <a th:href="@{/about}"><i class="uil uil-info-circle"></i> About</a>
-                    <a th:href="@{/contact}"><i class="uil uil-document-layout-left"></i> Contact</a>
-                    <a th:href="@{/carts}">
-                        <img class="logout" th:src="@{/user/img/shopping-cart.png}" alt="cart"/>
-                    </a>
-                    <span class="authen" sec:authentication="principal.username"></span>
-                    <a th:href="@{/logout}">
-                        <img class="logout" th:src="@{/user/img/logout.png}" alt="" />
-                    </a>
-                </div>
+<header>
+    <div class="nav-bar">
+        <a th:href="@{/home}" class="logo">
+            <img class="airline" th:src="@{/user/img/airline.png}" alt=""/>
+            TRAVEL</a>
+        <div class="navigation">
+            <div class="nav-items">
+                <i class="uil uil-times nav-close-btn"></i>
+                <a th:href="@{/home}"><i class="uil uil-home"></i> Home</a>
+                <a th:href="@{/contact}"><i class="uil uil-document-layout-left"></i> Contact</a>
+                <a th:href="@{/cart}">
+                    <img class="logout" th:src="@{/user/img/cart.png}" alt="cart"/>
+                </a>
+                <span class="authen" sec:authentication="principal.username"></span>
+                <a th:href="@{/logout}">
+                    <img class="logout" th:src="@{/user/img/out.png}" alt=""/>
+                </a>
             </div>
-            <!--                <i class="uil uil-apps nav-menu-btn"></i>-->
         </div>
-    </header>
-
+    </div>
+</header>
 
     <section class="page-heading" id="top">
         <div class="container">
@@ -65,48 +56,6 @@
         </div>
     </section>
 
-
-
-    <section class="contact-us">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="section-heading">
-                        <h2>Contact Information</h2>
-                        <p> Who is ugly and the author of the bed is pregnant or the average person.
-                            Then time and time. But not just Until then, the time around the world,
-                            and the pregnancy problems. We live a life of real fear.</p>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <img th:src="@{user/img/contact-01.jpg}" alt="">
-                </div>
-                <div class="col-md-6">
-                    <img th:src="@{user/img/contact-02.jpg}" alt="">
-                </div>
-                <div class="col-md-4">
-                    <h6>Uncategorized</h6>
-                    <p>It's time to take some elite risks, but put down some labels in the casino.
-                        The film or the range of the bed.</p>
-                </div>
-                <div class="col-md-4">
-                    <h6>Duis vehicula quis elit</h6>
-                    <p>Until the players of the cat, the teenagers that the football developed,
-                        was the saucer of the ends. It's time for the pain of convenience to cancel.
-                        Even in my earth. For the carton is great, and the makeup itself is the fringe of it.</p>
-                </div>
-                <div class="col-md-4">
-                    <h6>Duis vel rhoncus lectus</h6>
-                    <p>Mauris aliquet eget lorem a tempor. Morbi in dui sed orci placerat ultrices sed a mi.
-                        It's a need for the ferry. My time in the United States. You're a pill before.
-                        But the most flattering of life is the advantage of the backyard.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
     <section class="contact-form">
         <div class="container">
             <div class="row">
@@ -116,7 +65,7 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-md-offset-3">
-                    <form id="contact" action="#" method="post">
+                    <form id="contact" th:action="@{/contact}" method="post">
                         <div class="row">
                             <div class="col-md-6">
                                 <fieldset>
@@ -135,7 +84,7 @@
                             </div>
                             <div class="col-md-12">
                                 <fieldset>
-                                    <button type="submit" id="form-submit" class="btn">Submit Your Message</button>
+                                    <button type="submit" id="form-submit" class="btn btn-success">Submit Your Message</button>
                                 </fieldset>
                             </div>
                         </div>
@@ -158,38 +107,12 @@
                 </div>
             </div>
         </section>
-
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="primary-button">
-                        <a th:href="@{#}" class="scroll-top">Back To Top</a>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <ul class="social-icons">
-                        <li><a href="https://www.facebook.com/tooplate"><i class="fa fa-facebook"></i></a></li>
-                        <li><a th:href="@{/#}"><i class="fa fa-twitter"></i></a></li>
-                        <li><a th:href="@{/#}"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a th:href="@{/#}"><i class="fa fa-rss"></i></a></li>
-                        <li><a th:href="@{/#}"><i class="fa fa-behance"></i></a></li>
-                    </ul>
-                </div>
-                <!--                <div class="col-md-12">-->
-                <!--                <p>Copyright &copy; suyash-->
-
-                <!--                    | Design: <a th:href="@{/#}" target="_parent"><em>suyash</em></a></p>-->
-                <!--            </div>-->
-            </div>
-        </div>
-    </footer>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script th:src="@{../user/js/vendor/jquery-1.11.2.min.js}"><\/script>')</script>
-    <script th:src="@{../user/js/vendor/bootstrap.min.js}"></script>
-    <script th:src="@{../user/js/datepicker.js}"></script>
-    <script th:src="@{../user/js/plugins.js}"></script>
-    <script th:src="@{../user/js/mainUser.js}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function() {

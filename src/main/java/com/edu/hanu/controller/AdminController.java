@@ -51,9 +51,12 @@ public class AdminController {
 
     @Autowired
     DelayRepository delayRepository;
+    @Autowired
+    TicketRepository ticketRepository;
 
     @Autowired
     SendEmailService emailService;
+    private JavaMailSender javaMailSender;
 
     @GetMapping("/admin")
     public String admin(Model model) {
@@ -293,6 +296,16 @@ public class AdminController {
     }
 
 
+    void sendMail(String receiverEmail, String content) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(receiverEmail);
+        msg.setSubject("Apology Letter");
+        msg.setText(content);
+
+        javaMailSender.send(msg);
+    }
+
+
     //    Airlines page
     @GetMapping("/admin/airlines")
     public String airline(Model model) {
@@ -371,6 +384,13 @@ public class AdminController {
         List<Role> roles = roleRepository.findAll();
         model.addAttribute("roles", roles);
         return "admin/role/roles";
+    }
+
+    @GetMapping("/admin/tickets")
+    public String ticket(Model model){
+        List<Ticket> tickets = ticketRepository.findAll();
+        model.addAttribute("tickets", tickets);
+        return "admin/ticket";
     }
 
 }

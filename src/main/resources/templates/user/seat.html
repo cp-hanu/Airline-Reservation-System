@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Seat</title>
     <link rel="stylesheet" th:href="@{/user/css/seat.css}"/>
+    <style>
+        .payment{
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
 </head>
 <body>
 <div class="plane">
@@ -40,10 +46,9 @@
 
         <div class="exit exit--back fuselage">
         </div>
-        <div th:hidden="true" class="totalPrice" id="totalPrice"
+        <div th:hidden="true" style="text-align: center" class="totalPrice" id="totalPrice"
              th:text="'Your Total Price:' + ${seats.get(0).get(0).price} + '$' "></div>
-        <button type="submit" class="btn btn-primary mb-2">
-            <i class="fas fa-submit"></i>
+        <button type="submit"  class="btn btn-primary payment">
             Next to payment
         </button>
     </form>

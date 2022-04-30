@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.context.annotation.Scope;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -66,14 +67,14 @@ public class CustomerController {
     @Autowired
     GeneratePNRService generatePNR;
 
-
-    @Autowired
-    SendEmailService emailService;
-
     public static final String SUCCESS_URL = "checkout/pay/success";
     public static final String CANCEL_URL = "checkout/pay/cancel";
 
     private Logger log = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    SendEmailService emailService;
+
 
     @GetMapping("/home")
     public String homepage(Model model) {
@@ -99,18 +100,30 @@ public class CustomerController {
         if (result.hasErrors()) {
             return "error/500";
         }
+
         // one way
         if (flightSearch.getReturnDate() == null) {
             var flights = flightRepository.findByFromAirportAndToAirportAndDepartureDate(flightSearch.getFrom(), flightSearch.getTo(), flightSearch.getDepartureDate());
-
+//            var total = flights.getClassPrice(flightSearch.getSeatClass());
+            double seatTax = 0;
+            double serviceTax = 0.1;
+            if (flightSearch.getSeatClass().equals("FIRST CLASS")) {
+                seatTax = 0.015;
+            } else if (flightSearch.getSeatClass().equals("BUSINESS CLASS")) {
+                seatTax = 0.03;
+            } else if (flightSearch.getSeatClass().equals("ECONOMY CLASS")) {
+                seatTax = 0.05;
+            }
             model.addAttribute("flights", flights);
             model.addAttribute("flightSearch", flightSearch);
+            model.addAttribute("tax", seatTax);
+            model.addAttribute("serviceTax", serviceTax);
             return "user/view";
         }
         //round trip
-        if(flightSearch.getDepartureDate() != null && flightSearch.getReturnDate() != null){
+        if (flightSearch.getDepartureDate() != null && flightSearch.getReturnDate() != null) {
             var flights = flightRepository.findByFromAirportAndToAirportAndDepartureDateAndArrivalDate(flightSearch.getFrom(),
-                    flightSearch.getTo(),flightSearch.getDepartureDate(),flightSearch.getReturnDate());
+                    flightSearch.getTo(), flightSearch.getDepartureDate(), flightSearch.getReturnDate());
             model.addAttribute("flights", flights);
             model.addAttribute("flightSearch", flightSearch);
             return "user/view";
@@ -119,48 +132,25 @@ public class CustomerController {
         return "user/index";
     }
 
-    @GetMapping("/view")
-    public String view(Model model, FlightSearch flightSearch) {
-        if (flightSearch.getReturnDate() == null) {
-            var flights = flightRepository.findByFromAirportAndToAirportAndDepartureDate(flightSearch.getFrom(), flightSearch.getTo(), flightSearch.getDepartureDate());
-
-            model.addAttribute("flights", flights);
-            model.addAttribute("flightSearch", flightSearch);
-            return "user/view";
-        }
-        //round trip
-        if(flightSearch.getDepartureDate() != null && flightSearch.getReturnDate() != null){
-            var flights = flightRepository.findByFromAirportAndToAirportAndDepartureDateAndArrivalDate(flightSearch.getFrom(),
-                    flightSearch.getTo(),flightSearch.getDepartureDate(),flightSearch.getReturnDate());
-            model.addAttribute("flights", flights);
-            model.addAttribute("flightSearch", flightSearch);
-            return "user/view";
-        }
-        return "user/view";
+    @GetMapping("/cart")
+    public String cart(Model model){
+        List<Ticket> tickets = ticketRepository.findAll();
+        model.addAttribute("tickets",tickets);
+        return "user/cart";
     }
 
     @GetMapping("/contact")
     public String contact() {
-        return "user/form-checkout";
+        return "user/contact";
     }
 
-    @GetMapping("/flights")
-    public String success() {
-        return "user/success";
+    @PostMapping("/contact")
+    public String contactPost(){
+        return "user/contact";
     }
 
 
-
-    @GetMapping("/view/detail")
-    public String detail() {
-        return "user/flight-detail";
-    }
-
-    @GetMapping("/view/fare")
-    public String fare() {
-        return "user/fare";
-    }
-
+    //choose flight
     @GetMapping("/view/choose")
     public String choose(@RequestParam(value = "id") long id, @RequestParam("type") String seatClass, Model model) {
         Flight flight = flightRepository.getById(id);
@@ -197,13 +187,33 @@ public class CustomerController {
                 Flight.builder().id(flightSeat.getFlightId()).build(), Seat.builder().id(flightSeat.getSeatId()).build()
         );
 
+        double tax = 0;
+        double transportTax = 0.1;
         session.setAttribute("flightId", flightSeat.getFlightId());
         session.setAttribute("seatId", flightSeat.getSeatId());
 
+        var basePrice = flightSeatPrice.getPrice();
+        if(flightSeatPrice.getSeat().getType().equals("FIRST CLASS")){
+            tax = 0.015;
+        }else if(flightSeatPrice.getSeat().getType().equals("BUSINESS CLASS")){
+            tax = 0.03;
+        }else if(flightSeatPrice.getSeat().getType().equals("ECONOMY CLASS")){
+            tax = 0.05;
+        }
+        double total = basePrice + basePrice*tax + basePrice*transportTax;
         Ticket ticket = new Ticket();
         model.addAttribute("basePrice", flightSeatPrice.getPrice());
         model.addAttribute("ticket", ticket);
+        model.addAttribute("tax", tax);
+        model.addAttribute("transportTax", transportTax);
+        model.addAttribute("total", total);
+        return "user/form-checkout";
+    }
 
+    //payment with paypal
+
+    @GetMapping("/checkout")
+    public String checkout() {
         return "user/form-checkout";
     }
 

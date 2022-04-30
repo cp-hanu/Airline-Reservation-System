@@ -54,6 +54,7 @@ public class AdminController {
 
     @Autowired
     SendEmailService emailService;
+    private JavaMailSender javaMailSender;
 
     @GetMapping("/admin")
     public String admin(Model model) {
@@ -290,6 +291,16 @@ public class AdminController {
         // notify user here
 
         return "redirect:/internal/admin/flights";
+    }
+
+
+    void sendMail(String receiverEmail, String content) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(receiverEmail);
+        msg.setSubject("Apology Letter");
+        msg.setText(content);
+
+        javaMailSender.send(msg);
     }
 
 

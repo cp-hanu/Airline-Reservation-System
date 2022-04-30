@@ -81,6 +81,18 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label class="form-label" for="from">From</label>
+                                    <input list="answers" name="answer" id="answerInput">
+                                    <datalist id="answers">
+                                        <option th:each="airport : ${airports}" th:value="${airport.id}"
+                                                th:text="${airport.city} + '(' + ${airport.code} + ')'"></option>
+                                    </datalist>
+                                    <input type="hidden" name="answer" id="answerInput-hidden">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
                                     <label class="form-label" for="to">To</label>
                                     <select required name='to' id="to" class="form-control" th:field="*{to}">
                                         <option value="">Select a location...</option>
@@ -108,8 +120,8 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label" for="travel">Travel Class</label>
-                                    <select  required name='to' id="travel" class="form-control" th:field="*{seatClass}">
-<!--                                        <option value="">Select a location...</option>-->
+                                    <select required name='to' id="travel" class="form-control" th:field="*{seatClass}">
+                                        <!--                                        <option value="">Select a location...</option>-->
                                         <option th:each="index,seat : ${seats}" th:value="${seat.current}"
                                                 th:text="${seat.current}"></option>
                                     </select>
@@ -117,7 +129,6 @@
                             </div>
 
                         </div>
-
 
 
                         <button id="btnAdd" class="btn btn-success " style="display:none">Add another flight</button>
@@ -136,8 +147,18 @@
     </div>
 </div>
 <script>
-    let returnForm = document.getElementById("returning");
+    document.querySelector('#answerInput').addEventListener('input', function(e) {
+        var input = e.target,
+            list = input.getAttribute('list'),
+            options = document.querySelectorAll('#' + list + ' option[value="'+input.value+'"]'),
+            hiddenInput = document.getElementById(input.getAttribute('id') + '-hidden');
 
+        if (options.length > 0) {
+            hiddenInput.value = input.value;
+            input.value = options[0].innerText;
+        }
+
+    });
     function text(x) {
         if (x == 0) {
             document.getElementById("btnAdd").style.display = "none";

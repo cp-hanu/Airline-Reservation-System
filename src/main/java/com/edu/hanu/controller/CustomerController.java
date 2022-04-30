@@ -1,7 +1,16 @@
 package com.edu.hanu.controller;
 
+import com.edu.hanu.model.PaypalPaymentIntent;
+import com.edu.hanu.model.PaypalPaymentMethod;
+import com.edu.hanu.service.PaypalService;
+import com.edu.hanu.service.GetURLFromServer;
 import com.edu.hanu.model.*;
 import com.edu.hanu.repository.*;
+import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Payment;
+import com.paypal.base.rest.PayPalRESTException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+
+import javax.servlet.http.HttpServletRequest;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -41,18 +53,33 @@ public class CustomerController {
     @Autowired
     FlightSeatPriceRepository flightSeatPriceRepository;
 
+    @Autowired
+    PaypalService service;
+
+
+
     @GetMapping("/home")
     public String homepage(Model model) {
         List<Airline> airline = airlineRepository.findAll();
         List<Plane> planes = planeRepository.findAll();
         List<Airport> airports = airportRepository.findAll();
+//        List<Seat> seats = seatRepository.findAll();
+//
+//        String[] seats = new String[] {"FIRST CLASS", "ECONOMY CLASS","BUSINESS CLASS"};
+//        List<String> ghe = new ArrayList<>();
+//        ghe.add(seats[0]);
+//        ghe.add(seats[1]);
+//        ghe.add(seats[2]);
 
         String[] seats = new String[]{"FIRST CLASS", "ECONOMY CLASS", "BUSINESS CLASS"};
         model.addAttribute("flightSearch", new FlightSearch());
         model.addAttribute("airlines", airline);
         model.addAttribute("planes", planes);
         model.addAttribute("airports", airports);
+
+//        model.addAttribute("seats", ghe);
         model.addAttribute("seats", seats);
+
         LocalDate now = LocalDate.now();
         model.addAttribute("now", now);
         return "user/index";
@@ -66,6 +93,7 @@ public class CustomerController {
         // one way
         if (flightSearch.getReturnDate() == null) {
             var flights = flightRepository.findByFromAirportAndToAirportAndDepartureDate(flightSearch.getFrom(), flightSearch.getTo(), flightSearch.getDepartureDate());
+
             model.addAttribute("flights", flights);
             model.addAttribute("flightSearch", flightSearch);
             return "user/view";
@@ -139,6 +167,7 @@ public class CustomerController {
         return "user/seat";
     }
 
+
     @PostMapping("/payment/create")
     public String payment(Model model, FlightSeat flightSeat, BindingResult result) {
         if (result.hasErrors()) {
@@ -154,5 +183,57 @@ public class CustomerController {
 //        var x = flightSeatPriceRepository.findByFlightAndSeat(flight,seat);
 //        System.out.println(x);
         return "user/bill";
+    }
+
+    //payment with paypal
+
+
+    public static final String SUCCESS_URL = "checkout/pay/success";
+    public static final String CANCEL_URL = "checkout/pay/cancel";
+
+    private Logger log = LoggerFactory.getLogger(getClass());
+
+    @GetMapping("/checkout")
+    public String checkout() {
+        return "user/form-checkout";
+    }
+
+    @PostMapping("/checkout/pay")
+    public String payment(HttpServletRequest request, @RequestParam("price") double price) {
+        String cancelUrl = GetURLFromServer.getBaseURL(request) + "/" + CANCEL_URL;
+        String successUrl = GetURLFromServer.getBaseURL(request) + "/" + SUCCESS_URL;
+        try {
+            Payment payment = service.createPayment(price, "USD",
+                    PaypalPaymentMethod.paypal,
+                    PaypalPaymentIntent.sale,
+                    "flight payment", cancelUrl,
+                    successUrl);
+            for (Links link : payment.getLinks()) {
+                if (link.getRel().equals("approval_url")) {
+                    return "redirect:" + link.getHref();
+                }
+            }
+        } catch (PayPalRESTException e) {
+            log.error(e.getMessage());
+        }
+        return "redirect:/checkout";
+    }
+    @GetMapping(value = CANCEL_URL)
+    public String cancelPay() {
+        return "user/cancel";
+    }
+
+    @GetMapping(value = SUCCESS_URL)
+    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
+        try {
+            Payment payment = service.executePayment(paymentId, payerId);
+            System.out.println(payment.toJSON());
+            if (payment.getState().equals("approved")) {
+                return "user/success";
+            }
+        } catch (PayPalRESTException e) {
+            log.error(e.getMessage());
+        }
+        return "redirect:/checkout";
     }
 }

@@ -88,7 +88,7 @@
                                         <label class="form-label" for="air">Airline</label>
 <!--                                        <input type="text" list="airline" id="air" placeholder="Enter Airline" class="form-control"  required th:field="*{airline}">-->
                                         <select id="air" class="form-control"  required th:field="*{airline}">
-                                            <option th:each="airline : ${airlines}" th:value="${airline.abbreviation}" th:text="${airline.fullName}"></option>
+                                            <option th:each="airline : ${airlines}" th:value="${airline.id}" th:text="${airline.fullName}"></option>
                                         </select>
 <!--                                        <datalist id="airline" >-->
 <!--                                            <option th:each="airline : ${airlines}" th:value="${airline.fullName}" th:text="${airline.fullName}"></option>-->
@@ -117,7 +117,7 @@
 <!--                                            <option th:value="${airport.city} + '(' + ${airport.code} + ')' " />-->
 <!--                                        </datalist>-->
                                         <select id="from"  class="form-control"  required th:field="*{fromAirport}">
-                                            <option th:each="airport : ${airports}" th:value="${airport.code}" th:text="${airport.city} + '-' + ${airport.code}"></option>
+                                            <option th:each="airport : ${airports}" th:value="${airport.id}" th:text="${airport.city} + '-' + ${airport.code}"></option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
@@ -127,7 +127,7 @@
 <!--                                            <option th:each="airport : ${airports}" th:value="${airport.city} + '(' + ${airport.code} + ')' " />-->
 <!--                                        </datalist>-->
                                         <select id="to"  class="form-control"  required th:field="*{toAirport}">
-                                            <option th:each="airport : ${airports}" th:value="${airport.code}" th:text="${airport.city} + '-' + ${airport.code}"></option>
+                                            <option th:each="airport : ${airports}" th:value="${airport.id}" th:text="${airport.city} + '-' + ${airport.code}"></option>
                                         </select>
                                     </div>
                                     <div class="mb-3">

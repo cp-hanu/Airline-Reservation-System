@@ -83,7 +83,9 @@ public class Flight {
     @Transient
     private Double businessClassPrice;
 
-
+    @OneToOne
+    @JoinColumn(name = "delay_id")
+    private Delay delay;
     public TreeSet<FlightSeatPrice> getFlightSeats() {
         Set<FlightSeatPrice> bookedSeats = new HashSet<>();
         this.tickets.forEach(ticket -> {

@@ -3,12 +3,15 @@ package com.edu.hanu.controller;
 import com.edu.hanu.model.*;
 import com.edu.hanu.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.time.LocalTime;
 import java.util.Collection;
@@ -40,6 +43,12 @@ public class AdminController {
 
     @Autowired
     FlightSeatPriceRepository flightSeatPriceRepository;
+
+    @Autowired
+    DelayRepository delayRepository;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @GetMapping("/admin")
     public String admin(Model model) {
@@ -176,6 +185,12 @@ public class AdminController {
             return "admin/flight/flight-add";
         }
         model.addAttribute("flight", flight);
+        Delay delay = Delay.builder()
+                .minute(0)
+                .reason("")
+                .build();
+        delayRepository.save(delay);
+        flight.setDelay(delay);
         flightRepository.save(flight);
         Collection<Seat> allSeat = flight.getPlane().getSeats();
         for (Seat seat : allSeat) {
@@ -202,12 +217,13 @@ public class AdminController {
                 flightSeatPriceRepository.save(flightSeat);
             }
         }
-//        return "redirect:?success";
-        return "redirect:/internal/admin/flight";
+
+        return "redirect:/internal/admin/flights";
     }
 
     @GetMapping("/admin/flights/update/{id}")
     public String flightUpdate(@PathVariable(value = "id") long id, Model model) {
+        System.out.println("-----------------------------");
         Flight flights = flightRepository.getById(id);
         List<Airline> airline = airlineRepository.findAll();
         List<Plane> planes = planeRepository.findAll();
@@ -239,6 +255,55 @@ public class AdminController {
         return "redirect:/internal/admin/flights";
     }
 
+    @GetMapping(value = "/admin/flights/delay/update/{id}")
+    public String updateDelay(@PathVariable(value = "id") Long id, Model model) {
+        Delay delay = delayRepository.getDelayById(id);
+        model.addAttribute("delay", delay);
+        return "admin/flight/delay";
+    }
+
+    @PostMapping(value = "/admin/flights/delay/save/{id}")
+    public String updateDelayPost(@PathVariable(value = "id", required = false) long id, Delay delay, BindingResult result) {
+        if (result.hasErrors()) {
+            delay.setId(id);
+            return "admin/flight/delay";
+        }
+        System.out.println(delay);
+        System.out.println(flightRepository);
+        // notify user here
+
+        String x = "Dear \n" +
+                "first name\n" +
+                ",\n" +
+                "\n" +
+                "We sincerely regret to inform you that your order of PS5 you placed on April 29, 2022 is delayed.\n" +
+                "\n" +
+                "The reason for the delay is \n" +
+                "technical issues preventing us from processing your order\n" +
+                ".\n" +
+                "\n" +
+                "Here is how we will make it right: \n" +
+                "insert the remedy here\n" +
+                ".\n" +
+                "\n" +
+                "Our team hopes we can make it right. Thank you for your patience.\n" +
+                "\n" +
+                "Sincerely,\n" +
+                "\n" +
+                "Taylor’s Designs";
+
+//        delayRepository.save(delay);
+        return "redirect:/internal/admin/flights";
+    }
+
+    void sendMail(String receiverEmail, String content) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(receiverEmail);
+        msg.setSubject("Apology Letter");
+        msg.setText(content);
+
+        javaMailSender.send(msg);
+    }
 
     //    Airlines page
     @GetMapping("/admin/airlines")

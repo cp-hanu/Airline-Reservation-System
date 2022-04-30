@@ -44,24 +44,20 @@ public class UserPDFExporter {
         cellHeader.setBorder(0);
         cellHeader.setPhrase(new Phrase("BOARDING PASS",font));
         tableHeader.addCell(cellHeader);
-//        for(Ticket tick : listTicket){
-//            cellHeader.setPhrase(new Phrase(tick.getFlight().getAirline().getFullName(),font));
-//            tableHeader.addCell(cellHeader);
-//        }
-        cellHeader.setPhrase(new Phrase("VietNam Airlines",font));
-        tableHeader.addCell(cellHeader);
+        for(Ticket tick : listTicket){
+            cellHeader.setPhrase(new Phrase(tick.getFlight().getAirline().getFullName(),font));
+            tableHeader.addCell(cellHeader);
+        }
 
         //row 2
         PdfPTable tableContent = new PdfPTable(3);
         tableContent.setWidthPercentage(100f);
-        tableContent.setHorizontalAlignment(Element.ALIGN_MIDDLE);
         tableContent.setWidths(new float[]{3f,4f,3f});
         tableContent.setSpacingBefore(15);
         tableContent.getDefaultCell().setBorder(0);
         PdfPCell cellContent = new PdfPCell();
         cellContent.setBorder(Rectangle.NO_BORDER);
         cellContent.setPadding(8);
-        cellContent.setBorder(0);
         cellContent.setPhrase(new Phrase("FLIGHT",font));
         tableContent.addCell(cellContent);
         cellContent.setPhrase(new Phrase("BOARDING TIME",font));
@@ -75,9 +71,9 @@ public class UserPDFExporter {
         tableName.setWidthPercentage(100f);
         tableName.setWidths(new float[]{4.5f,3f,3f});
         tableName.getDefaultCell().setBorder(0);
-        tableName.setSpacingBefore(25);
+        tableName.setSpacingBefore(15);
         PdfPCell cellName = new PdfPCell();
-        cellName.setPadding(15);
+        cellName.setPadding(8);
         cellName.setBorder(Rectangle.NO_BORDER);
 
         cellName.setPhrase(new Phrase("PASSENGER NAME",font));
@@ -102,29 +98,21 @@ public class UserPDFExporter {
         cellFooter.setPhrase(new Phrase("Class",font));
         tableFooter.addCell(cellFooter);
 
-//        for(Ticket tick : listTicket){
-//            tableHeader.addCell(tick.getFlight().getPlane().getName());
-//            tableHeader.addCell(String.valueOf(tick.getFlight().getDepartureTime()));
-//            tableHeader.addCell(String.valueOf(tick.getFlightSeatPrice().getSeat().getRow())
-//            + tick.getFlightSeatPrice().getSeat().getCol());
-//
-//            tableName.addCell(tick.getFirstName() + tick.getLastName());
-//            tableName.addCell(String.valueOf(tick.getFlight().getFromAirport()));
-//            tableName.addCell(String.valueOf(tick.getFlight().getToAirport()));
-//
-//            tableFooter.addCell(String.valueOf(tick.getFlight().getArrivalDate()));
-//            tableFooter.addCell(tick.getFlightSeatPrice().getSeat().getType());
-//        }
+        for(Ticket tick : listTicket){
+            tableContent.addCell(tick.getFlight().getPlane().getName());
+            tableContent.addCell(String.valueOf(tick.getFlight().getDepartureTime()));
+            tableContent.addCell(String.valueOf(tick.getFlightSeatPrice().getSeat().getRow())
+            + tick.getFlightSeatPrice().getSeat().getCol());
 
-        tableContent.addCell("A320");
-        tableContent.addCell(String.valueOf("10:20"));
-        tableContent.addCell("11A");
-        tableName.addCell("John Doe");
-        tableName.addCell("Ha Noi");
-        tableName.addCell("Ho Chi Minh");
-        tableFooter.addCell(String.valueOf("04/29/2022"));
-        tableFooter.addCell("Economy");
+            tableName.addCell(tick.getFirstName() +" "+tick.getLastName());
+            tableName.addCell(String.valueOf(tick.getFlight().getFromAirport().getCity()+","
+            +tick.getFlight().getFromAirport().getCountry()));
+            tableName.addCell(String.valueOf(tick.getFlight().getToAirport().getCity())+","
+            +tick.getFlight().getToAirport().getCountry());
 
+            tableFooter.addCell(String.valueOf(tick.getFlight().getArrivalDate()));
+            tableFooter.addCell(tick.getFlightSeatPrice().getSeat().getType());
+        }
         document.add(tableHeader);
         document.add(tableContent);
         document.add(tableName);

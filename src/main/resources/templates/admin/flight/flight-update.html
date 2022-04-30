@@ -110,7 +110,11 @@
                                     <div class="mb-3">
                                         <label class="form-label" for="from">From</label>
                                         <select id="from"  class="form-control"  required th:field="*{fromAirport}">
-                                            <option th:each="airport : ${airports}" th:value="${airport.id}" th:text="${airport.getCity()} + '-' + ${airport.code}"></option>
+                                            <option th:each="airport : ${airports}" th:value="${airport.id}" th:text="${airport.city} + '-' + ${airport.code}"></option>
+<<<<<<< Updated upstream
+
+=======
+>>>>>>> Stashed changes
                                         </select>
                                     </div>
                                     <div class="mb-3">

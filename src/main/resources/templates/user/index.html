@@ -32,10 +32,8 @@
             <div class="nav-items">
                 <i class="uil uil-times nav-close-btn"></i>
                 <a th:href="@{/home}"><i class="uil uil-home"></i> Home</a>
-                <a th:href="@{/checkout}"><i class="uil uil-compass"></i> Flights</a>
-                <a th:href="@{/users/export/pdf}"><i class="uil uil-info-circle"></i> About</a>
                 <a th:href="@{/contact}"><i class="uil uil-document-layout-left"></i> Contact</a>
-                <a th:href="@{/view}">
+                <a th:href="@{/cart}">
                     <img class="logout" th:src="@{/user/img/cart.png}" alt="cart"/>
                 </a>
                 <span class="authen" sec:authentication="principal.username"></span>
@@ -108,16 +106,15 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="form-label" for="travel">Travel Class</label>
-                                    <select  required name='to' id="travel" class="form-control" th:field="*{seatClass}">
-<!--                                        <option value="">Select a location...</option>-->
+                                    <select required name='to' id="travel" class="form-control" th:field="*{seatClass}">
                                         <option th:each="index,seat : ${seats}" th:value="${seat.current}"
                                                 th:text="${seat.current}"></option>
                                     </select>
+                                    <span class="select-arrow"></span>
                                 </div>
                             </div>
 
                         </div>
-
 
 
                         <button id="btnAdd" class="btn btn-success " style="display:none">Add another flight</button>
@@ -136,8 +133,30 @@
     </div>
 </div>
 <script>
-    let returnForm = document.getElementById("returning");
+    document.querySelector('#answerInput').addEventListener('input', function(e) {
+        var input = e.target,
+            list = input.getAttribute('list'),
+            options = document.querySelectorAll('#' + list + ' option[value="'+input.value+'"]'),
+            hiddenInput = document.getElementById(input.getAttribute('id') + '-hidden');
 
+        if (options.length > 0) {
+            hiddenInput.value = input.value;
+            input.value = options[0].innerText;
+        }
+
+    });
+    document.querySelector('#answerInput1').addEventListener('input', function(e) {
+        var input = e.target,
+            list = input.getAttribute('list'),
+            options = document.querySelectorAll('#' + list + ' option[value="'+input.value+'"]'),
+            hiddenInput = document.getElementById(input.getAttribute('id') + '-hidden');
+
+        if (options.length > 0) {
+            hiddenInput.value = input.value;
+            input.value = options[0].innerText;
+        }
+
+    });
     function text(x) {
         if (x == 0) {
             document.getElementById("btnAdd").style.display = "none";
@@ -202,48 +221,6 @@
     function removeit(btn) {
         document.getElementById('box').removeChild(btn.parentNode);
     }
-
-
-    // function add_another_flight(){
-    //     count +=1;
-    //     html= '<div class="row" id="row"+count+">\n' +
-    //         '                                <div class="col-md-4">\n' +
-    //         '                                    <div class="form-group">\n' +
-    //         '                                        <label class="form-label" for="from">Flying from</label>\n' +
-    //         '                                        <select required name=\'from"+count+"\' id="from" class="form-control">\n' +
-    //         '                                            <option value="">Select a location...</option>\n' +
-    //         '                                            <option th:each="airport : ${airports}" th:value="${airport.id}"\n' +
-    //         '                                                    th:text="${airport.city}"></option>\n' +
-    //         '                                        </select>\n' +
-    //         '                                    </div>\n' +
-    //         '                                </div>\n' +
-    //         '                                <div class="col-md-4">\n' +
-    //         '                                    <div class="form-group">\n' +
-    //         '                                        <label class="form-label" for="to">Flying from</label>\n' +
-    //         '                                        <select required name=\'to\' id="to" class="form-control">\n' +
-    //         '                                            <option value="">Select a location...</option>\n' +
-    //         '                                            <option th:each="airport : ${airports}" th:value="${airport.id}"\n' +
-    //         '                                                    th:text="${airport.city}"></option>\n' +
-    //         '                                        </select>\n' +
-    //         '                                    </div>\n' +
-    //         '                                </div>\n' +
-    //         '                                <div class="col-md-2">\n' +
-    //         '                                    <div class="form-group">\n' +
-    //         '                                        <label class="form-label" for="departure">Departing</label>\n' +
-    //         '                                        <input class="form-control" name="departure" id="departure" type="date" required>\n' +
-    //         '                                    </div>\n' +
-    //         '                                </div>\n' +
-    //         '                                <div class="col-md-2" id="returning" style="display: block">\n' +
-    //         '                                    <div class="form-group">\n' +
-    //         '                                        <label class="form-label" for="return">Returning</label>\n' +
-    //         '                                        <input class="form-control" name="return" id="return" type="date"  required>\n' +
-    //         '                                    </div>\n' +
-    //         '                                </div>\n' +
-    //         '                            </div>'
-    //     let form =  document.getElementById("search-flight");
-    //     form.innerHTML += html;
-    // }
-
 </script>
 </body>
 

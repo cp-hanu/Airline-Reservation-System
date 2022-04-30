@@ -1,6 +1,7 @@
 package com.edu.hanu.model;
 
 import lombok.*;
+import org.springframework.context.annotation.Scope;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 @Table(name = "ticket")
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String pnr;
@@ -21,6 +22,7 @@ public class Ticket {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
+    private String email;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

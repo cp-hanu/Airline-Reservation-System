@@ -28,8 +28,6 @@
                 <div class="nav-items">
                     <i class="uil uil-times nav-close-btn"></i>
                     <a th:href="@{/home}"><i class="uil uil-home"></i> Home</a>
-                    <a th:href="@{/flights}"><i class="uil uil-compass"></i> Flights</a>
-                    <a th:href="@{/about}"><i class="uil uil-info-circle"></i> About</a>
                     <a th:href="@{/contact}"><i class="uil uil-document-layout-left"></i> Contact</a>
                     <a th:href="@{/view}">
                         <img class="logout" th:src="@{/user/img/cart.png}" alt="cart"/>
@@ -70,20 +68,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="alert" role="alert">
-                            <th scope="row">Pham Van Bao</th>
-                            <td>Ha Noi</td>
-                            <td>Ho chi minh</td>
-                            <td>04/25/2022</td>
-                            <td>17:00</td>
-                            <td>19:00</td>
-                            <td>AIRBUS A380</td>
+                        <tr class="alert" role="alert" th:each="ticket : ${tickets}">
+                            <th scope="row" th:text="${ticket.firstName}+' '+${ticket.lastName}"></th>
+                            <td th:text="${ticket.getFlight().fromAirport.city}+','+${ticket.getFlight().fromAirport.country}"></td>
+                            <td th:text="${ticket.getFlight().toAirport.city}+','+${ticket.getFlight().toAirport.country}"></td>
+                            <td th:text="${ticket.getFlight().departureDate}"></td>
+                            <td th:text="${ticket.getFlight().departureTime}"></td>
+                            <td th:text="${ticket.getFlight().arrivalTime}"></td>
+                            <td th:text="${ticket.getFlight().getPlane().brand} +' '
+                                       + ${ticket.getFlight().getPlane().name}"></td>
                             <td>
-                                <img th:src="@{/user/img/img.png}" height="40px" width="40px" />
-                                VietNam Airlines
+                                <img th:src="${ticket.getFlight().getAirline().getLogoUrl()}" height="40px" width="40px" />
+                                <strong th:text="${ticket.getFlight().getAirline().fullName}"></strong>
                             </td>
-                            <td>BUSINESS CLASS</td>
+                            <td th:text="${ticket.getFlightSeatPrice().getSeat().type}"></td>
                             <td>
+                                <a th:href="'/cart/export/pdf/'+${ticket.getId()}" > Print</a>
                                 <a href="#" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true"><i class="fa fa-close"></i></span>
                                 </a>

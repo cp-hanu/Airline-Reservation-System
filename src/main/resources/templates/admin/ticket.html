@@ -23,6 +23,7 @@
             crossorigin="anonymous" defer></script>
     <script th:src="@{/admin/js/script.js}" defer></script>
 </head>
+
 <body>
 <div class="wrapper">
     <nav id="sidebar" class="active">
@@ -41,9 +42,6 @@
             </li>
             <li>
                 <a th:href="@{/internal/admin/flights}"><i class="fas fa-chart-bar"></i> Flights</a>
-            </li>
-            <li>
-                <a th:href="@{/internal/admin/tickets}"><i class="fas fa-chart-bar"></i> Tickets</a>
             </li>
             <li>
                 <a th:href="@{/internal/admin/users}"><i class="fas fa-user-friends"></i>Users</a>
@@ -80,46 +78,54 @@
         <!-- end of navbar navigation -->
         <div class="content">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-header">Update Plane</div>
-                            <div th:if="${param.error}">
-                                <div class="alert alert-info">Update unsuccessfully!</div>
-                            </div>
-                            <div th:if="${param.success}">
-                                <div class="alert alert-info">Update successfully!</div>
-                            </div>
-                            <div class="card-body">
-                                <form th:action="@{/internal/admin/airlines/save/{id}(id=${airline.id})}" method="post" th:object="${airline}" accept-charset="utf-8" >
-                                    <div class="mb-3">
-                                        <label class="form-label" for="branch">FullName</label>
-                                        <input type="text" id="branch" placeholder="Enter Branch" class="form-control"  required th:field="*{fullName}">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label" for="capacity">Abbreviation</label>
-                                        <input type="text" id="capacity" placeholder="Enter capacity" class="form-control" required th:field="*{abbreviation}">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label" for="name">Logo</label>
-                                        <input type="text" id="name" placeholder="Enter Name plane" class="form-control"  required th:field="*{logoUrl}">
-                                    </div>
-                                    <div class="col-sm-4 offset-sm-2">
-                                        <a type="submit" th:href="@{/internal/admin/planes}" class="btn btn-secondary mb-2"><i class="fas fa-times"></i> Cancel</a>
-                                        <button type="submit" class="btn btn-primary mb-2">
-                                             <i class="fas fa-save"></i>
-                                            Update
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                <div class="page-title">
+                    <h3>Tickets</h3>
+                </div>
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <table width="100%" class="table table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Passenger</th>
+                                <th>PNR</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Departure Date</th>
+                                <th>Departure Time</th>
+                                <th>Arrival Time</th>
+                                <th>Flight</th>
+                                <th>Brand</th>
+                                <th>Seat</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="index,ticket : ${tickets}">
+                                <th scope="row" th:text="${ticket.index+1}"> </th>
+                                <th th:text="${ticket.current.firstName}+' '+${ticket.current.lastName}"></th>
+                                <td th:text="${ticket.current.getFlight().fromAirport.city}+','+${ticket.current.getFlight().fromAirport.country}"></td>
+                                <td th:text="${ticket.current.getFlight().toAirport.city}+','+${ticket.current.getFlight().toAirport.country}"></td>
+                                <td th:text="${ticket.current.getFlight().departureDate}"></td>
+                                <td th:text="${ticket.current.getFlight().departureTime}"></td>
+                                <td th:text="${ticket.current.getFlight().arrivalTime}"></td>
+                                <td th:text="${ticket.current.getFlight().getPlane().brand} +' '
+                                       + ${ticket.current.getFlight().getPlane().name}"></td>
+                                <td>
+                                    <img th:src="${ticket.current.getFlight().getAirline().getLogoUrl()}" height="40px" width="40px" />
+                                    <strong th:text="${ticket.current.getFlight().getAirline().fullName}"></strong>
+                                </td>
+                                <td th:text="${ticket.current.getFlightSeatPrice().getSeat().type}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+                <a class="btn btn-outline-success" th:href="@{/internal/admin}">Back to list</a>
             </div>
         </div>
     </div>
 </div>
 </body>
+
 
 </html>

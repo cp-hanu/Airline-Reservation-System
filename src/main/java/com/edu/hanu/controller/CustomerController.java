@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -178,8 +179,10 @@ public class CustomerController {
         var flightSeatPrice = flightSeatPriceRepository.findByFlightAndSeat(
                 Flight.builder().id(flightSeat.getFlightId()).build(), Seat.builder().id(flightSeat.getSeatId()).build()
         );
+
         double tax = 0;
         double transportTax = 0.1;
+
         session.setAttribute("flightId", flightSeat.getFlightId());
         session.setAttribute("seatId", flightSeat.getSeatId());
 

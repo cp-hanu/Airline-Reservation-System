@@ -7,6 +7,7 @@ import com.edu.hanu.service.PaypalService;
 import com.edu.hanu.service.GetURLFromServer;
 import com.edu.hanu.model.*;
 import com.edu.hanu.repository.*;
+import com.edu.hanu.service.SendEmailService;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
@@ -64,6 +65,10 @@ public class CustomerController {
 
     @Autowired
     GeneratePNRService generatePNR;
+
+
+    @Autowired
+    SendEmailService emailService;
 
     public static final String SUCCESS_URL = "checkout/pay/success";
     public static final String CANCEL_URL = "checkout/pay/cancel";
@@ -241,7 +246,7 @@ public class CustomerController {
 
                 var saveTicket = (Ticket) request.getSession().getAttribute("ticket");
                 var flightId = (long) request.getSession().getAttribute("flightId");
-                var seatId= (long) request.getSession().getAttribute("seatId");
+                var seatId = (long) request.getSession().getAttribute("seatId");
                 var flightSeatPrice = flightSeatPriceRepository.findByFlightAndSeat(
                         Flight.builder().id(flightId).build(), Seat.builder().id(seatId).build()
                 );
@@ -256,6 +261,7 @@ public class CustomerController {
                 }
                 saveTicket.setUser(userRepository.findByEmail(username));
                 ticketRepository.save(saveTicket);
+                emailService.confirmBookingNotification(saveTicket, flightRepository.getById(flightId));
                 return "user/success";
             }
         } catch (PayPalRESTException e) {

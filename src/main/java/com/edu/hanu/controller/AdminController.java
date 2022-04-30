@@ -2,11 +2,13 @@ package com.edu.hanu.controller;
 
 import com.edu.hanu.model.*;
 import com.edu.hanu.repository.*;
+import com.edu.hanu.service.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/internal")
@@ -49,7 +53,7 @@ public class AdminController {
     DelayRepository delayRepository;
 
     @Autowired
-    private JavaMailSender javaMailSender;
+    SendEmailService emailService;
 
     @GetMapping("/admin")
     public String admin(Model model) {
@@ -271,42 +275,23 @@ public class AdminController {
             delay.setId(id);
             return "admin/flight/delay";
         }
-        System.out.println(delay);
-        System.out.println(flightRepository);
+        System.out.println(flightRepository.getByDelayId(delay.getId()));
+        var flight = flightRepository.getByDelayId(delay.getId());
+        delayRepository.save(delay);
+        // get the list of email
+        if (flight.getTickets() != null) {
+            var listEmail = flight.getTickets().stream().map(Ticket::getEmail).collect(Collectors.toSet());
+            System.out.println(listEmail);
+            listEmail.forEach(email -> {
+                emailService.delayNotification(delay, flight, email);
+            });
+        }
+
         // notify user here
 
-        String x = "Dear \n" +
-                "first name\n" +
-                ",\n" +
-                "\n" +
-                "We sincerely regret to inform you that your order of PS5 you placed on April 29, 2022 is delayed.\n" +
-                "\n" +
-                "The reason for the delay is \n" +
-                "technical issues preventing us from processing your order\n" +
-                ".\n" +
-                "\n" +
-                "Here is how we will make it right: \n" +
-                "insert the remedy here\n" +
-                ".\n" +
-                "\n" +
-                "Our team hopes we can make it right. Thank you for your patience.\n" +
-                "\n" +
-                "Sincerely,\n" +
-                "\n" +
-                "Taylor’s Designs";
-
-//        delayRepository.save(delay);
         return "redirect:/internal/admin/flights";
     }
 
-    void sendMail(String receiverEmail, String content) {
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(receiverEmail);
-        msg.setSubject("Apology Letter");
-        msg.setText(content);
-
-        javaMailSender.send(msg);
-    }
 
     //    Airlines page
     @GetMapping("/admin/airlines")

@@ -20,5 +20,6 @@ public class Delay {
 
     private int minute;
     private String reason;
+    private boolean cancel;
 
 }

@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,19 +10,20 @@
     <title>Checkout</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/user/css/navbar.css}" />
+    <link rel="stylesheet" th:href="@{/user/css/navbar.css}"/>
     <style>
-        .star{
+        .star {
             color: red;
         }
-        .container{
+
+        .container {
             margin-top: 70px;
         }
     </style>
 
 </head>
 <body class="bg-light">
-<div >
+<div>
     <header id="head">
         <div class="nav-bar">
             <a th:href="@{/home}" class="logo">
@@ -37,7 +39,7 @@
                     <a th:href="@{/view}">
                         <img class="logout" th:src="@{/user/img/cart.png}" alt="cart"/>
                     </a>
-                                    <span class="authen" sec:authentication="principal.username"></span>
+                    <span class="authen" sec:authentication="principal.username"></span>
                     <a th:href="@{/logout}">
                         <img class="logout" th:src="@{/user/img/out.png}" alt=""/>
                     </a>
@@ -75,18 +77,21 @@
         </div>
         <div class="col-md-8 order-md-1">
             <h4 class="mb-3">Personal Information</h4>
-<!--            <form class="needs-validation" novalidate>-->
+            <!--            <form class="needs-validation" novalidate>-->
+            <form method="post" th:action="@{/checkout/pay}">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="firstName">First name<span class="star">*</span></label>
-                        <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                        <input type="text" class="form-control" id="firstName" placeholder="First name"
+                               th:field="*{ticket.firstName}" required>
                         <div class="invalid-feedback">
                             Valid first name is required.
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="lastName">Last name<span class="star">*</span></label>
-                        <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                        <input type="text" class="form-control" id="lastName" placeholder="" th:field="*{ticket.lastName}"
+                               required>
                         <div class="invalid-feedback">
                             Valid last name is required.
                         </div>
@@ -95,7 +100,8 @@
 
                 <div class="mb-3">
                     <label for="email">Email <span class="star">*</span></label>
-                    <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                    <input type="email" class="form-control" id="email" placeholder="you@example.com"
+                           th:field="*{ticket.email}">
                     <div class="invalid-feedback">
                         Please enter a valid email address for shipping updates.
                     </div>
@@ -126,7 +132,8 @@
 
                 <div class="d-block my-3">
                     <div class="custom-control custom-radio">
-                        <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                        <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked
+                               required>
                         <label class="custom-control-label" for="credit">Credit card</label>
                     </div>
                     <div class="custom-control custom-radio">
@@ -171,10 +178,9 @@
                         </div>
                     </div>
                 </div>
-            <form method="post" th:action="@{/checkout/pay}">
                 <div class="col-md-3 mb-3">
-                    <label >Payment</label>
-                    <input type="text" class="form-control" name="price" value="20" >
+                    <label>Payment</label>
+                    <input type="text" class="form-control" name="price" value="20">
                 </div>
                 <hr class="mb-4">
                 <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout with Paypal</button>
@@ -182,7 +188,13 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="https://getbootstrap.com/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
-<script src="https://getbootstrap.com/docs/4.3/examples/checkout/form-validation.js"></script></body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script src="https://getbootstrap.com/docs/4.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+        crossorigin="anonymous"></script>
+<script src="https://getbootstrap.com/docs/4.3/examples/checkout/form-validation.js"></script>
+</body>
 </html>

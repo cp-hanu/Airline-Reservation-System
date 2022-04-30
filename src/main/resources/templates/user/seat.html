@@ -32,7 +32,8 @@
                                th:field="*{seatId}"
                                th:id="${seat.current.getSeat().getRow() + seat.current.getSeat().getCol()}"/>
                         <label th:for="${seat.current.getSeat().getRow() + seat.current.getSeat().getCol()}"
-                               th:text="${seat.current.getSeat().getRow() + seat.current.getSeat().getCol()}"></label>
+                               th:text="${seat.current.getSeat().getRow() + seat.current.getSeat().getCol()}">
+                        </label>
                     </li>
                 </ol>
             </li>

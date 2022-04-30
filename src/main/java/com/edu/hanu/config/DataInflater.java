@@ -1,159 +1,159 @@
-//package com.edu.hanu.config;
-//
-//import com.edu.hanu.model.*;
-//import com.edu.hanu.repository.*;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import lombok.Data;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//
-//import javax.annotation.PostConstruct;
-//import javax.transaction.Transactional;
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.sql.Date;
-//import java.sql.Time;
-//import java.time.LocalTime;
-//import java.util.*;
-//
-//@Configuration
-//@Data
-//public class DataInflater {
-//    @Autowired
-//    private UserRepository userRepository;
-//
-//    @Autowired
-//    private RoleRepository roleRepository;
-//
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-//
-//    @Autowired
-//    private AirportRepository airportRepository;
-//    @Autowired
-//    PlaneRepository planeRepository;
-//    @Autowired
-//    SeatRepository seatRepository;
-//    @Autowired
-//    AirlineRepository airlineRepository;
-//
-//    @Autowired
-//    FlightRepository flightRepository;
-//
-//    @Autowired
-//    FlightSeatPriceRepository flightSeatPriceRepository;
-//
-//    @Autowired
-//    TicketRepository ticketRepository;
-//
-//
-//    @Transactional
-//    @PostConstruct
-//    void init() {
-//
-//        // Roles
-//        if (roleRepository.findByName("ROLE_ADMIN") == null) {
-//            roleRepository.save(new Role("ROLE_ADMIN"));
-//        }
-//
-//        if (roleRepository.findByName("ROLE_CUSTOMER") == null) {
-//            roleRepository.save(new Role("ROLE_CUSTOMER"));
-//        }
-//
-//        // Admin account
-//        if (userRepository.findByEmail("admin@gmail.com") == null) {
-//            HashSet<Role> roles = new HashSet<>();
-//            roles.add(roleRepository.findByName("ROLE_ADMIN"));
-//            roles.add(roleRepository.findByName("ROLE_CUSTOMER"));
-//            User admin = User.builder().
-//                    email("admin@gmail.com")
-//                    .fullname("Chinh Pham")
-//                    .password(passwordEncoder.encode("1"))
-//                    .country("VN")
-//                    .phone("0123")
-//                    .roles(roles)
-//                    .build();
-//            userRepository.save(admin);
-//        }
-//
-//        // customer account
-//        if (userRepository.findByEmail("customer@gmail.com") == null) {
-//            HashSet<Role> roles = new HashSet<>();
-//            roles.add(roleRepository.findByName("ROLE_CUSTOMER"));
-//
-//            User customer = User.builder().email("customer@gmail.com").fullname("Chinh Pham")
-//                    .password(passwordEncoder.encode("1"))
-//                    .country("VN")
-//                    .phone("0121313")
-//                    .roles(roles).build();
-//            userRepository.save(customer);
-//        }
-//
-//        if (!airportRepository.exists(1L)) {
-//            InputStream resourceStream = getClass().getResourceAsStream("/airports.json");
-//            try {
-//                ArrayList<HashMap> list = new ObjectMapper().readValue(resourceStream, ArrayList.class);
-//                list.forEach(o -> {
-//                    try {
-//                        Airport airport = new Airport();
-//
-//                        if (o.containsKey("code")) {
-//                            airport.setCode(o.get("code").toString());
-//                        }
-//                        if (o.containsKey("name")) {
-//                            airport.setName(o.get("name").toString());
-//                        }
-//                        if (o.containsKey("type")) {
-//                            airport.setType(o.get("type").toString());
-//                        }
-//                        if (o.containsKey("city")) {
-//                            airport.setCity(o.get("city").toString());
-//                        }
-//                        if (o.containsKey("country")) {
-//                            airport.setCountry(o.get("country").toString());
-//                        }
-//                        if (!airport.getCity().equals("")) {
-//                            airportRepository.save(airport);
-//                        }
-//                    } catch (Exception ex) {
-//                        ex.printStackTrace();
-//                    }
-//                });
-//
-//            } catch (IOException ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//        if (!airlineRepository.exists(1L)) {
-//            InputStream resourceStream = getClass().getResourceAsStream("/airlines.json");
-//            try {
-//                ArrayList<HashMap> list = new ObjectMapper().readValue(resourceStream, ArrayList.class);
-//                list.forEach(o -> {
-//                    try {
-//                        Airline airline = new Airline();
-//
-//                        if (o.containsKey("id")) {
-//                            airline.setAbbreviation(o.get("id").toString());
-//                        }
-//                        if (o.containsKey("name")) {
-//                            airline.setFullName(o.get("name").toString());
-//                        }
-//                        if (o.containsKey("logo")) {
-//                            airline.setLogoUrl(o.get("logo").toString());
-//                        }
-//
-//                        airlineRepository.save(airline);
-//                    } catch (Exception ex) {
-//                        ex.printStackTrace();
-//                    }
-//                });
-//
-//            } catch (IOException ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//        // For create plane data: ID: 1, Airbus A320
+package com.edu.hanu.config;
+
+import com.edu.hanu.model.*;
+import com.edu.hanu.repository.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalTime;
+import java.util.*;
+
+@Configuration
+@Data
+public class DataInflater {
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AirportRepository airportRepository;
+    @Autowired
+    PlaneRepository planeRepository;
+    @Autowired
+    SeatRepository seatRepository;
+    @Autowired
+    AirlineRepository airlineRepository;
+
+    @Autowired
+    FlightRepository flightRepository;
+
+    @Autowired
+    FlightSeatPriceRepository flightSeatPriceRepository;
+
+    @Autowired
+    TicketRepository ticketRepository;
+
+
+    @Transactional
+    @PostConstruct
+    void init() {
+
+        // Roles
+        if (roleRepository.findByName("ROLE_ADMIN") == null) {
+            roleRepository.save(new Role("ROLE_ADMIN"));
+        }
+
+        if (roleRepository.findByName("ROLE_CUSTOMER") == null) {
+            roleRepository.save(new Role("ROLE_CUSTOMER"));
+        }
+
+        // Admin account
+        if (userRepository.findByEmail("admin@gmail.com") == null) {
+            HashSet<Role> roles = new HashSet<>();
+            roles.add(roleRepository.findByName("ROLE_ADMIN"));
+            roles.add(roleRepository.findByName("ROLE_CUSTOMER"));
+            User admin = User.builder().
+                    email("admin@gmail.com")
+                    .fullname("Chinh Pham")
+                    .password(passwordEncoder.encode("1"))
+                    .country("VN")
+                    .phone("0123")
+                    .roles(roles)
+                    .build();
+            userRepository.save(admin);
+        }
+
+        // customer account
+        if (userRepository.findByEmail("customer@gmail.com") == null) {
+            HashSet<Role> roles = new HashSet<>();
+            roles.add(roleRepository.findByName("ROLE_CUSTOMER"));
+
+            User customer = User.builder().email("customer@gmail.com").fullname("Chinh Pham")
+                    .password(passwordEncoder.encode("1"))
+                    .country("VN")
+                    .phone("0121313")
+                    .roles(roles).build();
+            userRepository.save(customer);
+        }
+
+        if (!airportRepository.exists(1L)) {
+            InputStream resourceStream = getClass().getResourceAsStream("/airports.json");
+            try {
+                ArrayList<HashMap> list = new ObjectMapper().readValue(resourceStream, ArrayList.class);
+                list.forEach(o -> {
+                    try {
+                        Airport airport = new Airport();
+
+                        if (o.containsKey("code")) {
+                            airport.setCode(o.get("code").toString());
+                        }
+                        if (o.containsKey("name")) {
+                            airport.setName(o.get("name").toString());
+                        }
+                        if (o.containsKey("type")) {
+                            airport.setType(o.get("type").toString());
+                        }
+                        if (o.containsKey("city")) {
+                            airport.setCity(o.get("city").toString());
+                        }
+                        if (o.containsKey("country")) {
+                            airport.setCountry(o.get("country").toString());
+                        }
+                        if (!airport.getCity().equals("")) {
+                            airportRepository.save(airport);
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        if (!airlineRepository.exists(1L)) {
+            InputStream resourceStream = getClass().getResourceAsStream("/airlines.json");
+            try {
+                ArrayList<HashMap> list = new ObjectMapper().readValue(resourceStream, ArrayList.class);
+                list.forEach(o -> {
+                    try {
+                        Airline airline = new Airline();
+
+                        if (o.containsKey("id")) {
+                            airline.setAbbreviation(o.get("id").toString());
+                        }
+                        if (o.containsKey("name")) {
+                            airline.setFullName(o.get("name").toString());
+                        }
+                        if (o.containsKey("logo")) {
+                            airline.setLogoUrl(o.get("logo").toString());
+                        }
+
+                        airlineRepository.save(airline);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        // For create plane data: ID: 1, Airbus A320
 //        if (!planeRepository.exists(1L)) {
 //            try {
 //                Plane newPlane = Plane.builder().
@@ -278,11 +278,11 @@
 //            ticketRepository.save(newTicket);
 //
 //        }
-//
-//        // Get booked Seat from a flight
-////        var x = flightRepository.findOne(1L);
-//
-//        // Get ticket details
+
+        // Get booked Seat from a flight
+//        var x = flightRepository.findOne(1L);
+
+        // Get ticket details
 //        System.out.println("TEST QUERY ---------------------------------------------------");
 //        var plane = planeRepository.findAll();
 //        System.out.println(plane);
@@ -293,19 +293,19 @@
 //        System.out.println("-------------------------");
 //        System.out.println(seatRepository.findAll());
 //        System.out.println("-------------------------");
-//
-////        var user = userRepository.findAll();
-////        System.out.println(user);
-////        var ticket = ticketRepository.findOne(1L);
-//////        System.out.println("GET FLIGHT FROM TICKET");
-//////        System.out.println(ticket.getFlightSeatPrice().getFlight());
-//////        System.out.println("GET SEAT FROM TICKET");
-//////        System.out.println(ticket.getFlightSeatPrice().getSeat());
-////          var
-////        System.out.println("GET BOOKED SEAT");
-////        var x = flightRepository.findOne(1L);
-////        System.out.println(x.getFlightSeats());
-////        System.out.println("--------------------------------------");
-//
-//    }
-//}
+
+//        var user = userRepository.findAll();
+//        System.out.println(user);
+//        var ticket = ticketRepository.findOne(1L);
+////        System.out.println("GET FLIGHT FROM TICKET");
+////        System.out.println(ticket.getFlightSeatPrice().getFlight());
+////        System.out.println("GET SEAT FROM TICKET");
+////        System.out.println(ticket.getFlightSeatPrice().getSeat());
+//          var
+//        System.out.println("GET BOOKED SEAT");
+//        var x = flightRepository.findOne(1L);
+//        System.out.println(x.getFlightSeats());
+//        System.out.println("--------------------------------------");
+
+    }
+}

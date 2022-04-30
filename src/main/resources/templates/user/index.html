@@ -77,17 +77,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label" for="from">From</label>
-                                    <input list="answers" name="answer" id="answerInput">
-                                    <datalist id="answers">
-                                        <option th:each="airport : ${airports}" th:value="${airport.id}"
-                                                th:text="${airport.city} + '(' + ${airport.code} + ')'"></option>
-                                    </datalist>
-                                    <input type="hidden" name="answer" id="answerInput-hidden">
-                                </div>
-                            </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">

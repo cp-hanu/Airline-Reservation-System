@@ -109,7 +109,7 @@
                     <input type="email" class="form-control" id="email" placeholder="you@example.com"
                            th:field="*{ticket.email}">
                     <div class="invalid-feedback">
-                        Please enter a valid email address for shipping updates.
+                        Please enter a valid email address.
                     </div>
                 </div>
 
@@ -117,7 +117,7 @@
                     <label for="address">Address<span class="star">*</span></label>
                     <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
                     <div class="invalid-feedback">
-                        Please enter your shipping address.
+                        Please enter your address.
                     </div>
                 </div>
                 <div class="row">
@@ -373,13 +373,13 @@
                 </div>
                 <hr class="mb-4">
 
-                <h4 class="mb-3">Payment</h4>
+                <h1 class="mb-3">Payment</h1>
 
                 <div class="d-block my-3">
 
                     <img th:src="@{/user/img/paypal.png}" alt="paypal" width="80" height="50" />
                 </div>
-                <div class="col-md-3 mb-3">
+                <div class="col-md-12 mb-3">
 
                     <label >Payment</label>
                     <input type="text" class="form-control" name="price" th:value="${#numbers.formatDecimal(total, 1, 'POINT',0, 'POINT')}" readonly>

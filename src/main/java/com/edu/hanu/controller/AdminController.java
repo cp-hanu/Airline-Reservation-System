@@ -47,6 +47,8 @@ public class AdminController {
 
     @Autowired
     DelayRepository delayRepository;
+    @Autowired
+    TicketRepository ticketRepository;
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -387,6 +389,13 @@ public class AdminController {
         List<Role> roles = roleRepository.findAll();
         model.addAttribute("roles", roles);
         return "admin/role/roles";
+    }
+
+    @GetMapping("/admin/tickets")
+    public String ticket(Model model){
+        List<Ticket> tickets = ticketRepository.findAll();
+        model.addAttribute("tickets", tickets);
+        return "admin/ticket";
     }
 
 }

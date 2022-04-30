@@ -13,7 +13,9 @@ import com.paypal.base.rest.PayPalRESTException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Scope;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -75,12 +77,11 @@ public class CustomerController {
         List<Airport> airports = airportRepository.findAll();
 
         String[] seats = new String[]{"FIRST CLASS", "ECONOMY CLASS", "BUSINESS CLASS"};
+
         model.addAttribute("flightSearch", new FlightSearch());
         model.addAttribute("airlines", airline);
         model.addAttribute("planes", planes);
         model.addAttribute("airports", airports);
-
-//        model.addAttribute("seats", ghe);
         model.addAttribute("seats", seats);
 
         LocalDate now = LocalDate.now();
@@ -88,7 +89,7 @@ public class CustomerController {
         return "user/index";
     }
 
-    @PostMapping("/home")
+    @PostMapping("/view")//home
     public String getFlight(Model model, FlightSearch flightSearch, BindingResult result) {
         if (result.hasErrors()) {
             return "error/500";
@@ -101,8 +102,36 @@ public class CustomerController {
             model.addAttribute("flightSearch", flightSearch);
             return "user/view";
         }
+        //round trip
+        if(flightSearch.getDepartureDate() != null && flightSearch.getReturnDate() != null){
+            var flights = flightRepository.findByFromAirportAndToAirportAndDepartureDateAndArrivalDate(flightSearch.getFrom(),
+                    flightSearch.getTo(),flightSearch.getDepartureDate(),flightSearch.getReturnDate());
+            model.addAttribute("flights", flights);
+            model.addAttribute("flightSearch", flightSearch);
+            return "user/view";
+        }
 
         return "user/index";
+    }
+
+    @GetMapping("/view")
+    public String view(Model model, FlightSearch flightSearch) {
+        if (flightSearch.getReturnDate() == null) {
+            var flights = flightRepository.findByFromAirportAndToAirportAndDepartureDate(flightSearch.getFrom(), flightSearch.getTo(), flightSearch.getDepartureDate());
+
+            model.addAttribute("flights", flights);
+            model.addAttribute("flightSearch", flightSearch);
+            return "user/view";
+        }
+        //round trip
+        if(flightSearch.getDepartureDate() != null && flightSearch.getReturnDate() != null){
+            var flights = flightRepository.findByFromAirportAndToAirportAndDepartureDateAndArrivalDate(flightSearch.getFrom(),
+                    flightSearch.getTo(),flightSearch.getDepartureDate(),flightSearch.getReturnDate());
+            model.addAttribute("flights", flights);
+            model.addAttribute("flightSearch", flightSearch);
+            return "user/view";
+        }
+        return "user/view";
     }
 
     @GetMapping("/contact")
@@ -115,17 +144,14 @@ public class CustomerController {
         return "user/success";
     }
 
-    @GetMapping("/view")
-    public String view() {
-        return "user/view";
-    }
+
 
     @GetMapping("/view/detail")
     public String detail() {
         return "user/flight-detail";
     }
 
-    @GetMapping("/view/detail/fare")
+    @GetMapping("/view/fare")
     public String fare() {
         return "user/fare";
     }

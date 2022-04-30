@@ -103,6 +103,7 @@
                             <tr th:each="index,ticket : ${tickets}">
                                 <th scope="row" th:text="${ticket.index+1}"> </th>
                                 <th th:text="${ticket.current.firstName}+' '+${ticket.current.lastName}"></th>
+                                <th th:text="${ticket.current.pnr}"></th>
                                 <td th:text="${ticket.current.getFlight().fromAirport.city}+','+${ticket.current.getFlight().fromAirport.country}"></td>
                                 <td th:text="${ticket.current.getFlight().toAirport.city}+','+${ticket.current.getFlight().toAirport.country}"></td>
                                 <td th:text="${ticket.current.getFlight().departureDate}"></td>

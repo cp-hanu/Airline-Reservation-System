@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
@@ -166,7 +167,8 @@ public class AdminController {
         model.addAttribute("airlines", airlines);
         model.addAttribute("planes", planes);
         model.addAttribute("airports", airports);
-        model.addAttribute("dep", LocalTime.now());
+        LocalDate now = LocalDate.now();
+        model.addAttribute("now", now);
         return "admin/flight/flight-add";
     }
 
@@ -202,20 +204,21 @@ public class AdminController {
                 flightSeatPriceRepository.save(flightSeat);
             }
         }
-//        return "redirect:?success";
-        return "redirect:/internal/admin/flight";
+        return "redirect:/internal/admin/flights";
     }
 
     @GetMapping("/admin/flights/update/{id}")
     public String flightUpdate(@PathVariable(value = "id") long id, Model model) {
         Flight flights = flightRepository.getById(id);
-        List<Airline> airline = airlineRepository.findAll();
+        List<Airline> airline = airlineRepository.findAllAirline();
         List<Plane> planes = planeRepository.findAll();
-        List<Airport> airports = airportRepository.findAll();
+        List<Airport> airports = airportRepository.findAllAirport();
         model.addAttribute("flights", flights);
         model.addAttribute("airlines", airline);
         model.addAttribute("planes", planes);
         model.addAttribute("airports", airports);
+        LocalDate now = LocalDate.now();
+        model.addAttribute("now", now);
         return "admin/flight/flight-update";
     }
 
@@ -228,7 +231,7 @@ public class AdminController {
             return "admin/flight/flight-update";
         }
         flightRepository.save(flight);
-        return "redirect:internal/admin/flights";
+        return "redirect:/internal/admin/flights";
     }
 
     @GetMapping(value = "/admin/flights/delete/{id}")
@@ -264,7 +267,7 @@ public class AdminController {
 
         }
         airlineRepository.save(airline);
-        return "redirect:internal/admin/airlines";
+        return "redirect:/internal/admin/airlines";
     }
 
     @GetMapping(value = "/admin/airlines/delete/{id}")
@@ -272,7 +275,7 @@ public class AdminController {
             @PathVariable(value = "id") Long id) {
         Airline airline = airlineRepository.getById(id);
         airlineRepository.delete(airline);
-        return "redirect:internal/admin/airlines";
+        return "redirect:/internal/admin/airlines";
     }
 
     //    Account page

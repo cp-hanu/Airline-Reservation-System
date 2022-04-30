@@ -210,7 +210,6 @@ public class CustomerController {
 
     //payment with paypal
 
-
     @PostMapping("/checkout/pay")
     public String payment(HttpServletRequest request, @RequestParam("price") double price, Ticket ticket) {
         String cancelUrl = GetURLFromServer.getBaseURL(request) + "/" + CANCEL_URL;

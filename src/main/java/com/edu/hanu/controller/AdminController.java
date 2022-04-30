@@ -219,6 +219,7 @@ public class AdminController {
                 flightSeatPriceRepository.save(flightSeat);
             }
         }
+
         return "redirect:/internal/admin/flights";
     }
 

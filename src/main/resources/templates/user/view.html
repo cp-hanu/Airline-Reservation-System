@@ -63,7 +63,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="index,flight : ${flights}">
+                    <tr th:each="index,flight : ${flights}"
+                        th:hidden="${flight.current.getAvailableSeat(flightSearch.seatClass) == 0}">
                         <td th:text="${flight.current.airline.getFullName()}"></td>
                         <td th:text="${flight.current.fromAirport.city} + '(' + ${flight.current.fromAirport.code} + ')'"></td>
                         <td th:text="${flight.current.toAirport.city} + '(' + ${flight.current.toAirport.code} + ')'"></td>

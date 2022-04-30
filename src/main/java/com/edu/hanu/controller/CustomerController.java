@@ -2,6 +2,7 @@ package com.edu.hanu.controller;
 
 import com.edu.hanu.model.PaypalPaymentIntent;
 import com.edu.hanu.model.PaypalPaymentMethod;
+import com.edu.hanu.service.GeneratePNRService;
 import com.edu.hanu.service.PaypalService;
 import com.edu.hanu.service.GetURLFromServer;
 import com.edu.hanu.model.*;
@@ -12,7 +13,9 @@ import com.paypal.base.rest.PayPalRESTException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+
+import org.springframework.context.annotation.Scope;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -22,12 +25,14 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
+@Scope("session")
 public class CustomerController {
     @Autowired
     PlaneRepository planeRepository;
@@ -57,13 +62,20 @@ public class CustomerController {
     @Autowired
     PaypalService service;
 
+    @Autowired
+    GeneratePNRService generatePNR;
 
+    public static final String SUCCESS_URL = "checkout/pay/success";
+    public static final String CANCEL_URL = "checkout/pay/cancel";
+
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     @GetMapping("/home")
     public String homepage(Model model) {
         List<Airline> airline = airlineRepository.findAll();
         List<Plane> planes = planeRepository.findAll();
         List<Airport> airports = airportRepository.findAll();
+
         String[] seats = new String[]{"FIRST CLASS", "ECONOMY CLASS", "BUSINESS CLASS"};
 
         model.addAttribute("flightSearch", new FlightSearch());
@@ -150,14 +162,6 @@ public class CustomerController {
         // compose a array
         var test = flight.getFlightSeats().stream().filter(e -> e.getSeat().getType().equalsIgnoreCase(seatClass)).collect(Collectors.toList());
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        System.out.println(username);
 
         var x = flight.getFlightSeats().stream().filter(e -> e.getSeat().getType().equalsIgnoreCase(seatClass)).collect(Collectors.toList());
         List<List<FlightSeatPrice>> seats = new ArrayList<>();
@@ -177,48 +181,36 @@ public class CustomerController {
         return "user/seat";
     }
 
-    @GetMapping("/payment/create")
-    public String paymentGet(Model model) {
-        FlightSeat flightSeat = new FlightSeat();
-        model.addAttribute("bookSeat", flightSeat);
-        return "user/seat";
-    }
-
-
     @PostMapping("/payment/create")
-    public String payment(Model model, FlightSeat flightSeat, BindingResult result) {
+    public String payment(HttpSession session, Model model, FlightSeat flightSeat, BindingResult result) {
         if (result.hasErrors()) {
             System.out.println(result.getAllErrors());
             return "error/500";
         }
-        System.out.println(flightSeat.getFlightId());
 
         var flightSeatPrice = flightSeatPriceRepository.findByFlightAndSeat(
                 Flight.builder().id(flightSeat.getFlightId()).build(), Seat.builder().id(flightSeat.getSeatId()).build()
         );
-        System.out.println(flightSeatPrice);
-//        var x = flightSeatPriceRepository.findByFlightAndSeat(flight,seat);
-//        System.out.println(x);
-        return "user/checkout";
+
+        session.setAttribute("flightId", flightSeat.getFlightId());
+        session.setAttribute("seatId", flightSeat.getSeatId());
+
+        Ticket ticket = new Ticket();
+        model.addAttribute("basePrice", flightSeatPrice.getPrice());
+        model.addAttribute("ticket", ticket);
+
+        return "user/form-checkout";
     }
 
     //payment with paypal
 
 
-    public static final String SUCCESS_URL = "checkout/pay/success";
-    public static final String CANCEL_URL = "checkout/pay/cancel";
-
-    private Logger log = LoggerFactory.getLogger(getClass());
-
-    @GetMapping("/checkout")
-    public String checkout() {
-        return "user/form-checkout";
-    }
-
     @PostMapping("/checkout/pay")
-    public String payment(HttpServletRequest request, @RequestParam("price") double price) {
+    public String payment(HttpServletRequest request, @RequestParam("price") double price, Ticket ticket) {
         String cancelUrl = GetURLFromServer.getBaseURL(request) + "/" + CANCEL_URL;
         String successUrl = GetURLFromServer.getBaseURL(request) + "/" + SUCCESS_URL;
+
+        request.getSession().setAttribute("ticket", ticket);
         try {
             Payment payment = service.createPayment(price, "USD",
                     PaypalPaymentMethod.paypal,
@@ -235,17 +227,35 @@ public class CustomerController {
         }
         return "redirect:/checkout";
     }
+
     @GetMapping(value = CANCEL_URL)
     public String cancelPay() {
         return "user/cancel";
     }
 
     @GetMapping(value = SUCCESS_URL)
-    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
+    public String successPay(HttpServletRequest request, @RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
         try {
             Payment payment = service.executePayment(paymentId, payerId);
-            System.out.println(payment.toJSON());
             if (payment.getState().equals("approved")) {
+
+                var saveTicket = (Ticket) request.getSession().getAttribute("ticket");
+                var flightId = (long) request.getSession().getAttribute("flightId");
+                var seatId= (long) request.getSession().getAttribute("seatId");
+                var flightSeatPrice = flightSeatPriceRepository.findByFlightAndSeat(
+                        Flight.builder().id(flightId).build(), Seat.builder().id(seatId).build()
+                );
+                saveTicket.setPnr(generatePNR.generatePnr());
+                saveTicket.setFlightSeatPrice(flightSeatPrice);
+                Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                String username;
+                if (principal instanceof UserDetails) {
+                    username = ((UserDetails) principal).getUsername();
+                } else {
+                    username = principal.toString();
+                }
+                saveTicket.setUser(userRepository.findByEmail(username));
+                ticketRepository.save(saveTicket);
                 return "user/success";
             }
         } catch (PayPalRESTException e) {

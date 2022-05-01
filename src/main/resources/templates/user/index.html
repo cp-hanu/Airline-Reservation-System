@@ -146,17 +146,6 @@
         }
 
     });
-    document.querySelector('#answerInput1').addEventListener('input', function(e) {
-        var input = e.target,
-            list = input.getAttribute('list'),
-            options = document.querySelectorAll('#' + list + ' option[value="'+input.value+'"]'),
-            hiddenInput = document.getElementById(input.getAttribute('id') + '-hidden');
-
-        if (options.length > 0) {
-            hiddenInput.value = input.value;
-            input.value = options[0].innerText;
-        }
-    });
 
     function text(x) {
         if (x == 0) {

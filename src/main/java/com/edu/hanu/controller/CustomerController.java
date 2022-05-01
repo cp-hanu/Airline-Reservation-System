@@ -207,6 +207,14 @@ public class CustomerController {
         model.addAttribute("tax", tax);
         model.addAttribute("transportTax", transportTax);
         model.addAttribute("total", total);
+
+        return "user/form-checkout";
+    }
+
+    //payment with paypal
+
+    @GetMapping("/checkout")
+    public String checkout() {
         return "user/form-checkout";
     }
 

@@ -47,6 +47,9 @@ public class DataInflater {
     @Autowired
     TicketRepository ticketRepository;
 
+    @Autowired
+    DelayRepository delayRepository;
+
 
     @Transactional
     @PostConstruct
@@ -153,159 +156,120 @@ public class DataInflater {
                 ex.printStackTrace();
             }
         }
-        // For create plane data: ID: 1, Airbus A320
-//        if (!planeRepository.exists(1L)) {
-//            try {
-//                Plane newPlane = Plane.builder().
-//                        brand("AIRBUS")
-//                        .name("A320")
-//                        .capacity(180).
-//                        build();
-//                var plane = planeRepository.save(newPlane);
-//
-//                var planeRow = plane.getCapacity() / 6;
-//                String[] cols = {"A", "B", "C", "D", "E", "F"};
-//                for (int i = 0; i < planeRow; i++) {
-//                    if (i < 3) {
-//                        for (String col : cols) {
-//                            Seat seat = Seat.builder()
-//                                    .plane(plane)
-//                                    .type("FIRST CLASS")
-//                                    .col(col)
-//                                    .row(i + 1)
-//                                    .build();
-//                            seatRepository.save(seat);
-//                        }
-//                    } else if (i < 6) {
-//                        for (String col : cols) {
-//                            Seat seat = Seat.builder()
-//                                    .plane(plane)
-//                                    .type("BUSINESS CLASS")
-//                                    .col(col)
-//                                    .row(i + 1)
-//                                    .build();
-//
-//                            seatRepository.save(seat);
-//                        }
-//                    } else {
-//                        for (String col : cols) {
-//                            Seat seat = Seat.builder()
-//                                    .plane(plane)
-//                                    .type("ECONOMY CLASS")
-//                                    .col(col)
-//                                    .row(i + 1)
-//                                    .build();
-//                            seatRepository.save(seat);
-//                        }
-//                    }
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
+//         For create plane data: ID: 1, Airbus A320
+        if (!planeRepository.exists(1L)) {
+            try {
+                Plane newPlane = Plane.builder().
+                        brand("AIRBUS")
+                        .name("A320")
+                        .capacity(180).
+                        build();
+                var plane = planeRepository.save(newPlane);
+
+                var planeRow = plane.getCapacity() / 6;
+                String[] cols = {"A", "B", "C", "D", "E", "F"};
+                for (int i = 0; i < planeRow; i++) {
+                    if (i < 3) {
+                        for (String col : cols) {
+                            Seat seat = Seat.builder()
+                                    .plane(plane)
+                                    .type("FIRST CLASS")
+                                    .col(col)
+                                    .row(i + 1)
+                                    .build();
+                            seatRepository.save(seat);
+                        }
+                    } else if (i < 6) {
+                        for (String col : cols) {
+                            Seat seat = Seat.builder()
+                                    .plane(plane)
+                                    .type("BUSINESS CLASS")
+                                    .col(col)
+                                    .row(i + 1)
+                                    .build();
+
+                            seatRepository.save(seat);
+                        }
+                    } else {
+                        for (String col : cols) {
+                            Seat seat = Seat.builder()
+                                    .plane(plane)
+                                    .type("ECONOMY CLASS")
+                                    .col(col)
+                                    .row(i + 1)
+                                    .build();
+                            seatRepository.save(seat);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
 //
 //        // create a new flight
-//        if (!flightRepository.exists(1L)) {
-//            Flight newFlight = new Flight();
-//            Airline VNAirline = airlineRepository.findByAbbreviation("VN");
-//
-//            Airport fromAirport = airportRepository.findByCode("HAN");
-//            Airport toAirport = airportRepository.findByCode("SGN");
-//
-//            Plane plane = planeRepository.findByName("A320");
-//
-//            LocalTime departureTime = LocalTime.of(5, 0);
-//            LocalTime arrivalTime = LocalTime.of(7, 0);
-////            Time arrivalTime = Time.valueOf("07:25:00");
-//
-//            Date departureDate = Date.valueOf("2022-04-20");
-//            Date arrivalDate = Date.valueOf("2022-04-20");
-//
-//            newFlight.setFlightNo("205");
-//            newFlight.setAirline(VNAirline);
-//            newFlight.setPlane(plane);
-//            newFlight.setFromAirport(fromAirport);
-//            newFlight.setToAirport(toAirport);
-//            newFlight.setDepartureDate(departureDate);
-//            newFlight.setDepartureTime(departureTime);
-//            newFlight.setArrivalDate(arrivalDate);
-//            newFlight.setArrivalTime(arrivalTime);
-//
-//            var flight = flightRepository.save(newFlight);
-//
-//            // set price for flight
-//            //
-//            Collection<Seat> allSeat = plane.getSeats();
-//
-//            for (Seat seat : allSeat) {
-//                if (seat.getType().equalsIgnoreCase("Economy Class")) {
-//                    FlightSeatPrice flightSeat = FlightSeatPrice.builder()
-//                            .flight(flight)
-//                            .seat(seat)
-//                            .price(58).build();
-//                    flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(), seat.getId()));
-//                    flightSeatPriceRepository.save(flightSeat);
-//                } else if (seat.getType().equalsIgnoreCase("BUSINESS CLASS")) {
-//                    FlightSeatPrice flightSeat = FlightSeatPrice.builder()
-//                            .flight(flight)
-//                            .seat(seat)
-//                            .price(300).build();
-//                    flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(), seat.getId()));
-//                    flightSeatPriceRepository.save(flightSeat);
-//                } else if (seat.getType().equalsIgnoreCase("First Class")) {
-//                    FlightSeatPrice flightSeat = FlightSeatPrice.builder()
-//                            .flight(flight)
-//                            .seat(seat)
-//                            .price(500).build();
-//                    flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(), seat.getId()));
-//                    flightSeatPriceRepository.save(flightSeat);
-//                }
-//            }
-//            // create ticket seat
-//            User user = userRepository.findByEmail("customer@gmail.com");
-//            Seat seat3B = seatRepository.findSeatByRowAndColAndPlane(3, "B", plane);
-//
-//            FlightSeatPrice flightSeatPrice = flightSeatPriceRepository.findByFlightAndSeat(flight, seat3B);
-//
-//            Ticket newTicket = Ticket.builder()
-//                    .pnr("GWGIQR")
-//                    .firstName("Nam")
-//                    .lastName("Nguyen")
-//                    .user(user)
-//                    .flightSeatPrice(flightSeatPrice)
-//                    .build();
-//            ticketRepository.save(newTicket);
-//
-//        }
+        if (!flightRepository.exists(1L)) {
+            Flight newFlight = new Flight();
+            Airline VNAirline = airlineRepository.findByAbbreviation("VN");
 
-        // Get booked Seat from a flight
-//        var x = flightRepository.findOne(1L);
+            Airport fromAirport = airportRepository.findByCode("HAN");
+            Airport toAirport = airportRepository.findByCode("SGN");
 
-        // Get ticket details
-//        System.out.println("TEST QUERY ---------------------------------------------------");
-//        var plane = planeRepository.findAll();
-//        System.out.println(plane);
-//        var flight = flightRepository.findAll();
-//        System.out.println(flight);
-//        var airline = airlineRepository.findAll();
-//        System.out.println(airline);
-//        System.out.println("-------------------------");
-//        System.out.println(seatRepository.findAll());
-//        System.out.println("-------------------------");
+            Plane plane = planeRepository.findByName("A320");
 
-//        var user = userRepository.findAll();
-//        System.out.println(user);
-//        var ticket = ticketRepository.findOne(1L);
-////        System.out.println("GET FLIGHT FROM TICKET");
-////        System.out.println(ticket.getFlightSeatPrice().getFlight());
-////        System.out.println("GET SEAT FROM TICKET");
-////        System.out.println(ticket.getFlightSeatPrice().getSeat());
-//          var
-//        System.out.println("GET BOOKED SEAT");
-//        var x = flightRepository.findOne(1L);
-//        System.out.println(x.getFlightSeats());
-//        System.out.println("--------------------------------------");
+            LocalTime departureTime = LocalTime.of(5, 0);
+            LocalTime arrivalTime = LocalTime.of(7, 0);
+//            Time arrivalTime = Time.valueOf("07:25:00");
 
+            Date departureDate = Date.valueOf("2022-05-10");
+            Date arrivalDate = Date.valueOf("2022-05-10");
+
+            newFlight.setFlightNo("205");
+            newFlight.setAirline(VNAirline);
+            newFlight.setPlane(plane);
+            newFlight.setFromAirport(fromAirport);
+            newFlight.setToAirport(toAirport);
+            newFlight.setDepartureDate(departureDate);
+            newFlight.setDepartureTime(departureTime);
+            newFlight.setArrivalDate(arrivalDate);
+            newFlight.setArrivalTime(arrivalTime);
+            Delay delay = Delay.builder()
+                    .minute(0)
+                    .reason("")
+                    .build();
+            delayRepository.save(delay);
+            newFlight.setDelay(delay);
+            var flight = flightRepository.save(newFlight);
+
+            // set price for flight
+            //
+            Collection<Seat> allSeat = plane.getSeats();
+
+            for (Seat seat : allSeat) {
+                if (seat.getType().equalsIgnoreCase("Economy Class")) {
+                    FlightSeatPrice flightSeat = FlightSeatPrice.builder()
+                            .flight(flight)
+                            .seat(seat)
+                            .price(58).build();
+                    flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(), seat.getId()));
+                    flightSeatPriceRepository.save(flightSeat);
+                } else if (seat.getType().equalsIgnoreCase("BUSINESS CLASS")) {
+                    FlightSeatPrice flightSeat = FlightSeatPrice.builder()
+                            .flight(flight)
+                            .seat(seat)
+                            .price(300).build();
+                    flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(), seat.getId()));
+                    flightSeatPriceRepository.save(flightSeat);
+                } else if (seat.getType().equalsIgnoreCase("First Class")) {
+                    FlightSeatPrice flightSeat = FlightSeatPrice.builder()
+                            .flight(flight)
+                            .seat(seat)
+                            .price(500).build();
+                    flightSeat.setPk(new FlightSeatPrice.FlightSeatPricePk(flight.getId(), seat.getId()));
+                    flightSeatPriceRepository.save(flightSeat);
+                }
+            }
+        }
     }
 }

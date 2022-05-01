@@ -118,8 +118,7 @@
 
 
                                         </select>
-                                    </div>
-                                    <div class="mb-3">
+                                        ">
                                         <label class="form-label" for="to">To</label>
                                         <select id="to"  class="form-control"  required th:field="*{toAirport}">
                                             <option th:each="airport : ${airports}" th:value="${airport.id}" th:text="${airport.city} + '-' + ${airport.code}"></option>
@@ -131,7 +130,9 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="departureTime">Departure Time</label>
-                                        <input type="time" id="departureTime" class="form-control"  required th:field="*{departureTime}">
+                                        <input type="time"          </div>
+                                    <div class="mb-3 id="departureTime" class="form-control"  required th:field="*{departureTime}">
+
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="arrivalDate">Arrival Date</label>

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -65,14 +66,14 @@ public class CustomerController {
     @Autowired
     GeneratePNRService generatePNR;
 
-
-    @Autowired
-    SendEmailService emailService;
-
     public static final String SUCCESS_URL = "checkout/pay/success";
     public static final String CANCEL_URL = "checkout/pay/cancel";
 
     private Logger log = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    SendEmailService emailService;
+
 
     @GetMapping("/home")
     public String homepage(Model model) {
@@ -211,12 +212,7 @@ public class CustomerController {
 
     //payment with paypal
 
-    @GetMapping("/checkout")
-    public String checkout() {
-        return "user/form-checkout";
-    }
 
-    //payment with paypal
 
     @PostMapping("/checkout/pay")
     public String payment(HttpServletRequest request, @RequestParam("price") double price, Ticket ticket) {

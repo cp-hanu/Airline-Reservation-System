@@ -87,7 +87,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3">
+                        <div class="col-sm-6 col-md-6 col-lg-4 mt-3">
                             <div class="card">
                                 <div class="content">
                                     <div class="row">
@@ -110,7 +110,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3">
+                        <div class="col-sm-6 col-md-6 col-lg-4 mt-3">
                             <div class="card">
                                 <div class="content">
                                     <div class="row">
@@ -133,7 +133,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3">
+                        <div class="col-sm-6 col-md-6 col-lg-4 mt-3">
                             <div class="card">
                                 <div class="content">
                                     <div class="row">
@@ -157,7 +157,31 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3">
+                        <div class="col-sm-6 col-md-6 col-lg-4 mt-3">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <a th:href="@{/internal/admin/tickets}">
+                                            <div class="col-sm-4">
+                                                <div class="icon-big text-center">
+                                                    <i class="violet fa fa-ticket"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="detail">
+                                                    <p class="detail-subtitle">Tickets</p>
+                                                    <div th:text="${tickets.size()}">
+                                                        <span class="number" th:if="${tickets.size()} > 1" th:text="No Tickets"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-4 mt-3">
                             <div class="card">
                                 <div class="content">
                                         <div class="row">

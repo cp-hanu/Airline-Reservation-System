@@ -56,16 +56,19 @@ public class AdminController {
 
     @Autowired
     SendEmailService emailService;
+    private JavaMailSender javaMailSender;
 
     @GetMapping("/admin")
     public String admin(Model model) {
         List<Flight> flights = flightRepository.findAll();
         List<Airline> airlines = airlineRepository.findAll();
         List<Plane> planes = planeRepository.findAll();
+        List<Ticket> tickets = ticketRepository.findAll();
         List<User> users = userRepository.findAll();
         model.addAttribute("flights", flights);
         model.addAttribute("airlines", airlines);
         model.addAttribute("planes", planes);
+        model.addAttribute("tickets", tickets);
         model.addAttribute("users", users);
         return "admin/index";
     }
@@ -293,6 +296,16 @@ public class AdminController {
         // notify user here
 
         return "redirect:/internal/admin/flights";
+    }
+
+
+    void sendMail(String receiverEmail, String content) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(receiverEmail);
+        msg.setSubject("Apology Letter");
+        msg.setText(content);
+
+        javaMailSender.send(msg);
     }
 
 

@@ -209,21 +209,22 @@ public class DataInflater {
 
 //
 //        // create a new flight
-        if (!flightRepository.exists(1L)) {
-            Flight newFlight = new Flight();
-            Airline VNAirline = airlineRepository.findByAbbreviation("VN");
+        Airline VNAirline = airlineRepository.findByAbbreviation("VN");
 
-            Airport fromAirport = airportRepository.findByCode("HAN");
-            Airport toAirport = airportRepository.findByCode("SGN");
+        Airport fromAirport = airportRepository.findByCode("HAN");
+        Airport toAirport = airportRepository.findByCode("SGN");
 
-            Plane plane = planeRepository.findByName("A320");
+        Plane plane = planeRepository.findByName("A320");
 
-            LocalTime departureTime = LocalTime.of(5, 0);
-            LocalTime arrivalTime = LocalTime.of(7, 0);
+        LocalTime departureTime = LocalTime.of(5, 0);
+        LocalTime arrivalTime = LocalTime.of(7, 0);
 //            Time arrivalTime = Time.valueOf("07:25:00");
 
-            Date departureDate = Date.valueOf("2022-05-10");
-            Date arrivalDate = Date.valueOf("2022-05-10");
+        Date departureDate = Date.valueOf("2022-05-10");
+        Date arrivalDate = Date.valueOf("2022-05-10");
+
+        if (flightRepository.findByFromAirportAndToAirportAndDepartureDate(fromAirport, toAirport, departureDate) == null) {
+            Flight newFlight = new Flight();
 
             newFlight.setFlightNo("205");
             newFlight.setAirline(VNAirline);
@@ -272,4 +273,5 @@ public class DataInflater {
             }
         }
     }
+
 }

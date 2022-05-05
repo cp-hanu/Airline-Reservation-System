@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Seat</title>
     <link rel="stylesheet" th:href="@{/user/css/seat.css}"/>
+    <style>
+        .payment{
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
 </head>
 <body>
 <div class="plane">
@@ -14,8 +20,6 @@
 
     </div>
     <form method="post" th:action="@{/payment/create/}" th:object="${bookSeat}">
-        <!--        <div id="flight" th:field="*{flight_id}" th:value="${seats.get(0).get(0).getFlight().id}">-->
-
         <label for="flightId"></label><input type="hidden"
                                              th:value="${seats.get(0).get(0).getFlight().id}"
                                              id="flightId"
@@ -32,7 +36,8 @@
                                th:field="*{seatId}"
                                th:id="${seat.current.getSeat().getRow() + seat.current.getSeat().getCol()}"/>
                         <label th:for="${seat.current.getSeat().getRow() + seat.current.getSeat().getCol()}"
-                               th:text="${seat.current.getSeat().getRow() + seat.current.getSeat().getCol()}"></label>
+                               th:text="${seat.current.getSeat().getRow() + seat.current.getSeat().getCol()}">
+                        </label>
                     </li>
                 </ol>
             </li>
@@ -41,11 +46,24 @@
 
         <div class="exit exit--back fuselage">
         </div>
-        <button type="submit" class="btn btn-primary mb-2">
-            <i class="fas fa-submit"></i>
+        <div th:hidden="true" style="text-align: center" class="totalPrice" id="totalPrice"
+             th:text="'Your Total Price:' + ${seats.get(0).get(0).price} + '$' "></div>
+        <button type="submit"  class="btn btn-primary payment">
             Next to payment
         </button>
     </form>
 </div>
+<script>
+    const radioButtons = document.querySelectorAll('input[name="seatId"]');
+    console.log(radioButtons)
+    const total = document.getElementById("totalPrice")
+    for (const radioBtn of radioButtons) {
+        radioBtn.addEventListener('change', function (e) {
+            if (this.checked) {
+                total.style.display = 'block';
+            }
+        });
+    }
+</script>
 </body>
 </html>

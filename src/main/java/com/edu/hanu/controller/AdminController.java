@@ -2,17 +2,25 @@ package com.edu.hanu.controller;
 
 import com.edu.hanu.model.*;
 import com.edu.hanu.repository.*;
+import com.edu.hanu.service.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/internal")
@@ -40,6 +48,15 @@ public class AdminController {
 
     @Autowired
     FlightSeatPriceRepository flightSeatPriceRepository;
+
+    @Autowired
+    DelayRepository delayRepository;
+    @Autowired
+    TicketRepository ticketRepository;
+
+    @Autowired
+    SendEmailService emailService;
+    private JavaMailSender javaMailSender;
 
     @GetMapping("/admin")
     public String admin(Model model) {
@@ -166,7 +183,8 @@ public class AdminController {
         model.addAttribute("airlines", airlines);
         model.addAttribute("planes", planes);
         model.addAttribute("airports", airports);
-        model.addAttribute("dep", LocalTime.now());
+        LocalDate now = LocalDate.now();
+        model.addAttribute("now", now);
         return "admin/flight/flight-add";
     }
 
@@ -176,6 +194,12 @@ public class AdminController {
             return "admin/flight/flight-add";
         }
         model.addAttribute("flight", flight);
+        Delay delay = Delay.builder()
+                .minute(0)
+                .reason("")
+                .build();
+        delayRepository.save(delay);
+        flight.setDelay(delay);
         flightRepository.save(flight);
         Collection<Seat> allSeat = flight.getPlane().getSeats();
         for (Seat seat : allSeat) {
@@ -202,20 +226,22 @@ public class AdminController {
                 flightSeatPriceRepository.save(flightSeat);
             }
         }
-//        return "redirect:?success";
-        return "redirect:/internal/admin/flight";
+        return "redirect:/internal/admin/flights";
     }
 
     @GetMapping("/admin/flights/update/{id}")
     public String flightUpdate(@PathVariable(value = "id") long id, Model model) {
+        System.out.println("-----------------------------");
         Flight flights = flightRepository.getById(id);
-        List<Airline> airline = airlineRepository.findAll();
+        List<Airline> airline = airlineRepository.findAllAirline();
         List<Plane> planes = planeRepository.findAll();
-        List<Airport> airports = airportRepository.findAll();
+        List<Airport> airports = airportRepository.findAllAirport();
         model.addAttribute("flights", flights);
         model.addAttribute("airlines", airline);
         model.addAttribute("planes", planes);
         model.addAttribute("airports", airports);
+        LocalDate now = LocalDate.now();
+        model.addAttribute("now", now);
         return "admin/flight/flight-update";
     }
 
@@ -228,7 +254,7 @@ public class AdminController {
             return "admin/flight/flight-update";
         }
         flightRepository.save(flight);
-        return "redirect:internal/admin/flights";
+        return "redirect:/internal/admin/flights";
     }
 
     @GetMapping(value = "/admin/flights/delete/{id}")
@@ -237,6 +263,46 @@ public class AdminController {
         Flight flight = flightRepository.getById(id);
         flightRepository.delete(flight);
         return "redirect:/internal/admin/flights";
+    }
+
+    @GetMapping(value = "/admin/flights/delay/update/{id}")
+    public String updateDelay(@PathVariable(value = "id") Long id, Model model) {
+        Delay delay = delayRepository.getDelayById(id);
+        model.addAttribute("delay", delay);
+        return "admin/flight/delay";
+    }
+
+    @PostMapping(value = "/admin/flights/delay/save/{id}")
+    public String updateDelayPost(@PathVariable(value = "id", required = false) long id, Delay delay, BindingResult result) {
+        if (result.hasErrors()) {
+            delay.setId(id);
+            return "admin/flight/delay";
+        }
+        System.out.println(flightRepository.getByDelayId(delay.getId()));
+        var flight = flightRepository.getByDelayId(delay.getId());
+        delayRepository.save(delay);
+        // get the list of email
+        if (flight.getTickets() != null) {
+            var listEmail = flight.getTickets().stream().map(Ticket::getEmail).collect(Collectors.toSet());
+            System.out.println(listEmail);
+            listEmail.forEach(email -> {
+                emailService.delayNotification(delay, flight, email);
+            });
+        }
+
+        // notify user here
+
+        return "redirect:/internal/admin/flights";
+    }
+
+
+    void sendMail(String receiverEmail, String content) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(receiverEmail);
+        msg.setSubject("Apology Letter");
+        msg.setText(content);
+
+        javaMailSender.send(msg);
     }
 
 
@@ -264,7 +330,7 @@ public class AdminController {
 
         }
         airlineRepository.save(airline);
-        return "redirect:internal/admin/airlines";
+        return "redirect:/internal/admin/airlines";
     }
 
     @GetMapping(value = "/admin/airlines/delete/{id}")
@@ -272,7 +338,7 @@ public class AdminController {
             @PathVariable(value = "id") Long id) {
         Airline airline = airlineRepository.getById(id);
         airlineRepository.delete(airline);
-        return "redirect:internal/admin/airlines";
+        return "redirect:/internal/admin/airlines";
     }
 
     //    Account page
@@ -318,6 +384,13 @@ public class AdminController {
         List<Role> roles = roleRepository.findAll();
         model.addAttribute("roles", roles);
         return "admin/role/roles";
+    }
+
+    @GetMapping("/admin/tickets")
+    public String ticket(Model model){
+        List<Ticket> tickets = ticketRepository.findAll();
+        model.addAttribute("tickets", tickets);
+        return "admin/ticket";
     }
 
 }

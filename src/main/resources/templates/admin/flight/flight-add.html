@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:HH="http://www.w3.org/1999/xhtml">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" >
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Travel Admin</title>
-    <link th:href="@{/admin/vendor/fontawesome/css/fontawesome.min.css}" rel="stylesheet">
-    <link th:href="@{/admin/vendor/fontawesome/css/solid.min.css}" rel="stylesheet">
-    <link th:href="@{/admin/vendor/fontawesome/css/brands.min.css}" rel="stylesheet">
-    <link th:href="@{/admin/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/solid.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/brands.min.css">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.2.0/css/flag-icons.min.css" rel="stylesheet" />
     <link th:href="@{/admin/css/master.css}" rel="stylesheet">
-    <!--    <link th:href="@{/admin/vendor/flagiconcss/css/flag-icon.min.css}" rel="stylesheet">-->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous" defer></script>
+    <script th:src="@{/admin/js/script.js}" defer></script>
 </head>
 <body>
 <div class="wrapper">
@@ -35,7 +43,10 @@
                 <a th:href="@{/internal/admin/flights}"><i class="fas fa-chart-bar"></i> Flights</a>
             </li>
             <li>
-                <a href="users.html"><i class="fas fa-user-friends"></i>Users</a>
+                <a th:href="@{/internal/admin/tickets}"><i class="fas fa-chart-bar"></i> Tickets</a>
+            </li>
+            <li>
+                <a th:href="@{/internal/admin/users}"><i class="fas fa-user-friends"></i>Users</a>
             </li>
         </ul>
     </nav>
@@ -74,9 +85,6 @@
         <!-- end of navbar navigation -->
         <div class="content">
             <div class="container">
-                <!--                <div class="page-title">-->
-                <!--                    <h3>Create Plane</h3>-->
-                <!--                </div>-->
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -93,16 +101,11 @@
                                       accept-charset="utf-8">
                                     <div class="mb-3">
                                         <label class="form-label" for="air">Airline</label>
-                                        <!--                                        <input type="text" list="airline" id="air" placeholder="Enter Airline" class="form-control"  required th:field="*{airline}">-->
                                         <select id="air" class="form-control" th:field="*{airline}">
                                             <option th:each="airline : ${airlines}" th:value="${airline.id}"
                                                     th:text="${airline.fullName}"></option>
                                         </select>
 
-                                        <datalist id="airline">
-                                            <option th:each="airline : ${airlines}" th:value="${airline.fullName}"
-                                                    th:text="${airline.fullName}"></option>
-                                        </datalist>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="flightNo">Flight No</label>
@@ -110,25 +113,15 @@
                                                class="form-control" th:field="*{flightNo}">
                                     </div>
                                     <div class="mb-3">
-                                        <!--                                        <label class="form-label">Plane</label>-->
                                         <label class="form-label" for="plane">Plane</label>
-                                        <!--                                        <input type="text"  id="plane" placeholder="Enter Plane" class="form-control"  required th:field="*{plane}">-->
-                                        <!--                                        <datalist id="planeList" th:each="plane : ${planes}">-->
-                                        <!--                                            <option th:value="${plane.brand} + ' ' + ${plane.name}" />-->
-                                        <!--                                        </datalist>-->
-                                        <select id="plane" placeholder="Enter Plane" class="form-control"
+                                        <select id="plane" class="form-control"
                                                 th:field="*{plane}">
-                                            <!--/*@thymesVar id="name" type=""*/-->
                                             <option th:each="p : ${planes}" th:value="${p.id}"
                                                     th:text="${p.brand} + ' ' + ${p.name}"></option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="from">From</label>
-                                        <!--                                        <input type="text" list="fromCity" id="from" placeholder="Enter From Destination" class="form-control"  required th:field="*{fromAirport}">-->
-                                        <!--                                        <datalist id="fromCity" th:each="airport : ${airports}">-->
-                                        <!--                                            <option th:value="${airport.city} + '(' + ${airport.code} + ')' " />-->
-                                        <!--                                        </datalist>-->
                                         <select id="from" class="form-control" th:field="*{fromAirport}">
                                             <option th:each="airport : ${airports}" th:value="${airport.id}"
                                                     th:text="${airport.getCity()} + '-' + ${airport.code}"></option>
@@ -136,10 +129,6 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="to">To</label>
-                                        <!--                                        <input type="text" list="toCity" id="to" placeholder="Enter To Destination" class="form-control"  required th:field="*{toAirport}">-->
-                                        <!--                                        <datalist id="toCity" >-->
-                                        <!--                                            <option th:each="airport : ${airports}" th:value="${airport.city} + '(' + ${airport.code} + ')' " />-->
-                                        <!--                                        </datalist>-->
                                         <select id="to" class="form-control" th:field="*{toAirport}">
                                             <option th:each="airport : ${airports}" th:value="${airport.id}"
                                                     th:text="${airport.city} + '-' + ${airport.code}"></option>
@@ -147,7 +136,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="departureDate">Departure Date</label>
-                                        <input type="date" id="departureDate" placeholder="Enter Departure Date"
+                                        <input type="date" id="departureDate" th:attr="min=${now}" placeholder="Enter Departure Date"
                                                class="form-control" th:field="*{departureDate}">
                                     </div>
                                     <div class="mb-3">
@@ -157,7 +146,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="arrivalDate">Arrival Date</label>
-                                        <input type="date" id="arrivalDate" placeholder="Enter Arrival Date"
+                                        <input type="date" id="arrivalDate" th:attr="min=${now}" placeholder="Enter Arrival Date"
                                                class="form-control" th:field="*{arrivalDate}">
                                     </div>
                                     <div class="mb-3">
@@ -191,13 +180,6 @@
                                             Save
                                         </button>
                                     </div>
-                                    <!--                                    <div class="col-sm-4 offset-sm-2">-->
-                                    <!--                                        <a type="submit" th:href="@{/admin/planes}" class="btn btn-secondary mb-2"><i class="fas fa-times"></i> Cancel</a>-->
-                                    <!--                                        <button type="submit" class="btn btn-primary mb-2">-->
-                                    <!--                                             <i class="fas fa-save"></i>-->
-                                    <!--                                            Save-->
-                                    <!--                                        </button>-->
-                                    <!--                                    </div>-->
                                 </form>
                             </div>
                         </div>
@@ -207,9 +189,6 @@
         </div>
     </div>
 </div>
-<script th:src="@{/admin/vendor/jquery/jquery.min.js}"></script>
-<script th:src="@{/admin/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<!--<script th:src="@{/admin/js/form-validator.js}"></script>-->
 <script>
     // prevent form submit
     const form = document.querySelector("form");
@@ -220,9 +199,6 @@
     });
 
 </script>
-<script th:src="@{/admin/js/script.js}"></script>
-
-
 </body>
 
 </html>

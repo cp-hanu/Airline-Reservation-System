@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -75,14 +76,23 @@ public class Flight {
     private Set<Ticket> tickets;
 
     @Transient
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Double firstClassPrice;
 
     @Transient
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Double economyClassPrice;
 
     @Transient
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Double businessClassPrice;
 
+    @OneToOne
+    @JoinColumn(name = "delay_id")
+    private Delay delay;
 
     public TreeSet<FlightSeatPrice> getFlightSeats() {
         Set<FlightSeatPrice> bookedSeats = new HashSet<>();
@@ -104,11 +114,14 @@ public class Flight {
     }
 
     public double getClassPrice(String seatClass) {
-        return this.flightSeats.stream().filter(e -> e.getSeat().getType().equalsIgnoreCase(seatClass)).findFirst().get().getPrice();
+        var optional = this.flightSeats.stream().filter(e -> e.getSeat().getType().equalsIgnoreCase(seatClass)).findFirst();
+        return optional.map(FlightSeatPrice::getPrice).orElse(0.0);
     }
 
     public int getAvailableSeat(String seatClass) {
-        return (int) this.getFlightSeats().stream().filter(e -> e.getSeat().getType().equalsIgnoreCase(seatClass)).count();
+        return (int) this.getFlightSeats().stream()
+                .filter(flightSeatPrice -> !flightSeatPrice.isBooked()).
+                filter(e -> e.getSeat().getType().equalsIgnoreCase(seatClass)).count();
     }
 
 }

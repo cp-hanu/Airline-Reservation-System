@@ -83,7 +83,7 @@
                             </td>
                             <td th:text="${ticket.getFlightSeatPrice().getSeat().type}"></td>
                             <td>
-                                <a th:href="'/cart/export/pdf/'+${ticket.getId()}" > Print</a>
+                                <a th:href="'/cart/export/pdf/'+${ticket.getId()}" class="btn btn-primary"> Print</a>
                                 <a href="#" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true"><i class="fa fa-close"></i></span>
                                 </a>

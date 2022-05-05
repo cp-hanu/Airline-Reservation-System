@@ -92,7 +92,6 @@
                                         <th>Index</th>
                                         <th>FullName</th>
                                         <th>Email</th>
-                                        <th>Password</th>
                                         <th>Phone</th>
                                         <th>Country</th>
 <!--                                        <th>Role</th>-->
@@ -103,10 +102,9 @@
                                         <td th:text="${user.index + 1}"></td>
                                         <td th:text="${user.current.fullname}"></td>
                                         <td th:text="${user.current.email}"></td>
-                                        <td th:text="${user.current.password}"></td>
                                         <td th:text="${user.current.phone}"></td>
                                         <td th:text="${user.current.country}"></td>
-<!--                                        <td th:text="${user.current.roles.}"></td>-->
+<!--                                        <td th:text="${user.current.roles}"></td>-->
                                         <td class="text-end">
                                             <a th:href="'/internal/admin/users/update/' + ${user.current.id}" class="btn btn-outline-info btn-rounded"><i class="fas fa-pen"></i></a>
                                             <a th:href="'/internal/admin/users/delete/' + ${user.current.id}" class="btn btn-outline-danger btn-rounded"
